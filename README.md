@@ -82,10 +82,18 @@ npm run preview
 
 ## GitHub Pages での公開手順
 
+GitHub Pages の公開用ファイルは **`docs/`** フォルダ配下に生成・配置されます。
+
+### 方法A: ブランチから直接公開する場合（推奨・シンプル）
 1. 本リポジトリを GitHub にプッシュします。
-2. GitHubリポジトリの **Settings** > **Pages** を開きます。
-3. **Build and deployment** > **Source** を **GitHub Actions** に変更します。
-4. `main` ブランチにプッシュされると、`.github/workflows/deploy.yml` が自動実行され、数分でサイトが公開されます。
+2. リポジトリの **Settings** > **Pages** を開きます。
+3. **Build and deployment** の設定：
+   - **Source**: `Deploy from a branch` を選択
+   - **Branch**: `main` ブランチ、フォルダを **`/docs`** に選択
+4. **Save** をクリックすると、数分でサイトが公開されます。
+
+### 方法B: GitHub Actions で自動ビルド＆公開する場合
+- **Source**: `GitHub Actions` を選択すると、プッシュ時に `.github/workflows/deploy.yml` が自動実行されて公開されます。
 
 ---
 
