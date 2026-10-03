@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <h1 className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                Global Blocs
+                World Blocs
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-semibold">
                   IR-DB
                 </span>

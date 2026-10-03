@@ -1,5 +1,5 @@
-# Global Blocs (国際関係データベース)
-**Global Blocs: International Relations & Multilateral Frameworks Visualizer**
+# World Blocs (国際関係データベース)
+**World Blocs: International Relations & Multilateral Frameworks Visualizer**
 
 G7, EU, NATO, AUKUS, Quad, CPTPP, RCEP, パリ協定などの国際的な枠組みや主要条約の参加国・締結国を、世界地図とタイムライン上で直感的に可視化・比較探索できるWebプラットフォームです。
 
@@ -85,10 +85,8 @@ npm run preview
 GitHub Pages の公開用ファイルは **`docs/`** フォルダ配下に生成・配置されます。
 
 ### 1. GitHub へのプッシュ
-GitHub上で `global-blocs` という名前で新しいリポジトリを作成後、以下を実行してプッシュします：
-
 ```bash
-git remote add origin https://github.com/<あなたのユーザー名>/global-blocs.git
+git remote add origin https://github.com/m03k0103/world-blocs.git
 git branch -M main
 git push -u origin main
 ```
@@ -98,7 +96,7 @@ git push -u origin main
 2. **Build and deployment** の設定：
    - **Source**: `Deploy from a branch` を選択
    - **Branch**: `main` ブランチ、フォルダを **`/docs`** に選択
-3. **Save** をクリックすると、数分で `https://<あなたのユーザー名>.github.io/global-blocs/` にて公開されます！
+3. **Save** をクリックすると、数分で `https://m03k0103.github.io/world-blocs/` にて公開されます！
 
 ---
 
