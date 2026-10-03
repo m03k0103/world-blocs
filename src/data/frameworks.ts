@@ -1,0 +1,484 @@
+import type { Framework } from '../types';
+
+export const FRAMEWORKS: Framework[] = [
+  {
+    id: 'nato',
+    nameJa: '北大西洋条約機構',
+    nameEn: 'North Atlantic Treaty Organization',
+    acronym: 'NATO',
+    category: 'security',
+    establishedYear: 1949,
+    inForceYear: 1949,
+    secretariat: 'ブリュッセル（ベルギー）',
+    description: '欧米32カ国による集団防衛・軍事同盟。加盟国への武力攻撃は全加盟国への攻撃とみなされる（第5条）。冷戦終結後の東方拡大、2023年のフィンランド、2024年のスウェーデン加盟が歴史的転換点。',
+    members: [
+      // 原加盟国 (1949)
+      { countryCode: 'USA', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'GBR', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'FRA', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国 (1966-2009軍事機構離脱)' },
+      { countryCode: 'CAN', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'ITA', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'NLD', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'BEL', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'LUX', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'NOR', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'DNK', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      { countryCode: 'ISL', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国（常備軍なし）' },
+      { countryCode: 'PRT', status: 'ratified', signedYear: 1949, ratifiedYear: 1949, notes: '原加盟国' },
+      // 第1次・第2次拡大
+      { countryCode: 'GRC', status: 'ratified', signedYear: 1951, ratifiedYear: 1952, notes: '第1次拡大' },
+      { countryCode: 'TUR', status: 'ratified', signedYear: 1951, ratifiedYear: 1952, notes: '第1次拡大' },
+      { countryCode: 'DEU', status: 'ratified', signedYear: 1954, ratifiedYear: 1955, notes: '西ドイツ加盟 (1990年統一ドイツ)' },
+      { countryCode: 'ESP', status: 'ratified', signedYear: 1981, ratifiedYear: 1982, notes: '第3次拡大' },
+      // 東方拡大 (1999)
+      { countryCode: 'POL', status: 'ratified', signedYear: 1997, ratifiedYear: 1999, notes: '第4次拡大（東方拡大）' },
+      { countryCode: 'CZE', status: 'ratified', signedYear: 1997, ratifiedYear: 1999, notes: '第4次拡大（東方拡大）' },
+      { countryCode: 'HUN', status: 'ratified', signedYear: 1997, ratifiedYear: 1999, notes: '第4次拡大（東方拡大）' },
+      // 第5次拡大 (2004)
+      { countryCode: 'EST', status: 'ratified', signedYear: 2002, ratifiedYear: 2004, notes: 'バルト三国' },
+      { countryCode: 'LVA', status: 'ratified', signedYear: 2002, ratifiedYear: 2004, notes: 'バルト三国' },
+      { countryCode: 'LTU', status: 'ratified', signedYear: 2002, ratifiedYear: 2004, notes: 'バルト三国' },
+      { countryCode: 'ROU', status: 'ratified', signedYear: 2002, ratifiedYear: 2004, notes: '第5次拡大' },
+      { countryCode: 'BGR', status: 'ratified', signedYear: 2002, ratifiedYear: 2004, notes: '第5次拡大' },
+      { countryCode: 'SVK', status: 'ratified', signedYear: 2002, ratifiedYear: 2004, notes: '第5次拡大' },
+      { countryCode: 'SVN', status: 'ratified', signedYear: 2002, ratifiedYear: 2004, notes: '第5次拡大' },
+      // 第6・7・8次拡大
+      { countryCode: 'ALB', status: 'ratified', signedYear: 2008, ratifiedYear: 2009, notes: '第6次拡大' },
+      { countryCode: 'HRV', status: 'ratified', signedYear: 2008, ratifiedYear: 2009, notes: '第6次拡大' },
+      { countryCode: 'MNE', status: 'ratified', signedYear: 2015, ratifiedYear: 2017, notes: '第7次拡大' },
+      { countryCode: 'MKD', status: 'ratified', signedYear: 2019, ratifiedYear: 2020, notes: '第8次拡大' },
+      // 北欧加盟 (2023, 2024)
+      { countryCode: 'FIN', status: 'ratified', signedYear: 2022, ratifiedYear: 2023, notes: 'ロシアのウクライナ侵攻を受けて加盟' },
+      { countryCode: 'SWE', status: 'ratified', signedYear: 2022, ratifiedYear: 2024, notes: '約200年の軍事的中立を転換し加盟' },
+      // 加盟申請・候補国
+      { countryCode: 'UKR', status: 'candidate', signedYear: 2022, notes: 'NATO加盟申請' },
+      { countryCode: 'GEO', status: 'candidate', notes: '将来の加盟を合意' },
+      { countryCode: 'BIH', status: 'candidate', notes: '加盟行動計画 (MAP) 参加' }
+    ]
+  },
+  {
+    id: 'eu',
+    nameJa: '欧州連合',
+    nameEn: 'European Union',
+    acronym: 'EU',
+    category: 'regional',
+    establishedYear: 1957,
+    inForceYear: 1958,
+    secretariat: 'ブリュッセル（ベルギー）',
+    description: '欧州27カ国による独自の超国家政治・経済共同体。共通市場、単一通貨ユーロ、シェンゲン協定等を含む。2020年に英国が離脱（ブレグジット）。',
+    members: [
+      // 原加盟6カ国 (1957年ローマ条約・EEC発効1958)
+      { countryCode: 'DEU', status: 'ratified', signedYear: 1957, ratifiedYear: 1958, notes: '原加盟国' },
+      { countryCode: 'FRA', status: 'ratified', signedYear: 1957, ratifiedYear: 1958, notes: '原加盟国' },
+      { countryCode: 'ITA', status: 'ratified', signedYear: 1957, ratifiedYear: 1958, notes: '原加盟国' },
+      { countryCode: 'NLD', status: 'ratified', signedYear: 1957, ratifiedYear: 1958, notes: '原加盟国' },
+      { countryCode: 'BEL', status: 'ratified', signedYear: 1957, ratifiedYear: 1958, notes: '原加盟国' },
+      { countryCode: 'LUX', status: 'ratified', signedYear: 1957, ratifiedYear: 1958, notes: '原加盟国' },
+      // 第1次拡大 (1973)
+      { countryCode: 'IRL', status: 'ratified', signedYear: 1972, ratifiedYear: 1973, notes: '第1次拡大' },
+      { countryCode: 'DNK', status: 'ratified', signedYear: 1972, ratifiedYear: 1973, notes: '第1次拡大' },
+      { countryCode: 'GBR', status: 'withdrawn', signedYear: 1972, ratifiedYear: 1973, withdrawnYear: 2020, notes: '2020年にブレグジット（脱退）' },
+      // 南欧拡大 (1981, 1986)
+      { countryCode: 'GRC', status: 'ratified', signedYear: 1979, ratifiedYear: 1981, notes: '第2次拡大' },
+      { countryCode: 'ESP', status: 'ratified', signedYear: 1985, ratifiedYear: 1986, notes: '第3次拡大' },
+      { countryCode: 'PRT', status: 'ratified', signedYear: 1985, ratifiedYear: 1986, notes: '第3次拡大' },
+      // 第4次拡大 (1995)
+      { countryCode: 'AUT', status: 'ratified', signedYear: 1994, ratifiedYear: 1995, notes: '第4次拡大' },
+      { countryCode: 'FIN', status: 'ratified', signedYear: 1994, ratifiedYear: 1995, notes: '第4次拡大' },
+      { countryCode: 'SWE', status: 'ratified', signedYear: 1994, ratifiedYear: 1995, notes: '第4次拡大' },
+      // 東方大拡大 (2004)
+      { countryCode: 'POL', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: '東方大拡大' },
+      { countryCode: 'CZE', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: '東方大拡大' },
+      { countryCode: 'HUN', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: '東方大拡大' },
+      { countryCode: 'SVK', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: '東方大拡大' },
+      { countryCode: 'SVN', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: '東方大拡大' },
+      { countryCode: 'EST', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: 'バルト三国' },
+      { countryCode: 'LVA', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: 'バルト三国' },
+      { countryCode: 'LTU', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: 'バルト三国' },
+      { countryCode: 'CYP', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: '東方大拡大' },
+      { countryCode: 'MLT', status: 'ratified', signedYear: 2003, ratifiedYear: 2004, notes: '東方大拡大' },
+      // 第6・7次拡大
+      { countryCode: 'ROU', status: 'ratified', signedYear: 2005, ratifiedYear: 2007, notes: '第6次拡大' },
+      { countryCode: 'BGR', status: 'ratified', signedYear: 2005, ratifiedYear: 2007, notes: '第6次拡大' },
+      { countryCode: 'HRV', status: 'ratified', signedYear: 2011, ratifiedYear: 2013, notes: '第7次拡大' },
+      // 候補国
+      { countryCode: 'UKR', status: 'candidate', signedYear: 2022, notes: '加盟交渉中' },
+      { countryCode: 'MDA', status: 'candidate', signedYear: 2022, notes: '加盟交渉中' },
+      { countryCode: 'SRB', status: 'candidate', notes: '候補国' },
+      { countryCode: 'ALB', status: 'candidate', notes: '候補国' },
+      { countryCode: 'MNE', status: 'candidate', notes: '候補国' },
+      { countryCode: 'MKD', status: 'candidate', notes: '候補国' },
+      { countryCode: 'TUR', status: 'candidate', notes: '加盟交渉凍結中' }
+    ]
+  },
+  {
+    id: 'g7',
+    nameJa: '主要国首脳会議（G7）',
+    nameEn: 'Group of Seven',
+    acronym: 'G7',
+    category: 'summit',
+    establishedYear: 1975,
+    secretariat: '持ち回り議長国',
+    description: '民主主義と市場経済の普遍的価値を共有する主要7カ国およびEUの首脳による年次首脳会議。1997〜2014年はロシアが加わりG8だったが、クリミア併合により停止。',
+    members: [
+      { countryCode: 'JPN', status: 'ratified', ratifiedYear: 1975, notes: 'アジア唯一のメンバー' },
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 1975 },
+      { countryCode: 'GBR', status: 'ratified', ratifiedYear: 1975 },
+      { countryCode: 'DEU', status: 'ratified', ratifiedYear: 1975 },
+      { countryCode: 'FRA', status: 'ratified', ratifiedYear: 1975 },
+      { countryCode: 'ITA', status: 'ratified', ratifiedYear: 1975 },
+      { countryCode: 'CAN', status: 'ratified', ratifiedYear: 1976, notes: '1976年プエルトリコ・サミットから参加' },
+      { countryCode: 'RUS', status: 'withdrawn', ratifiedYear: 1997, withdrawnYear: 2014, notes: '1997-2014年までG8、クリミア併合で参加資格停止' }
+    ]
+  },
+  {
+    id: 'g20',
+    nameJa: '20カ国・地域首脳会合（G20）',
+    nameEn: 'Group of Twenty',
+    acronym: 'G20',
+    category: 'summit',
+    establishedYear: 1999,
+    secretariat: '持ち回り議長国',
+    description: '先進国と新興国の首脳が国際経済・金融の安定を議論するフォーラム。世界のGDPの約85%、貿易額の75%、人口の3分の2を占める。2023年にアフリカ連合（AU）が正式加盟。',
+    members: [
+      { countryCode: 'JPN', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'GBR', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'DEU', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'FRA', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'ITA', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'CAN', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'RUS', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'CHN', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'IND', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'BRA', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'MEX', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'ARG', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'AUS', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'KOR', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'IDN', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'SAU', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'TUR', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'ZAF', status: 'ratified', ratifiedYear: 1999 }
+    ]
+  },
+  {
+    id: 'cptpp',
+    nameJa: '包括的および先進的な環太平洋パートナーシップ協定',
+    nameEn: 'Comprehensive and Progressive Agreement for Trans-Pacific Partnership',
+    acronym: 'CPTPP',
+    category: 'economic',
+    establishedYear: 2018,
+    inForceYear: 2018,
+    description: 'アジア太平洋地域の高度な包括的メガFTA。米国がTPPから離脱後、日本主導で11カ国により再合意・発効。2024年に英国が正式加盟。',
+    members: [
+      { countryCode: 'JPN', status: 'ratified', signedYear: 2018, ratifiedYear: 2018, notes: '原加盟国' },
+      { countryCode: 'AUS', status: 'ratified', signedYear: 2018, ratifiedYear: 2018, notes: '原加盟国' },
+      { countryCode: 'CAN', status: 'ratified', signedYear: 2018, ratifiedYear: 2018, notes: '原加盟国' },
+      { countryCode: 'MEX', status: 'ratified', signedYear: 2018, ratifiedYear: 2018, notes: '原加盟国' },
+      { countryCode: 'NZL', status: 'ratified', signedYear: 2018, ratifiedYear: 2018, notes: '原加盟国' },
+      { countryCode: 'SGP', status: 'ratified', signedYear: 2018, ratifiedYear: 2018, notes: '原加盟国' },
+      { countryCode: 'VNM', status: 'ratified', signedYear: 2018, ratifiedYear: 2019, notes: '2019年発効' },
+      { countryCode: 'PER', status: 'ratified', signedYear: 2018, ratifiedYear: 2021, notes: '2021年発効' },
+      { countryCode: 'MYS', status: 'ratified', signedYear: 2018, ratifiedYear: 2022, notes: '2022年発効' },
+      { countryCode: 'CHL', status: 'ratified', signedYear: 2018, ratifiedYear: 2023, notes: '2023年発効' },
+      { countryCode: 'BRN', status: 'ratified', signedYear: 2018, ratifiedYear: 2023, notes: '2023年発効' },
+      { countryCode: 'GBR', status: 'ratified', signedYear: 2023, ratifiedYear: 2024, notes: '欧州から初、2024年12月発効' },
+      // 離脱・申請国
+      { countryCode: 'USA', status: 'withdrawn', signedYear: 2016, withdrawnYear: 2017, notes: 'TPPに署名したがトランプ政権発足時に離脱' },
+      { countryCode: 'CHN', status: 'candidate', signedYear: 2021, notes: '2021年9月加盟申請' },
+      { countryCode: 'TWN', status: 'candidate', signedYear: 2021, notes: '2021年9月加盟申請' },
+      { countryCode: 'CRI', status: 'candidate', signedYear: 2022, notes: '2022年加盟申請' },
+      { countryCode: 'ECU', status: 'candidate', signedYear: 2021, notes: '加盟申請' },
+      { countryCode: 'URY', status: 'candidate', signedYear: 2022, notes: '加盟申請' }
+    ]
+  },
+  {
+    id: 'rcep',
+    nameJa: '地域的な包括的経済連携協定',
+    nameEn: 'Regional Comprehensive Economic Partnership',
+    acronym: 'RCEP',
+    category: 'economic',
+    establishedYear: 2020,
+    inForceYear: 2022,
+    description: '日中韓、豪州、NZ、およびASEAN10カ国の計15カ国による世界最大規模のメガFTA。世界人口の約3割、GDPの約3割をカバー。日中・日韓間の初の自由貿易協定。',
+    members: [
+      { countryCode: 'JPN', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'CHN', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'KOR', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'AUS', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'NZL', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'SGP', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'THA', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'VNM', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'BRN', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'KHM', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'LAO', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'MYS', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'IDN', status: 'ratified', signedYear: 2020, ratifiedYear: 2023 },
+      { countryCode: 'PHL', status: 'ratified', signedYear: 2020, ratifiedYear: 2023 },
+      { countryCode: 'MMR', status: 'ratified', signedYear: 2020, ratifiedYear: 2022 },
+      { countryCode: 'IND', status: 'withdrawn', withdrawnYear: 2019, notes: '対中貿易赤字拡大等を懸念し2019年交渉離脱' }
+    ]
+  },
+  {
+    id: 'aukus',
+    nameJa: 'AUKUS（オーカス）',
+    nameEn: 'Australia-United Kingdom-United States Security Partnership',
+    acronym: 'AUKUS',
+    category: 'security',
+    establishedYear: 2021,
+    inForceYear: 2021,
+    description: '豪州、英国、米国によるインド太平洋地域の先端安全保障パートナーシップ。原子力潜水艦の豪州配備支援（第1の柱）およびAI・量子・極超音速技術等の共同開発（第2の柱）からなる。',
+    members: [
+      { countryCode: 'AUS', status: 'ratified', ratifiedYear: 2021 },
+      { countryCode: 'GBR', status: 'ratified', ratifiedYear: 2021 },
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 2021 },
+      { countryCode: 'JPN', status: 'dialogue', notes: '第2の柱（先端技術協力）での個別協力検討' }
+    ]
+  },
+  {
+    id: 'quad',
+    nameJa: '日米豪印戦略対話（クアッド）',
+    nameEn: 'Quadrilateral Security Dialogue',
+    acronym: 'Quad',
+    category: 'security',
+    establishedYear: 2007,
+    description: '日本、米国、オーストラリア、インドの4カ国による海洋安全保障・外交協議枠組み。「自由で開かれたインド太平洋（FOIP）」の維持・強化、インフラ支援、重要技術、サプライチェーン強靭化を推進。',
+    members: [
+      { countryCode: 'JPN', status: 'ratified', ratifiedYear: 2007, notes: '安倍晋三首相の提唱により発足、2017年再開' },
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 2007 },
+      { countryCode: 'AUS', status: 'ratified', ratifiedYear: 2007 },
+      { countryCode: 'IND', status: 'ratified', ratifiedYear: 2007 }
+    ]
+  },
+  {
+    id: 'five_eyes',
+    nameJa: 'ファイブ・アイズ',
+    nameEn: 'Five Eyes (FVEY)',
+    acronym: 'Five Eyes',
+    category: 'security',
+    establishedYear: 1946,
+    inForceYear: 1946,
+    description: '英語圏5カ国（米国、英国、カナダ、オーストラリア、ニュージーランド）による世界最強のシギント（信号情報）諜報・機密情報共有同盟。第二次世界大戦時の英米暗号協定（UKUSA協定）を起源とする。',
+    members: [
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 1946 },
+      { countryCode: 'GBR', status: 'ratified', ratifiedYear: 1946 },
+      { countryCode: 'CAN', status: 'ratified', ratifiedYear: 1948 },
+      { countryCode: 'AUS', status: 'ratified', ratifiedYear: 1956 },
+      { countryCode: 'NZL', status: 'ratified', ratifiedYear: 1956 }
+    ]
+  },
+  {
+    id: 'asean',
+    nameJa: '東南アジア諸国連合',
+    nameEn: 'Association of Southeast Asian Nations',
+    acronym: 'ASEAN',
+    category: 'regional',
+    establishedYear: 1967,
+    inForceYear: 1967,
+    secretariat: 'ジャカルタ（インドネシア）',
+    description: '東南アジア10カ国による地域統合機構。経済成長、社会・文化の発展、地域平和と安定の促進を目的とする。「ASEAN中心性」を掲げ、アジア太平洋の多くの多国間対話の基軸となる。',
+    members: [
+      { countryCode: 'IDN', status: 'ratified', ratifiedYear: 1967, notes: '原加盟国' },
+      { countryCode: 'MYS', status: 'ratified', ratifiedYear: 1967, notes: '原加盟国' },
+      { countryCode: 'PHL', status: 'ratified', ratifiedYear: 1967, notes: '原加盟国' },
+      { countryCode: 'SGP', status: 'ratified', ratifiedYear: 1967, notes: '原加盟国' },
+      { countryCode: 'THA', status: 'ratified', ratifiedYear: 1967, notes: '原加盟国' },
+      { countryCode: 'BRN', status: 'ratified', ratifiedYear: 1984 },
+      { countryCode: 'VNM', status: 'ratified', ratifiedYear: 1995 },
+      { countryCode: 'LAO', status: 'ratified', ratifiedYear: 1997 },
+      { countryCode: 'MMR', status: 'ratified', ratifiedYear: 1997 },
+      { countryCode: 'KHM', status: 'ratified', ratifiedYear: 1999 },
+      { countryCode: 'TLS', status: 'observer', ratifiedYear: 2022, notes: '原則加盟承認、正式加盟準備中' }
+    ]
+  },
+  {
+    id: 'brics',
+    nameJa: 'BRICS',
+    nameEn: 'BRICS',
+    acronym: 'BRICS',
+    category: 'summit',
+    establishedYear: 2006,
+    description: '新興大国による協力枠組み。欧米中心の国際秩序に対抗する「グローバルサウス」の代表的プラットフォーム。2024年にエジプト、エチオピア、イラン、UAE、サウジアラビアが加盟しBRICS+へ拡大。',
+    members: [
+      { countryCode: 'BRA', status: 'ratified', ratifiedYear: 2006, notes: '創設メンバー' },
+      { countryCode: 'RUS', status: 'ratified', ratifiedYear: 2006, notes: '創設メンバー' },
+      { countryCode: 'IND', status: 'ratified', ratifiedYear: 2006, notes: '創設メンバー' },
+      { countryCode: 'CHN', status: 'ratified', ratifiedYear: 2006, notes: '創設メンバー' },
+      { countryCode: 'ZAF', status: 'ratified', ratifiedYear: 2010, notes: '2010年加盟' },
+      // 2024年拡大
+      { countryCode: 'EGY', status: 'ratified', ratifiedYear: 2024, notes: '2024年拡大加盟' },
+      { countryCode: 'ETH', status: 'ratified', ratifiedYear: 2024, notes: '2024年拡大加盟' },
+      { countryCode: 'IRN', status: 'ratified', ratifiedYear: 2024, notes: '2024年拡大加盟' },
+      { countryCode: 'ARE', status: 'ratified', ratifiedYear: 2024, notes: '2024年拡大加盟' },
+      { countryCode: 'SAU', status: 'ratified', ratifiedYear: 2024, notes: '招待受諾・参加' },
+      // パートナー国・申請国
+      { countryCode: 'TUR', status: 'candidate', signedYear: 2024, notes: 'NATO加盟国として初申請' },
+      { countryCode: 'DZA', status: 'dialogue' },
+      { countryCode: 'IDN', status: 'dialogue' },
+      { countryCode: 'MYS', status: 'dialogue' },
+      { countryCode: 'THA', status: 'dialogue' },
+      { countryCode: 'VNM', status: 'dialogue' },
+      { countryCode: 'KAZ', status: 'dialogue' },
+      { countryCode: 'BLR', status: 'dialogue' },
+      { countryCode: 'BOL', status: 'dialogue' },
+      { countryCode: 'CUB', status: 'dialogue' },
+      { countryCode: 'NGA', status: 'dialogue' },
+      { countryCode: 'UGA', status: 'dialogue' },
+      { countryCode: 'UZB', status: 'dialogue' }
+    ]
+  },
+  {
+    id: 'sco',
+    nameJa: '上海協力機構',
+    nameEn: 'Shanghai Cooperation Organisation',
+    acronym: 'SCO',
+    category: 'regional',
+    establishedYear: 2001,
+    secretariat: '北京（中国）',
+    description: '中露および中央アジア諸国によって設立されたユーラシア地域の政治・経済・安全保障同盟。ユーラシア大陸の面積の約8割、世界人口の4割以上を占める。テロ・分離主義・過激主義の打倒（三つの悪）を掲げる。',
+    members: [
+      { countryCode: 'CHN', status: 'ratified', ratifiedYear: 2001, notes: '原加盟国' },
+      { countryCode: 'RUS', status: 'ratified', ratifiedYear: 2001, notes: '原加盟国' },
+      { countryCode: 'KAZ', status: 'ratified', ratifiedYear: 2001, notes: '原加盟国' },
+      { countryCode: 'KGZ', status: 'ratified', ratifiedYear: 2001, notes: '原加盟国' },
+      { countryCode: 'TJK', status: 'ratified', ratifiedYear: 2001, notes: '原加盟国' },
+      { countryCode: 'UZB', status: 'ratified', ratifiedYear: 2001, notes: '創設時加盟' },
+      { countryCode: 'IND', status: 'ratified', ratifiedYear: 2017, notes: '2017年加盟' },
+      { countryCode: 'PAK', status: 'ratified', ratifiedYear: 2017, notes: '2017年加盟' },
+      { countryCode: 'IRN', status: 'ratified', ratifiedYear: 2023, notes: '2023年正式加盟' },
+      { countryCode: 'BLR', status: 'ratified', ratifiedYear: 2024, notes: '2024年正式加盟' },
+      // オブザーバー・対話パートナー
+      { countryCode: 'AFG', status: 'observer', notes: '情勢不安により活動停止' },
+      { countryCode: 'MNG', status: 'observer' },
+      { countryCode: 'TUR', status: 'dialogue', notes: '対話パートナー' },
+      { countryCode: 'SAU', status: 'dialogue', notes: '対話パートナー' },
+      { countryCode: 'EGY', status: 'dialogue', notes: '対話パートナー' },
+      { countryCode: 'QAT', status: 'dialogue', notes: '対話パートナー' },
+      { countryCode: 'ARE', status: 'dialogue', notes: '対話パートナー' }
+    ]
+  },
+  {
+    id: 'paris_agreement',
+    nameJa: 'パリ協定（気候変動）',
+    nameEn: 'Paris Agreement',
+    acronym: 'Paris',
+    category: 'global_treaty',
+    establishedYear: 2015,
+    inForceYear: 2016,
+    description: '国連気候変動枠組条約（UNFCCC）のもとで採択された歴史的協定。世界の平均気温上昇を産業革命前と比べ2℃より十分低く保ち、1.5℃に抑える努力を追求する。先進国・途上国すべての国に削減目標（NDC）提出を義務付け。',
+    members: [
+      { countryCode: 'JPN', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'FRA', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'DEU', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'GBR', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'CHN', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'IND', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'BRA', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'RUS', status: 'ratified', signedYear: 2016, ratifiedYear: 2019 },
+      { countryCode: 'CAN', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'AUS', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'IDN', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'KOR', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'TUR', status: 'ratified', signedYear: 2016, ratifiedYear: 2021 },
+      { countryCode: 'SAU', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'ZAF', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'MEX', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'ARG', status: 'ratified', signedYear: 2016, ratifiedYear: 2016 },
+      { countryCode: 'NGA', status: 'ratified', signedYear: 2016, ratifiedYear: 2017 },
+      { countryCode: 'EGY', status: 'ratified', signedYear: 2016, ratifiedYear: 2017 },
+      // 米国（離脱と復帰）
+      { countryCode: 'USA', status: 'ratified', signedYear: 2016, ratifiedYear: 2021, notes: '2020年トランプ政権下で離脱、2021年バイデン政権発足日に復帰' },
+      // 未締結・未批准国
+      { countryCode: 'IRN', status: 'signed', signedYear: 2016, notes: '署名のみで未批准' },
+      { countryCode: 'LBY', status: 'signed', signedYear: 2016, notes: '署名のみで未批准' },
+      { countryCode: 'YEM', status: 'signed', signedYear: 2016, notes: '署名のみで未批准' }
+    ]
+  },
+  {
+    id: 'npt',
+    nameJa: '核兵器不拡散条約（NPT）',
+    nameEn: 'Treaty on the Non-Proliferation of Nuclear Weapons',
+    acronym: 'NPT',
+    category: 'global_treaty',
+    establishedYear: 1968,
+    inForceYear: 1970,
+    description: '核軍縮、核不拡散、原子力の平和的利用を柱とする国際条約。米・露・英・仏・中を核兵器保有国として認め、他国の核兵器取得を禁止。世界191カ国・地域が加盟。',
+    members: [
+      { countryCode: 'USA', status: 'ratified', signedYear: 1968, ratifiedYear: 1970, notes: '公認核兵器保有国' },
+      { countryCode: 'RUS', status: 'ratified', signedYear: 1968, ratifiedYear: 1970, notes: '公認核兵器保有国 (ソ連承継)' },
+      { countryCode: 'GBR', status: 'ratified', signedYear: 1968, ratifiedYear: 1970, notes: '公認核兵器保有国' },
+      { countryCode: 'FRA', status: 'ratified', signedYear: 1992, ratifiedYear: 1992, notes: '公認核兵器保有国' },
+      { countryCode: 'CHN', status: 'ratified', signedYear: 1992, ratifiedYear: 1992, notes: '公認核兵器保有国' },
+      { countryCode: 'JPN', status: 'ratified', signedYear: 1970, ratifiedYear: 1976 },
+      { countryCode: 'DEU', status: 'ratified', signedYear: 1969, ratifiedYear: 1975 },
+      { countryCode: 'CAN', status: 'ratified', signedYear: 1968, ratifiedYear: 1969 },
+      { countryCode: 'AUS', status: 'ratified', signedYear: 1970, ratifiedYear: 1973 },
+      { countryCode: 'BRA', status: 'ratified', signedYear: 1998, ratifiedYear: 1998 },
+      { countryCode: 'ZAF', status: 'ratified', signedYear: 1991, ratifiedYear: 1991, notes: '独自開発した核兵器を全廃して加盟' },
+      // 非加盟・脱退国
+      { countryCode: 'PRK', status: 'withdrawn', ratifiedYear: 1985, withdrawnYear: 2003, notes: '1985年加盟、2003年脱退宣言' },
+      { countryCode: 'IND', status: 'withdrawn', notes: '条約に差別的条項があるとして不参加・独自核保有' },
+      { countryCode: 'PAK', status: 'withdrawn', notes: '不参加・独自核保有' },
+      { countryCode: 'ISR', status: 'withdrawn', notes: '不参加・核保有を肯定も否定もせず（曖昧政策）' }
+    ]
+  },
+  {
+    id: 'tpnw',
+    nameJa: '核兵器禁止条約（TPNW）',
+    nameEn: 'Treaty on the Prohibition of Nuclear Weapons',
+    acronym: 'TPNW',
+    category: 'global_treaty',
+    establishedYear: 2017,
+    inForceYear: 2021,
+    description: '核兵器の開発、保有、使用、威嚇等を全面的に禁止する初の国際条約。ICAN（核兵器廃絶国際キャンペーン）などの市民社会が推進。核保有国および米国の「核の傘」の下にある日本やNATO加盟国は不参加。',
+    members: [
+      { countryCode: 'AUT', status: 'ratified', signedYear: 2017, ratifiedYear: 2018, notes: '中立国として批准' },
+      { countryCode: 'NZL', status: 'ratified', signedYear: 2017, ratifiedYear: 2018, notes: '非核政策を堅持' },
+      { countryCode: 'IRL', status: 'ratified', signedYear: 2017, ratifiedYear: 2020 },
+      { countryCode: 'MEX', status: 'ratified', signedYear: 2017, ratifiedYear: 2018 },
+      { countryCode: 'ZAF', status: 'ratified', signedYear: 2017, ratifiedYear: 2019 },
+      { countryCode: 'THA', status: 'ratified', signedYear: 2017, ratifiedYear: 2017 },
+      { countryCode: 'VNM', status: 'ratified', signedYear: 2017, ratifiedYear: 2018 },
+      { countryCode: 'MYS', status: 'ratified', signedYear: 2017, ratifiedYear: 2020 },
+      { countryCode: 'PHL', status: 'ratified', signedYear: 2017, ratifiedYear: 2021 },
+      { countryCode: 'IDN', status: 'ratified', signedYear: 2017, ratifiedYear: 2023 },
+      { countryCode: 'CRI', status: 'ratified', signedYear: 2017, ratifiedYear: 2018 },
+      { countryCode: 'CUB', status: 'ratified', signedYear: 2017, ratifiedYear: 2018 },
+      { countryCode: 'PER', status: 'ratified', signedYear: 2017, ratifiedYear: 2021 },
+      { countryCode: 'CHL', status: 'ratified', signedYear: 2017, ratifiedYear: 2022 },
+      { countryCode: 'BGD', status: 'ratified', signedYear: 2017, ratifiedYear: 2019 },
+      { countryCode: 'NGA', status: 'ratified', signedYear: 2017, ratifiedYear: 2020 },
+      // 署名のみ未批准
+      { countryCode: 'BRA', status: 'signed', signedYear: 2017, notes: '署名済（未批准）' },
+      { countryCode: 'COL', status: 'signed', signedYear: 2018, notes: '署名済（未批准）' },
+      // オブザーバー参加
+      { countryCode: 'DEU', status: 'observer', notes: '締約国会議にオブザーバー参加（NATO加盟国）' },
+      { countryCode: 'NOR', status: 'observer', notes: '締約国会議にオブザーバー参加（NATO加盟国）' },
+      { countryCode: 'BEL', status: 'observer', notes: '締約国会議にオブザーバー参加（NATO加盟国）' },
+      { countryCode: 'AUS', status: 'observer', notes: '締約国会議にオブザーバー参加' }
+    ]
+  }
+];
+
+export const FRAMEWORK_MAP: Record<string, Framework> = Object.fromEntries(
+  FRAMEWORKS.map(f => [f.id, f])
+);
+
+export const CATEGORY_LABELS: Record<string, { labelJa: string; badgeColor: string }> = {
+  security: { labelJa: '安全保障・同盟', badgeColor: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20' },
+  economic: { labelJa: '経済・貿易連携 (FTA)', badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' },
+  regional: { labelJa: '地域統合・地域機構', badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' },
+  summit: { labelJa: '首脳サミット・多国間協議', badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
+  global_treaty: { labelJa: '国際条約・環境・軍縮', badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20' }
+};
+
+export const STATUS_LABELS: Record<string, { labelJa: string; labelEn: string; color: string; hex: string }> = {
+  ratified: { labelJa: '批准・正式加盟', labelEn: 'Member / Ratified', color: 'bg-blue-600 text-white', hex: '#2563eb' },
+  signed: { labelJa: '署名のみ（未批准）', labelEn: 'Signatory only', color: 'bg-sky-400 text-white', hex: '#38bdf8' },
+  observer: { labelJa: 'オブザーバー', labelEn: 'Observer', color: 'bg-amber-500 text-white', hex: '#f59e0b' },
+  dialogue: { labelJa: '対話・パートナー', labelEn: 'Dialogue Partner', color: 'bg-violet-400 text-white', hex: '#a78bfa' },
+  candidate: { labelJa: '加盟申請・候補国', labelEn: 'Candidate / Applicant', color: 'bg-emerald-500 text-white', hex: '#10b981' },
+  withdrawn: { labelJa: '脱退・参加停止', labelEn: 'Withdrawn / Suspended', color: 'bg-slate-400 text-white', hex: '#94a3b8' }
+};
