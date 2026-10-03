@@ -1,5 +1,5 @@
-# 国際関係データベース (IR-DB)
-**International Relations Database & Interactive Visualizer**
+# Global Blocs (国際関係データベース)
+**Global Blocs: International Relations & Multilateral Frameworks Visualizer**
 
 G7, EU, NATO, AUKUS, Quad, CPTPP, RCEP, パリ協定などの国際的な枠組みや主要条約の参加国・締結国を、世界地図とタイムライン上で直感的に可視化・比較探索できるWebプラットフォームです。
 
@@ -84,16 +84,21 @@ npm run preview
 
 GitHub Pages の公開用ファイルは **`docs/`** フォルダ配下に生成・配置されます。
 
-### 方法A: ブランチから直接公開する場合（推奨・シンプル）
-1. 本リポジトリを GitHub にプッシュします。
-2. リポジトリの **Settings** > **Pages** を開きます。
-3. **Build and deployment** の設定：
+### 1. GitHub へのプッシュ
+GitHub上で `global-blocs` という名前で新しいリポジトリを作成後、以下を実行してプッシュします：
+
+```bash
+git remote add origin https://github.com/<あなたのユーザー名>/global-blocs.git
+git branch -M main
+git push -u origin main
+```
+
+### 2. GitHub Pages の有効化
+1. リポジトリの **Settings** > **Pages** を開きます。
+2. **Build and deployment** の設定：
    - **Source**: `Deploy from a branch` を選択
    - **Branch**: `main` ブランチ、フォルダを **`/docs`** に選択
-4. **Save** をクリックすると、数分でサイトが公開されます。
-
-### 方法B: GitHub Actions で自動ビルド＆公開する場合
-- **Source**: `GitHub Actions` を選択すると、プッシュ時に `.github/workflows/deploy.yml` が自動実行されて公開されます。
+3. **Save** をクリックすると、数分で `https://<あなたのユーザー名>.github.io/global-blocs/` にて公開されます！
 
 ---
 

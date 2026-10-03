@@ -53,13 +53,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <h1 className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                国際関係データベース
+                Global Blocs
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-semibold">
                   IR-DB
                 </span>
               </h1>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">
-                多国間条約・安全保障・経済枠組みの可視化プラットフォーム
+                国際枠組み・条約・同盟の可視化＆比較プラットフォーム
               </p>
             </div>
           </div>
