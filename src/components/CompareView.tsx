@@ -92,6 +92,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
     { title: 'CPTPP × RCEP', a: 'cptpp', b: 'rcep', desc: 'アジア太平洋のメガFTA比較' },
     { title: 'AUKUS × Quad', a: 'aukus', b: 'quad', desc: 'インド太平洋の先端防衛協力' },
     { title: 'G7 × BRICS', a: 'g7', b: 'brics', desc: '主要先進国 vs 新興大国連合' },
+    { title: 'ICC × G7', a: 'icc', b: 'g7', desc: '国際司法と主要国（米国の不参加）' },
     { title: 'NPT × TPNW', a: 'npt', b: 'tpnw', desc: '核不拡散条約 vs 核兵器禁止条約' },
   ];
 
@@ -103,7 +104,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           注目の比較プリセット
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
           {presets.map((p) => (
             <button
               key={p.title}

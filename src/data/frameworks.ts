@@ -459,6 +459,60 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'BEL', status: 'observer', notes: '締約国会議にオブザーバー参加（NATO加盟国）' },
       { countryCode: 'AUS', status: 'observer', notes: '締約国会議にオブザーバー参加' }
     ]
+  },
+  {
+    id: 'icc',
+    nameJa: '国際刑事裁判所（ローマ規程）',
+    nameEn: 'International Criminal Court (Rome Statute)',
+    acronym: 'ICC',
+    category: 'global_treaty',
+    establishedYear: 1998,
+    inForceYear: 2002,
+    secretariat: 'ハーグ（オランダ）',
+    description: 'ジェノサイド（集団殺害）、人道に対する罪、戦争犯罪、侵略犯罪を犯した個人を訴追・処罰する初の常設国際刑事法廷。1998年のローマ規程採択を経て2002年に発効。日本は2007年に加盟し筆頭分担金拠出国。米中露などの大国は不参加・離脱。',
+    members: [
+      // 主要批准・加盟国
+      { countryCode: 'JPN', status: 'ratified', ratifiedYear: 2007, notes: '2007年加盟。裁判所の筆頭分担金拠出国' },
+      { countryCode: 'GBR', status: 'ratified', signedYear: 1998, ratifiedYear: 2001 },
+      { countryCode: 'FRA', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'DEU', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'ITA', status: 'ratified', signedYear: 1998, ratifiedYear: 1999, notes: 'ローマ規程採択地' },
+      { countryCode: 'CAN', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'AUS', status: 'ratified', signedYear: 1998, ratifiedYear: 2002 },
+      { countryCode: 'NZL', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'KOR', status: 'ratified', signedYear: 2000, ratifiedYear: 2002 },
+      { countryCode: 'NLD', status: 'ratified', signedYear: 1998, ratifiedYear: 2001, notes: '本部所在地（ハーグ）' },
+      { countryCode: 'ESP', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'CHE', status: 'ratified', signedYear: 1998, ratifiedYear: 2001 },
+      { countryCode: 'AUT', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'SWE', status: 'ratified', signedYear: 1998, ratifiedYear: 2001 },
+      { countryCode: 'NOR', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'FIN', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'DNK', status: 'ratified', signedYear: 1998, ratifiedYear: 2001 },
+      { countryCode: 'BEL', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'IRL', status: 'ratified', signedYear: 1998, ratifiedYear: 2002 },
+      { countryCode: 'POL', status: 'ratified', signedYear: 1999, ratifiedYear: 2001 },
+      { countryCode: 'BRA', status: 'ratified', signedYear: 2000, ratifiedYear: 2002 },
+      { countryCode: 'MEX', status: 'ratified', signedYear: 2000, ratifiedYear: 2005 },
+      { countryCode: 'ARG', status: 'ratified', signedYear: 1999, ratifiedYear: 2001 },
+      { countryCode: 'CHL', status: 'ratified', signedYear: 1998, ratifiedYear: 2009 },
+      { countryCode: 'COL', status: 'ratified', signedYear: 1998, ratifiedYear: 2002 },
+      { countryCode: 'PER', status: 'ratified', signedYear: 2000, ratifiedYear: 2001 },
+      { countryCode: 'ZAF', status: 'ratified', signedYear: 1998, ratifiedYear: 2000 },
+      { countryCode: 'NGA', status: 'ratified', signedYear: 2000, ratifiedYear: 2001 },
+      { countryCode: 'KEN', status: 'ratified', signedYear: 1999, ratifiedYear: 2005 },
+      { countryCode: 'GHA', status: 'ratified', signedYear: 1998, ratifiedYear: 1999 },
+      { countryCode: 'COD', status: 'ratified', signedYear: 2000, ratifiedYear: 2002 },
+      { countryCode: 'UGA', status: 'ratified', signedYear: 1999, ratifiedYear: 2002 },
+      { countryCode: 'ARM', status: 'ratified', signedYear: 1999, ratifiedYear: 2024, notes: '2024年2月正式発効' },
+      { countryCode: 'UKR', status: 'ratified', signedYear: 2000, ratifiedYear: 2024, notes: '2024年に批准法案成立' },
+      // 署名撤回・脱退
+      { countryCode: 'USA', status: 'withdrawn', signedYear: 2000, withdrawnYear: 2002, notes: '2000年クリントン政権署名、2002年ブッシュ政権下で署名撤回を通告' },
+      { countryCode: 'RUS', status: 'withdrawn', signedYear: 2000, withdrawnYear: 2016, notes: '2000年署名、2016年クリミア情勢の報告書を受け署名撤回' },
+      { countryCode: 'ISR', status: 'withdrawn', signedYear: 2000, withdrawnYear: 2002, notes: '2000年署名、2002年署名撤回' },
+      { countryCode: 'PHL', status: 'withdrawn', signedYear: 2000, ratifiedYear: 2011, withdrawnYear: 2019, notes: '2011年加盟、麻薬戦争捜査反発により2019年脱退' },
+      { countryCode: 'BDI', status: 'withdrawn', signedYear: 1999, ratifiedYear: 2004, withdrawnYear: 2017, notes: '2017年脱退発効' }
+    ]
   }
 ];
 
