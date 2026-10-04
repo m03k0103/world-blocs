@@ -29,6 +29,7 @@ export interface MembershipRecord {
   status: MembershipStatus;  // 現在のステータス
   signedYear?: number;       // 署名年
   ratifiedYear?: number;     // 批准・加盟年
+  appliedYear?: number;      // 加盟申請・候補指定・オブザーバー参加年
   withdrawnYear?: number;    // 脱退・停止年
   notes?: string;            // 特記事項（例: "原加盟国", "2024年新規加盟"）
 }

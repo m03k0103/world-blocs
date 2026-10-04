@@ -47,8 +47,14 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
           // 署名年以降、批准前
           currentStatus = 'signed';
         } else if (m.status === 'candidate' || m.status === 'observer' || m.status === 'dialogue') {
-          // オブザーバー・候補等で年指定なし
-          currentStatus = m.status;
+          // 加盟申請・候補、オブザーバー、対話国：申請年/参加年以降のみ有効
+          const startYear = m.appliedYear || m.signedYear;
+          if (startYear) {
+            currentStatus = selectedYear >= startYear ? m.status : null;
+          } else {
+            // 年指定がない場合でも、創設年以降のみ有効
+            currentStatus = selectedYear >= selectedFramework.establishedYear ? m.status : null;
+          }
         } else {
           // まだ加盟・署名していない
           currentStatus = null;
@@ -69,7 +75,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
       res[m.countryCode] = {
         status: m.currentStatus,
         notes: m.notes,
-        year: m.ratifiedYear || m.signedYear,
+        year: m.ratifiedYear || m.signedYear || m.appliedYear,
       };
     });
     return res;

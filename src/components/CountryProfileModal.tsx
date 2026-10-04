@@ -23,6 +23,7 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
       status: MembershipStatus;
       signedYear?: number;
       ratifiedYear?: number;
+      appliedYear?: number;
       withdrawnYear?: number;
       notes?: string;
     }[] = [];
@@ -35,6 +36,7 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
           status: mem.status,
           signedYear: mem.signedYear,
           ratifiedYear: mem.ratifiedYear,
+          appliedYear: mem.appliedYear,
           withdrawnYear: mem.withdrawnYear,
           notes: mem.notes,
         });
@@ -43,8 +45,8 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
 
     // 加盟年順にソート
     return list.sort((a, b) => {
-      const ya = a.ratifiedYear || a.signedYear || 9999;
-      const yb = b.ratifiedYear || b.signedYear || 9999;
+      const ya = a.ratifiedYear || a.signedYear || a.appliedYear || 9999;
+      const yb = b.ratifiedYear || b.signedYear || b.appliedYear || 9999;
       return ya - yb;
     });
   }, [country]);
@@ -168,7 +170,13 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
                                 </span>
 
                                 <div className="text-[11px] font-mono text-slate-400">
-                                  {item.ratifiedYear ? `${item.ratifiedYear}年加盟` : item.signedYear ? `${item.signedYear}年署名` : ''}
+                                  {item.ratifiedYear
+                                    ? `${item.ratifiedYear}年加盟`
+                                    : item.signedYear
+                                    ? `${item.signedYear}年署名`
+                                    : item.appliedYear
+                                    ? `${item.appliedYear}年申請`
+                                    : ''}
                                 </div>
                               </div>
                             </div>

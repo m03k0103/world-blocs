@@ -66,8 +66,8 @@ export const TableView: React.FC<TableViewProps> = ({
         if (sortField === 'name') {
           diff = ca.nameJa.localeCompare(cb.nameJa, 'ja');
         } else if (sortField === 'year') {
-          const ya = a.ratifiedYear || a.signedYear || 9999;
-          const yb = b.ratifiedYear || b.signedYear || 9999;
+          const ya = a.ratifiedYear || a.signedYear || a.appliedYear || 9999;
+          const yb = b.ratifiedYear || b.signedYear || b.appliedYear || 9999;
           diff = ya - yb;
         } else if (sortField === 'status') {
           diff = a.currentStatus.localeCompare(b.currentStatus);
@@ -88,7 +88,7 @@ export const TableView: React.FC<TableViewProps> = ({
 
   // CSVエクスポート
   const handleExportCSV = () => {
-    const headers = ['ISO3', '国名（日）', '国名（英）', '地域', 'ステータス', '加盟/批准年', '備考'];
+    const headers = ['ISO3', '国名（日）', '国名（英）', '地域', 'ステータス', '加盟/批准/申請年', '備考'];
     const rows = filteredMembers.map((m) => {
       const c = COUNTRY_BY_ALPHA3[m.countryCode];
       return [
@@ -97,7 +97,7 @@ export const TableView: React.FC<TableViewProps> = ({
         c?.nameEn || '',
         c?.region || '',
         STATUS_LABELS[m.currentStatus]?.labelJa || m.currentStatus,
-        m.ratifiedYear || m.signedYear || '',
+        m.ratifiedYear || m.signedYear || m.appliedYear || '',
         `"${(m.notes || '').replace(/"/g, '""')}"`,
       ].join(',');
     });
@@ -253,7 +253,13 @@ export const TableView: React.FC<TableViewProps> = ({
                       </span>
                     </td>
                     <td className="py-3 px-4 font-mono text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      {m.ratifiedYear ? `${m.ratifiedYear}年` : m.signedYear ? `${m.signedYear}年(署名)` : '—'}
+                      {m.ratifiedYear
+                        ? `${m.ratifiedYear}年`
+                        : m.signedYear
+                        ? `${m.signedYear}年(署名)`
+                        : m.appliedYear
+                        ? `${m.appliedYear}年(申請)`
+                        : '—'}
                     </td>
                     <td className="py-3 px-4 text-xs text-slate-500 dark:text-slate-400 max-w-xs truncate">
                       {m.notes || '—'}

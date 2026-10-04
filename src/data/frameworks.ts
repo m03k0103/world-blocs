@@ -51,9 +51,9 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'FIN', status: 'ratified', signedYear: 2022, ratifiedYear: 2023, notes: 'ロシアのウクライナ侵攻を受けて加盟' },
       { countryCode: 'SWE', status: 'ratified', signedYear: 2022, ratifiedYear: 2024, notes: '約200年の軍事的中立を転換し加盟' },
       // 加盟申請・候補国
-      { countryCode: 'UKR', status: 'candidate', signedYear: 2022, notes: 'NATO加盟申請' },
-      { countryCode: 'GEO', status: 'candidate', notes: '将来の加盟を合意' },
-      { countryCode: 'BIH', status: 'candidate', notes: '加盟行動計画 (MAP) 参加' }
+      { countryCode: 'UKR', status: 'candidate', appliedYear: 2022, signedYear: 2022, notes: '2022年NATO加盟申請' },
+      { countryCode: 'GEO', status: 'candidate', appliedYear: 2008, notes: '2008年ブカレスト首脳会議で将来の加盟を合意' },
+      { countryCode: 'BIH', status: 'candidate', appliedYear: 2018, notes: '2018年加盟行動計画 (MAP) 参加' }
     ]
   },
   {
@@ -102,13 +102,15 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'BGR', status: 'ratified', signedYear: 2005, ratifiedYear: 2007, notes: '第6次拡大' },
       { countryCode: 'HRV', status: 'ratified', signedYear: 2011, ratifiedYear: 2013, notes: '第7次拡大' },
       // 候補国
-      { countryCode: 'UKR', status: 'candidate', signedYear: 2022, notes: '加盟交渉中' },
-      { countryCode: 'MDA', status: 'candidate', signedYear: 2022, notes: '加盟交渉中' },
-      { countryCode: 'SRB', status: 'candidate', notes: '候補国' },
-      { countryCode: 'ALB', status: 'candidate', notes: '候補国' },
-      { countryCode: 'MNE', status: 'candidate', notes: '候補国' },
-      { countryCode: 'MKD', status: 'candidate', notes: '候補国' },
-      { countryCode: 'TUR', status: 'candidate', notes: '加盟交渉凍結中' }
+      { countryCode: 'UKR', status: 'candidate', appliedYear: 2022, signedYear: 2022, notes: '2022年申請、加盟交渉中' },
+      { countryCode: 'MDA', status: 'candidate', appliedYear: 2022, signedYear: 2022, notes: '2022年申請、加盟交渉中' },
+      { countryCode: 'GEO', status: 'candidate', appliedYear: 2022, notes: '2022年申請、候補国' },
+      { countryCode: 'BIH', status: 'candidate', appliedYear: 2016, notes: '2016年申請、加盟交渉開始' },
+      { countryCode: 'SRB', status: 'candidate', appliedYear: 2009, notes: '2009年申請、候補国' },
+      { countryCode: 'ALB', status: 'candidate', appliedYear: 2009, notes: '2009年申請、候補国' },
+      { countryCode: 'MNE', status: 'candidate', appliedYear: 2008, notes: '2008年申請、候補国' },
+      { countryCode: 'MKD', status: 'candidate', appliedYear: 2004, notes: '2004年申請、候補国' },
+      { countryCode: 'TUR', status: 'candidate', appliedYear: 1987, notes: '1987年申請、加盟交渉凍結中' }
     ]
   },
   {
@@ -186,11 +188,11 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'GBR', status: 'ratified', signedYear: 2023, ratifiedYear: 2024, notes: '欧州から初、2024年12月発効' },
       // 離脱・申請国
       { countryCode: 'USA', status: 'withdrawn', signedYear: 2016, withdrawnYear: 2017, notes: 'TPPに署名したがトランプ政権発足時に離脱' },
-      { countryCode: 'CHN', status: 'candidate', signedYear: 2021, notes: '2021年9月加盟申請' },
-      { countryCode: 'TWN', status: 'candidate', signedYear: 2021, notes: '2021年9月加盟申請' },
-      { countryCode: 'CRI', status: 'candidate', signedYear: 2022, notes: '2022年加盟申請' },
-      { countryCode: 'ECU', status: 'candidate', signedYear: 2021, notes: '加盟申請' },
-      { countryCode: 'URY', status: 'candidate', signedYear: 2022, notes: '加盟申請' }
+      { countryCode: 'CHN', status: 'candidate', appliedYear: 2021, notes: '2021年9月加盟申請' },
+      { countryCode: 'TWN', status: 'candidate', appliedYear: 2021, notes: '2021年9月加盟申請' },
+      { countryCode: 'CRI', status: 'candidate', appliedYear: 2022, notes: '2022年加盟申請' },
+      { countryCode: 'ECU', status: 'candidate', appliedYear: 2021, notes: '2021年加盟申請' },
+      { countryCode: 'URY', status: 'candidate', appliedYear: 2022, notes: '2022年加盟申請' }
     ]
   },
   {
@@ -234,7 +236,7 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'AUS', status: 'ratified', ratifiedYear: 2021 },
       { countryCode: 'GBR', status: 'ratified', ratifiedYear: 2021 },
       { countryCode: 'USA', status: 'ratified', ratifiedYear: 2021 },
-      { countryCode: 'JPN', status: 'dialogue', notes: '第2の柱（先端技術協力）での個別協力検討' }
+      { countryCode: 'JPN', status: 'dialogue', appliedYear: 2024, notes: '第2の柱（先端技術協力）での個別協力検討' }
     ]
   },
   {
@@ -290,7 +292,7 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'LAO', status: 'ratified', ratifiedYear: 1997 },
       { countryCode: 'MMR', status: 'ratified', ratifiedYear: 1997 },
       { countryCode: 'KHM', status: 'ratified', ratifiedYear: 1999 },
-      { countryCode: 'TLS', status: 'observer', ratifiedYear: 2022, notes: '原則加盟承認、正式加盟準備中' }
+      { countryCode: 'TLS', status: 'observer', appliedYear: 2022, notes: '原則加盟承認、正式加盟準備中 (2022)' }
     ]
   },
   {
@@ -314,19 +316,19 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ARE', status: 'ratified', ratifiedYear: 2024, notes: '2024年拡大加盟' },
       { countryCode: 'SAU', status: 'ratified', ratifiedYear: 2024, notes: '招待受諾・参加' },
       // パートナー国・申請国
-      { countryCode: 'TUR', status: 'candidate', signedYear: 2024, notes: 'NATO加盟国として初申請' },
-      { countryCode: 'DZA', status: 'dialogue' },
-      { countryCode: 'IDN', status: 'dialogue' },
-      { countryCode: 'MYS', status: 'dialogue' },
-      { countryCode: 'THA', status: 'dialogue' },
-      { countryCode: 'VNM', status: 'dialogue' },
-      { countryCode: 'KAZ', status: 'dialogue' },
-      { countryCode: 'BLR', status: 'dialogue' },
-      { countryCode: 'BOL', status: 'dialogue' },
-      { countryCode: 'CUB', status: 'dialogue' },
-      { countryCode: 'NGA', status: 'dialogue' },
-      { countryCode: 'UGA', status: 'dialogue' },
-      { countryCode: 'UZB', status: 'dialogue' }
+      { countryCode: 'TUR', status: 'candidate', appliedYear: 2024, signedYear: 2024, notes: '2024年NATO加盟国として初申請' },
+      { countryCode: 'DZA', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'IDN', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'MYS', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'THA', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'VNM', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'KAZ', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'BLR', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'BOL', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'CUB', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'NGA', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'UGA', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' },
+      { countryCode: 'UZB', status: 'dialogue', appliedYear: 2024, notes: '2024年パートナー国' }
     ]
   },
   {
@@ -350,13 +352,13 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'IRN', status: 'ratified', ratifiedYear: 2023, notes: '2023年正式加盟' },
       { countryCode: 'BLR', status: 'ratified', ratifiedYear: 2024, notes: '2024年正式加盟' },
       // オブザーバー・対話パートナー
-      { countryCode: 'AFG', status: 'observer', notes: '情勢不安により活動停止' },
-      { countryCode: 'MNG', status: 'observer' },
-      { countryCode: 'TUR', status: 'dialogue', notes: '対話パートナー' },
-      { countryCode: 'SAU', status: 'dialogue', notes: '対話パートナー' },
-      { countryCode: 'EGY', status: 'dialogue', notes: '対話パートナー' },
-      { countryCode: 'QAT', status: 'dialogue', notes: '対話パートナー' },
-      { countryCode: 'ARE', status: 'dialogue', notes: '対話パートナー' }
+      { countryCode: 'AFG', status: 'observer', appliedYear: 2012, notes: '2012年オブザーバー（情勢不安により活動停止）' },
+      { countryCode: 'MNG', status: 'observer', appliedYear: 2004, notes: '2004年オブザーバー' },
+      { countryCode: 'TUR', status: 'dialogue', appliedYear: 2012, notes: '2012年対話パートナー' },
+      { countryCode: 'SAU', status: 'dialogue', appliedYear: 2023, notes: '2023年対話パートナー' },
+      { countryCode: 'EGY', status: 'dialogue', appliedYear: 2022, notes: '2022年対話パートナー' },
+      { countryCode: 'QAT', status: 'dialogue', appliedYear: 2022, notes: '2022年対話パートナー' },
+      { countryCode: 'ARE', status: 'dialogue', appliedYear: 2023, notes: '2023年対話パートナー' }
     ]
   },
   {
@@ -454,10 +456,10 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'BRA', status: 'signed', signedYear: 2017, notes: '署名済（未批准）' },
       { countryCode: 'COL', status: 'signed', signedYear: 2018, notes: '署名済（未批准）' },
       // オブザーバー参加
-      { countryCode: 'DEU', status: 'observer', notes: '締約国会議にオブザーバー参加（NATO加盟国）' },
-      { countryCode: 'NOR', status: 'observer', notes: '締約国会議にオブザーバー参加（NATO加盟国）' },
-      { countryCode: 'BEL', status: 'observer', notes: '締約国会議にオブザーバー参加（NATO加盟国）' },
-      { countryCode: 'AUS', status: 'observer', notes: '締約国会議にオブザーバー参加' }
+      { countryCode: 'DEU', status: 'observer', appliedYear: 2022, notes: '2022年締約国会議にオブザーバー参加（NATO加盟国）' },
+      { countryCode: 'NOR', status: 'observer', appliedYear: 2021, notes: '2021年締約国会議オブザーバー参加表明（NATO加盟国）' },
+      { countryCode: 'BEL', status: 'observer', appliedYear: 2022, notes: '2022年締約国会議にオブザーバー参加（NATO加盟国）' },
+      { countryCode: 'AUS', status: 'observer', appliedYear: 2022, notes: '2022年締約国会議にオブザーバー参加' }
     ]
   },
   {
@@ -552,9 +554,9 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'RUS', status: 'ratified', ratifiedYear: 1998, notes: '1998年加盟' },
       { countryCode: 'VNM', status: 'ratified', ratifiedYear: 1998, notes: '1998年加盟' },
       // 加盟申請・希望国
-      { countryCode: 'IND', status: 'candidate', notes: '加盟希望（1998年以降新規加盟モラトリアム中）' },
-      { countryCode: 'COL', status: 'candidate', notes: '加盟希望' },
-      { countryCode: 'ECU', status: 'candidate', notes: '加盟希望' }
+      { countryCode: 'IND', status: 'candidate', appliedYear: 1998, notes: '加盟希望（1998年以降新規加盟モラトリアム中）' },
+      { countryCode: 'COL', status: 'candidate', appliedYear: 1998, notes: '加盟希望' },
+      { countryCode: 'ECU', status: 'candidate', appliedYear: 1998, notes: '加盟希望' }
     ]
   },
   {
@@ -593,10 +595,10 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'DJI', status: 'ratified', ratifiedYear: 1977, notes: '1977年加盟' },
       { countryCode: 'COM', status: 'ratified', ratifiedYear: 1993, notes: '1993年加盟' },
       // オブザーバー
-      { countryCode: 'BRA', status: 'observer', notes: '2003年オブザーバー参加' },
-      { countryCode: 'ERI', status: 'observer', notes: '2003年オブザーバー参加' },
-      { countryCode: 'VEN', status: 'observer', notes: '2006年オブザーバー参加' },
-      { countryCode: 'IND', status: 'observer', notes: '2007年オブザーバー参加' }
+      { countryCode: 'BRA', status: 'observer', appliedYear: 2003, notes: '2003年オブザーバー参加' },
+      { countryCode: 'ERI', status: 'observer', appliedYear: 2003, notes: '2003年オブザーバー参加' },
+      { countryCode: 'VEN', status: 'observer', appliedYear: 2006, notes: '2006年オブザーバー参加' },
+      { countryCode: 'IND', status: 'observer', appliedYear: 2007, notes: '2007年オブザーバー参加' }
     ]
   },
   {
@@ -679,12 +681,12 @@ export const FRAMEWORKS: Framework[] = [
       // 過去に代表権を有していた台湾
       { countryCode: 'TWN', status: 'withdrawn', ratifiedYear: 1945, withdrawnYear: 1971, notes: '1945-1971年まで中華民国として安保理常任理事国の議席を保持' },
       // 常任理事国拡大を目指す主要国（G4など）
-      { countryCode: 'JPN', status: 'candidate', notes: 'G4の一角として常任理事国入りを目指す。非常任理事国当選回数は国連最多' },
-      { countryCode: 'DEU', status: 'candidate', notes: 'G4の一角として常任理事国入りを目指す' },
-      { countryCode: 'IND', status: 'candidate', notes: 'G4の一角として常任理事国入りを目指す。世界最多の人口を代表' },
-      { countryCode: 'BRA', status: 'candidate', notes: 'G4の一角として中南米からの常任理事国入りを目指す' },
-      { countryCode: 'ZAF', status: 'candidate', notes: 'アフリカ連合（AU）からの常任理事国候補' },
-      { countryCode: 'NGA', status: 'candidate', notes: 'アフリカ連合（AU）からの常任理事国候補' }
+      { countryCode: 'JPN', status: 'candidate', appliedYear: 2005, notes: 'G4の一角として常任理事国入りを目指す。非常任理事国当選回数は国連最多' },
+      { countryCode: 'DEU', status: 'candidate', appliedYear: 2005, notes: 'G4の一角として常任理事国入りを目指す' },
+      { countryCode: 'IND', status: 'candidate', appliedYear: 2005, notes: 'G4の一角として常任理事国入りを目指す。世界最多の人口を代表' },
+      { countryCode: 'BRA', status: 'candidate', appliedYear: 2005, notes: 'G4の一角として中南米からの常任理事国入りを目指す' },
+      { countryCode: 'ZAF', status: 'candidate', appliedYear: 2005, notes: 'アフリカ連合（AU）からの常任理事国候補' },
+      { countryCode: 'NGA', status: 'candidate', appliedYear: 2005, notes: 'アフリカ連合（AU）からの常任理事国候補' }
     ]
   },
   {
@@ -741,13 +743,13 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'COL', status: 'ratified', ratifiedYear: 2020, notes: '2020年加盟' },
       { countryCode: 'CRI', status: 'ratified', ratifiedYear: 2021, notes: '中米から初、第38番目の加盟国' },
       // 加盟交渉国 (candidate)
-      { countryCode: 'IDN', status: 'candidate', notes: '2024年加盟交渉開始。東南アジアから初の加盟を目指す' },
-      { countryCode: 'BRA', status: 'candidate', notes: '加盟交渉中' },
-      { countryCode: 'ARG', status: 'candidate', notes: '加盟交渉中' },
-      { countryCode: 'PER', status: 'candidate', notes: '加盟交渉中' },
-      { countryCode: 'ROU', status: 'candidate', notes: '加盟交渉中' },
-      { countryCode: 'BGR', status: 'candidate', notes: '加盟交渉中' },
-      { countryCode: 'HRV', status: 'candidate', notes: '加盟交渉中' },
+      { countryCode: 'IDN', status: 'candidate', appliedYear: 2024, notes: '2024年加盟交渉開始。東南アジアから初の加盟を目指す' },
+      { countryCode: 'BRA', status: 'candidate', appliedYear: 2022, notes: '2022年加盟交渉開始合意' },
+      { countryCode: 'ARG', status: 'candidate', appliedYear: 2022, notes: '2022年加盟交渉開始合意' },
+      { countryCode: 'PER', status: 'candidate', appliedYear: 2022, notes: '2022年加盟交渉開始合意' },
+      { countryCode: 'ROU', status: 'candidate', appliedYear: 2022, notes: '2022年加盟交渉開始合意' },
+      { countryCode: 'BGR', status: 'candidate', appliedYear: 2022, notes: '2022年加盟交渉開始合意' },
+      { countryCode: 'HRV', status: 'candidate', appliedYear: 2022, notes: '2022年加盟交渉開始合意' },
       // 交渉終了
       { countryCode: 'RUS', status: 'withdrawn', notes: '2007年交渉開始、2014年クリミア併合により停止、2022年ウクライナ侵攻により正式終了' }
     ]
@@ -790,12 +792,12 @@ export const FRAMEWORKS: Framework[] = [
       // 資格停止国
       { countryCode: 'VEN', status: 'withdrawn', signedYear: 2006, ratifiedYear: 2012, withdrawnYear: 2016, notes: '2012年正式加盟、2016年民主条項（ウスアイア議定書）違反により無期限資格停止' },
       // 準加盟国 (Associated States)
-      { countryCode: 'CHL', status: 'observer', signedYear: 1996, notes: '準加盟国 (1996)' },
-      { countryCode: 'COL', status: 'observer', signedYear: 2004, notes: '準加盟国 (2004)' },
-      { countryCode: 'ECU', status: 'observer', signedYear: 2004, notes: '準加盟国 (2004)' },
-      { countryCode: 'PER', status: 'observer', signedYear: 2003, notes: '準加盟国 (2003)' },
-      { countryCode: 'GUY', status: 'observer', signedYear: 2013, notes: '準加盟国 (2013)' },
-      { countryCode: 'SUR', status: 'observer', signedYear: 2013, notes: '準加盟国 (2013)' }
+      { countryCode: 'CHL', status: 'observer', appliedYear: 1996, signedYear: 1996, notes: '準加盟国 (1996)' },
+      { countryCode: 'COL', status: 'observer', appliedYear: 2004, signedYear: 2004, notes: '準加盟国 (2004)' },
+      { countryCode: 'ECU', status: 'observer', appliedYear: 2004, signedYear: 2004, notes: '準加盟国 (2004)' },
+      { countryCode: 'PER', status: 'observer', appliedYear: 2003, signedYear: 2003, notes: '準加盟国 (2003)' },
+      { countryCode: 'GUY', status: 'observer', appliedYear: 2013, signedYear: 2013, notes: '準加盟国 (2013)' },
+      { countryCode: 'SUR', status: 'observer', appliedYear: 2013, signedYear: 2013, notes: '準加盟国 (2013)' }
     ]
   },
   {
@@ -815,9 +817,9 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'MEX', status: 'ratified', signedYear: 2012, ratifiedYear: 2015, notes: '原加盟国' },
       { countryCode: 'PER', status: 'ratified', signedYear: 2012, ratifiedYear: 2015, notes: '原加盟国' },
       // 候補国・準加盟交渉
-      { countryCode: 'CRI', status: 'candidate', notes: '正式加盟交渉中' },
-      { countryCode: 'ECU', status: 'candidate', notes: '正式加盟交渉中' },
-      { countryCode: 'SGP', status: 'candidate', notes: '2022年準加盟国（Associate Member）協定署名' }
+      { countryCode: 'CRI', status: 'candidate', appliedYear: 2022, notes: '正式加盟交渉中 (2022)' },
+      { countryCode: 'ECU', status: 'candidate', appliedYear: 2019, notes: '正式加盟交渉中 (2019)' },
+      { countryCode: 'SGP', status: 'candidate', appliedYear: 2022, notes: '2022年準加盟国（Associate Member）協定署名' }
     ]
   },
   {
@@ -925,10 +927,10 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ARE', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
       { countryCode: 'YEM', status: 'ratified', ratifiedYear: 2005, notes: '2005年加盟' },
       // 候補国・加盟手続き中（アラブ連盟加盟国）
-      { countryCode: 'COM', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
-      { countryCode: 'DJI', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
-      { countryCode: 'MRT', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
-      { countryCode: 'SOM', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' }
+      { countryCode: 'COM', status: 'candidate', appliedYear: 2005, notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
+      { countryCode: 'DJI', status: 'candidate', appliedYear: 2005, notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
+      { countryCode: 'MRT', status: 'candidate', appliedYear: 2005, notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
+      { countryCode: 'SOM', status: 'candidate', appliedYear: 2005, notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' }
     ]
   }
 ];
