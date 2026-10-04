@@ -110,6 +110,7 @@ const rawCountries = [
   { numeric: "598", alpha3: "PNG", alpha2: "PG", nameJa: "パプアニューギニア", nameEn: "Papua New Guinea", region: "オセアニア", flagEmoji: "🇵🇬" },
   { numeric: "242", alpha3: "FJI", alpha2: "FJ", nameJa: "フィジー", nameEn: "Fiji", region: "オセアニア", flagEmoji: "🇫🇯" },
   { numeric: "158", alpha3: "TWN", alpha2: "TW", nameJa: "台湾", nameEn: "Taiwan", region: "アジア", flagEmoji: "🇹🇼" },
+  { numeric: "344", alpha3: "HKG", alpha2: "HK", nameJa: "香港", nameEn: "Hong Kong", region: "アジア", flagEmoji: "🇭🇰" },
   { numeric: "196", alpha3: "CYP", alpha2: "CY", nameJa: "キプロス", nameEn: "Cyprus", region: "ヨーロッパ/中東", flagEmoji: "🇨🇾" },
   { numeric: "470", alpha3: "MLT", alpha2: "MT", nameJa: "マルタ", nameEn: "Malta", region: "ヨーロッパ", flagEmoji: "🇲🇹" },
   { numeric: "498", alpha3: "MDA", alpha2: "MD", nameJa: "モルドバ", nameEn: "Moldova", region: "ヨーロッパ", flagEmoji: "🇲🇩" },
@@ -213,7 +214,7 @@ for (const val of countryMap.values()) {
 uniqueCountries.sort((a, b) => a.nameJa.localeCompare(b.nameJa, 'ja'));
 
 const tsContent = `// 自動生成された世界の国マスタデータ
-import { Country } from '../types';
+import type { Country } from '../types';
 
 export const COUNTRIES: Country[] = ${JSON.stringify(uniqueCountries, null, 2)};
 

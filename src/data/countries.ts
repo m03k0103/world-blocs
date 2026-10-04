@@ -1506,6 +1506,15 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇰🇷"
   },
   {
+    "numeric": "344",
+    "alpha3": "HKG",
+    "alpha2": "HK",
+    "nameJa": "香港",
+    "nameEn": "Hong Kong",
+    "region": "アジア",
+    "flagEmoji": "🇭🇰"
+  },
+  {
     "numeric": "732",
     "alpha3": "ESH",
     "alpha2": "EH",

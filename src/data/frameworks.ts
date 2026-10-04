@@ -513,6 +513,49 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'PHL', status: 'withdrawn', signedYear: 2000, ratifiedYear: 2011, withdrawnYear: 2019, notes: '2011年加盟、麻薬戦争捜査反発により2019年脱退' },
       { countryCode: 'BDI', status: 'withdrawn', signedYear: 1999, ratifiedYear: 2004, withdrawnYear: 2017, notes: '2017年脱退発効' }
     ]
+  },
+  {
+    id: 'apec',
+    nameJa: 'アジア太平洋経済協力（APEC）',
+    nameEn: 'Asia-Pacific Economic Cooperation',
+    acronym: 'APEC',
+    category: 'economic',
+    establishedYear: 1989,
+    inForceYear: 1989,
+    secretariat: 'シンガポール',
+    description: 'アジア太平洋地域の持続可能な成長と繁栄を支援する地域経済フォーラム。21の国・地域が「エコノミー」として参加し、世界人口の約38%、GDPの約62%、貿易額の47%を占める。国家主権を問わない枠組みのため、中国・台湾・香港が同時に正式参加しているのが大きな特徴。',
+    members: [
+      // 1989年 創設12エコノミー
+      { countryCode: 'AUS', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー（豪キャンベラで第1回閣僚会議）' },
+      { countryCode: 'BRN', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'CAN', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'IDN', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'JPN', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー（豪州とともに設立を主導）' },
+      { countryCode: 'KOR', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'MYS', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'NZL', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'PHL', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'SGP', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー（APEC事務局所在地）' },
+      { countryCode: 'THA', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 1989, notes: '創設エコノミー' },
+      // 1991年 中華圏3エコノミー同時加盟
+      { countryCode: 'CHN', status: 'ratified', ratifiedYear: 1991, notes: '1991年加盟' },
+      { countryCode: 'HKG', status: 'ratified', ratifiedYear: 1991, notes: '1991年加盟（ホンコン・チャイナ名義）' },
+      { countryCode: 'TWN', status: 'ratified', ratifiedYear: 1991, notes: '1991年加盟（チャイニーズ・タイペイ名義）' },
+      // 1993年
+      { countryCode: 'MEX', status: 'ratified', ratifiedYear: 1993, notes: '1993年加盟' },
+      { countryCode: 'PNG', status: 'ratified', ratifiedYear: 1993, notes: '1993年加盟' },
+      // 1994年
+      { countryCode: 'CHL', status: 'ratified', ratifiedYear: 1994, notes: '1994年加盟' },
+      // 1998年
+      { countryCode: 'PER', status: 'ratified', ratifiedYear: 1998, notes: '1998年加盟' },
+      { countryCode: 'RUS', status: 'ratified', ratifiedYear: 1998, notes: '1998年加盟' },
+      { countryCode: 'VNM', status: 'ratified', ratifiedYear: 1998, notes: '1998年加盟' },
+      // 加盟申請・希望国
+      { countryCode: 'IND', status: 'candidate', notes: '加盟希望（1998年以降新規加盟モラトリアム中）' },
+      { countryCode: 'COL', status: 'candidate', notes: '加盟希望' },
+      { countryCode: 'ECU', status: 'candidate', notes: '加盟希望' }
+    ]
   }
 ];
 
