@@ -102,15 +102,6 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🌐"
   },
   {
-    "numeric": "275",
-    "alpha3": "C275",
-    "alpha2": "C75",
-    "nameJa": "Palestine",
-    "nameEn": "Palestine",
-    "region": "その他",
-    "flagEmoji": "🌐"
-  },
-  {
     "numeric": "630",
     "alpha3": "C630",
     "alpha2": "C30",
@@ -615,6 +606,15 @@ export const COUNTRIES: Country[] = [
     "flagEmoji": "🇨🇷"
   },
   {
+    "numeric": "174",
+    "alpha3": "COM",
+    "alpha2": "KM",
+    "nameJa": "コモロ",
+    "nameEn": "Comoros",
+    "region": "アフリカ",
+    "flagEmoji": "🇰🇲"
+  },
+  {
     "numeric": "170",
     "alpha3": "COL",
     "alpha2": "CO",
@@ -1072,6 +1072,15 @@ export const COUNTRIES: Country[] = [
     "nameEn": "Paraguay",
     "region": "南米",
     "flagEmoji": "🇵🇾"
+  },
+  {
+    "numeric": "275",
+    "alpha3": "PSE",
+    "alpha2": "PS",
+    "nameJa": "パレスチナ",
+    "nameEn": "Palestine",
+    "region": "中東",
+    "flagEmoji": "🇵🇸"
   },
   {
     "numeric": "348",

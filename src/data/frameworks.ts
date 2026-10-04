@@ -556,6 +556,48 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'COL', status: 'candidate', notes: '加盟希望' },
       { countryCode: 'ECU', status: 'candidate', notes: '加盟希望' }
     ]
+  },
+  {
+    id: 'arab_league',
+    nameJa: 'アラブ連盟（アラブ諸国連盟）',
+    nameEn: 'League of Arab States',
+    acronym: 'Arab League',
+    category: 'regional',
+    establishedYear: 1945,
+    inForceYear: 1945,
+    secretariat: 'カイロ（エジプト）',
+    description: '中東および北アフリカのアラブ諸国22カ国・地域で構成される地域協力機構。共通の言語・文化・歴史的結びつきを基盤に、政治、経済、安全保障、社会文化の協調と主権擁護を推進。',
+    members: [
+      // 1945年 創設7カ国
+      { countryCode: 'EGY', status: 'ratified', ratifiedYear: 1945, notes: '創設メンバー。1979-1989年にイスラエル平和条約締結により資格停止、後に復帰' },
+      { countryCode: 'IRQ', status: 'ratified', ratifiedYear: 1945, notes: '創設メンバー' },
+      { countryCode: 'JOR', status: 'ratified', ratifiedYear: 1945, notes: '創設メンバー（旧トランスヨルダン）' },
+      { countryCode: 'LBN', status: 'ratified', ratifiedYear: 1945, notes: '創設メンバー' },
+      { countryCode: 'SAU', status: 'ratified', ratifiedYear: 1945, notes: '創設メンバー' },
+      { countryCode: 'SYR', status: 'ratified', ratifiedYear: 1945, notes: '創設メンバー。2011年内戦で資格停止、2023年復帰' },
+      { countryCode: 'YEM', status: 'ratified', ratifiedYear: 1945, notes: '創設メンバー（北イエメンとして加盟、1990年南北統一）' },
+      // 拡大加盟
+      { countryCode: 'LBY', status: 'ratified', ratifiedYear: 1953, notes: '1953年加盟' },
+      { countryCode: 'SDN', status: 'ratified', ratifiedYear: 1956, notes: '1956年加盟' },
+      { countryCode: 'MAR', status: 'ratified', ratifiedYear: 1958, notes: '1958年加盟' },
+      { countryCode: 'TUN', status: 'ratified', ratifiedYear: 1958, notes: '1958年加盟' },
+      { countryCode: 'KWT', status: 'ratified', ratifiedYear: 1961, notes: '1961年加盟' },
+      { countryCode: 'DZA', status: 'ratified', ratifiedYear: 1962, notes: '1962年加盟（独立直後に参加）' },
+      { countryCode: 'BHR', status: 'ratified', ratifiedYear: 1971, notes: '1971年加盟（湾岸独立国）' },
+      { countryCode: 'OMN', status: 'ratified', ratifiedYear: 1971, notes: '1971年加盟' },
+      { countryCode: 'QAT', status: 'ratified', ratifiedYear: 1971, notes: '1971年加盟' },
+      { countryCode: 'ARE', status: 'ratified', ratifiedYear: 1971, notes: '1971年連邦結成・加盟' },
+      { countryCode: 'MRT', status: 'ratified', ratifiedYear: 1973, notes: '1973年加盟' },
+      { countryCode: 'SOM', status: 'ratified', ratifiedYear: 1974, notes: '1974年加盟' },
+      { countryCode: 'PSE', status: 'ratified', ratifiedYear: 1976, notes: '1976年正式加盟（PLO/パレスチナ国）' },
+      { countryCode: 'DJI', status: 'ratified', ratifiedYear: 1977, notes: '1977年加盟' },
+      { countryCode: 'COM', status: 'ratified', ratifiedYear: 1993, notes: '1993年加盟' },
+      // オブザーバー
+      { countryCode: 'BRA', status: 'observer', notes: '2003年オブザーバー参加' },
+      { countryCode: 'ERI', status: 'observer', notes: '2003年オブザーバー参加' },
+      { countryCode: 'VEN', status: 'observer', notes: '2006年オブザーバー参加' },
+      { countryCode: 'IND', status: 'observer', notes: '2007年オブザーバー参加' }
+    ]
   }
 ];
 

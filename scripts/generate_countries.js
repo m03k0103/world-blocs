@@ -124,6 +124,8 @@ const rawCountries = [
   { numeric: "512", alpha3: "OMN", alpha2: "OM", nameJa: "オマーン", nameEn: "Oman", region: "中東", flagEmoji: "🇴🇲" },
   { numeric: "414", alpha3: "KWT", alpha2: "KW", nameJa: "クウェート", nameEn: "Kuwait", region: "中東", flagEmoji: "🇰🇼" },
   { numeric: "048", alpha3: "BHR", alpha2: "BH", nameJa: "バーレーン", nameEn: "Bahrain", region: "中東", flagEmoji: "🇧🇭" },
+  { numeric: "275", alpha3: "PSE", alpha2: "PS", nameJa: "パレスチナ", nameEn: "Palestine", region: "中東", flagEmoji: "🇵🇸" },
+  { numeric: "174", alpha3: "COM", alpha2: "KM", nameJa: "コモロ", nameEn: "Comoros", region: "アフリカ", flagEmoji: "🇰🇲" },
   { numeric: "304", alpha3: "GRL", alpha2: "GL", nameJa: "グリーンランド", nameEn: "Greenland", region: "北米/北欧", flagEmoji: "🇬🇱" },
   { numeric: "70",  alpha3: "BIH", alpha2: "BA", nameJa: "ボスニア・ヘルツェゴビナ", nameEn: "Bosnia and Herzegovina", region: "ヨーロッパ", flagEmoji: "🇧🇦" },
   { numeric: "070", alpha3: "BIH", alpha2: "BA", nameJa: "ボスニア・ヘルツェゴビナ", nameEn: "Bosnia and Herzegovina", region: "ヨーロッパ", flagEmoji: "🇧🇦" },
