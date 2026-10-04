@@ -899,7 +899,7 @@ export const FRAMEWORKS: Framework[] = [
     nameJa: '大アラブ自由貿易地域',
     nameEn: 'Greater Arab Free Trade Area',
     acronym: 'GAFTA',
-    aliases: ['pfta'],
+    aliases: ['pfta', 'cafta'],
     category: 'economic',
     establishedYear: 1997,
     inForceYear: 1998,
@@ -923,7 +923,12 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'SYR', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
       { countryCode: 'TUN', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
       { countryCode: 'ARE', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
-      { countryCode: 'YEM', status: 'ratified', ratifiedYear: 2005, notes: '2005年加盟' }
+      { countryCode: 'YEM', status: 'ratified', ratifiedYear: 2005, notes: '2005年加盟' },
+      // 候補国・加盟手続き中（アラブ連盟加盟国）
+      { countryCode: 'COM', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
+      { countryCode: 'DJI', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
+      { countryCode: 'MRT', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' },
+      { countryCode: 'SOM', status: 'candidate', notes: 'アラブ連盟加盟国（GAFTA加盟手続き中/候補国）' }
     ]
   }
 ];
