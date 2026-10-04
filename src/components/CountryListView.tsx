@@ -3,12 +3,14 @@ import type { Country } from '../types';
 import { COUNTRIES } from '../data/countries';
 import { FRAMEWORKS } from '../data/frameworks';
 import { Search, Filter, ShieldCheck } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface CountryListViewProps {
   onSelectCountry: (country: Country) => void;
 }
 
 export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountry }) => {
+  const { t, language } = useLanguage();
   const [search, setSearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('all');
 
@@ -54,13 +56,15 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
 
       return true;
     }).sort((a, b) => {
-      // 登録枠組み数が多い順、同じなら日本語順
+      // 登録枠組み数が多い順、同じなら言語に応じた国名順
       const ca = frameworkCountByCountry.get(a.alpha3) || 0;
       const cb = frameworkCountByCountry.get(b.alpha3) || 0;
       if (cb !== ca) return cb - ca;
-      return a.nameJa.localeCompare(b.nameJa, 'ja');
+      return language === 'en'
+        ? a.nameEn.localeCompare(b.nameEn, 'en')
+        : a.nameJa.localeCompare(b.nameJa, 'ja');
     });
-  }, [search, selectedRegion, frameworkCountByCountry]);
+  }, [search, selectedRegion, frameworkCountByCountry, language]);
 
   return (
     <div className="space-y-6">
@@ -70,7 +74,7 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
-            placeholder="国名（日本、米国など）やアルファベットで検索..."
+            placeholder={t('countryListSearch')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -83,9 +87,9 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
           <select
             value={selectedRegion}
             onChange={(e) => setSelectedRegion(e.target.value)}
-            className="w-full sm:w-auto px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 focus:outline-none"
+            className="w-full sm:w-auto px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
           >
-            <option value="all">すべての地域</option>
+            <option value="all">{t('filterRegionAll')}</option>
             {regions.map((r) => (
               <option key={r} value={r}>
                 {r}
@@ -111,10 +115,10 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
                 </span>
                 <div>
                   <div className="font-bold text-sm text-slate-800 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {country.nameJa}
+                    {language === 'en' ? country.nameEn : country.nameJa}
                   </div>
                   <div className="text-[11px] text-slate-400 font-mono">
-                    {country.nameEn} ({country.alpha3})
+                    {language === 'en' ? country.nameJa : country.nameEn} ({country.alpha3})
                   </div>
                   <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">
                     {country.region}
@@ -126,10 +130,10 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
                 {count > 0 ? (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
                     <ShieldCheck className="w-3.5 h-3.5" />
-                    {count} 枠組み
+                    {count} {language === 'ja' ? '枠組み' : 'blocs'}
                   </span>
                 ) : (
-                  <span className="text-xs text-slate-400">未登録</span>
+                  <span className="text-xs text-slate-400">{language === 'ja' ? '未登録' : 'None'}</span>
                 )}
               </div>
             </div>
@@ -137,8 +141,11 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
         })}
       </div>
       <div className="text-center text-xs text-slate-500 pt-2">
-        計 {filteredCountries.length} カ国・地域を表示中
+        {language === 'ja'
+          ? `計 ${filteredCountries.length} カ国・地域を表示中`
+          : `Showing ${filteredCountries.length} countries & territories`}
       </div>
     </div>
   );
 };
+

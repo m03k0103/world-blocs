@@ -6,6 +6,7 @@ import type { CountryMapData } from './WorldMap';
 import { TimelineSlider } from './TimelineSlider';
 import { TableView } from './TableView';
 import { Map, Table, Building2, Globe } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FrameworkViewProps {
   selectedFramework: Framework | null;
@@ -20,6 +21,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
   onSelectCountry,
   selectedCountryAlpha3,
 }) => {
+  const { t, language } = useLanguage();
   const currentMaxYear = 2026;
   const [selectedYear, setSelectedYear] = useState<number>(currentMaxYear);
   const [activeTab, setActiveTab] = useState<'map' | 'table'>('map');
@@ -114,7 +116,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
   const milestones = useMemo(() => {
     if (!selectedFramework) return [];
     const list: { year: number; label: string }[] = [];
-    list.push({ year: selectedFramework.establishedYear, label: '設立' });
+    list.push({ year: selectedFramework.establishedYear, label: t('milestoneEstablished') });
 
     // 大きな加盟年を抽出
     const yearCounts: Record<number, number> = {};
@@ -128,11 +130,11 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
       .sort((a, b) => b[1] - a[1])
       .slice(0, 3)
       .forEach(([y, c]) => {
-        list.push({ year: Number(y), label: `+${c}カ国加盟` });
+        list.push({ year: Number(y), label: `+${c}${t('milestoneJoinedSuffix')}` });
       });
 
     return list.sort((a, b) => a.year - b.year);
-  }, [selectedFramework]);
+  }, [selectedFramework, t]);
 
   return (
     <div className="space-y-6">
@@ -149,7 +151,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                   : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
               }`}
             >
-              すべて表示
+              {t('all')}
             </button>
             {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
               <button
@@ -161,7 +163,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                     : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-slate-300'
                 }`}
               >
-                {v.labelJa}
+                {language === 'en' ? v.labelEn : v.labelJa}
               </button>
             ))}
           </div>
@@ -184,10 +186,10 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
               }}
               className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
-              <option value="">-- 枠組み・条約を選択してください --</option>
+              <option value="">{t('frameworkPlaceholder')}</option>
               {filteredFrameworks.map((f) => (
                 <option key={f.id} value={f.id}>
-                  {f.acronym} - {f.nameJa}
+                  {f.acronym} - {language === 'en' ? f.nameEn : f.nameJa}
                 </option>
               ))}
             </select>
@@ -196,9 +198,9 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                 type="button"
                 onClick={() => onSelectFramework(null)}
                 className="px-2.5 py-2 text-xs font-semibold text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors whitespace-nowrap cursor-pointer"
-                title="選択を解除して初期表示に戻す"
+                title={t('clearSelection')}
               >
-                解除
+                {t('clearSelection')}
               </button>
             )}
           </div>
@@ -212,16 +214,16 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
             <div className="space-y-2 max-w-3xl">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/30 text-blue-200 border border-blue-400/30">
-                  {CATEGORY_LABELS[selectedFramework.category]?.labelJa}
+                  {CATEGORY_LABELS[selectedFramework.category]?.[language === 'en' ? 'labelEn' : 'labelJa']}
                 </span>
                 <span className="text-blue-300 font-mono text-xs">
-                  設立: {selectedFramework.establishedYear}年
-                  {selectedFramework.inForceYear && `（発効: ${selectedFramework.inForceYear}年）`}
+                  {t('establishedLabel')}: {selectedFramework.establishedYear}{t('yearSliderSuffix')}
+                  {selectedFramework.inForceYear && ` (${t('inForceLabel')}: ${selectedFramework.inForceYear}${t('yearSliderSuffix')})`}
                 </span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-3">
-                <span>{selectedFramework.nameJa}</span>
+                <span>{language === 'en' ? selectedFramework.nameEn : selectedFramework.nameJa}</span>
                 <span className="text-blue-400 font-mono text-xl sm:text-2xl font-bold">
                   ({selectedFramework.acronym})
                 </span>
@@ -235,17 +237,17 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
             {/* 右側サマリーバッジ */}
             <div className="shrink-0 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex lg:flex-col gap-4 justify-around">
               <div className="text-center">
-                <div className="text-xs text-blue-200 font-medium">参加国・地域</div>
+                <div className="text-xs text-blue-200 font-medium">{t('membersCount')}</div>
                 <div className="text-3xl font-black font-mono mt-0.5 text-white">
                   {computedMembership.length}
-                  <span className="text-sm font-normal text-blue-200 ml-1">カ国</span>
+                  <span className="text-sm font-normal text-blue-200 ml-1">{t('countriesSuffix')}</span>
                 </div>
               </div>
               {selectedFramework.secretariat && (
                 <div className="text-center lg:border-t lg:border-white/10 lg:pt-3">
                   <div className="text-xs text-blue-200 font-medium flex items-center justify-center gap-1">
                     <Building2 className="w-3.5 h-3.5" />
-                    事務局
+                    {t('secretariatLabel')}
                   </div>
                   <div className="text-xs font-semibold mt-0.5 text-white truncate max-w-[140px]">
                     {selectedFramework.secretariat}
@@ -261,42 +263,22 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/30 text-blue-200 border border-blue-400/30 inline-flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" />
-                枠組み未選択
+                {t('noFrameworkSelected')}
               </span>
               <span className="text-slate-400 text-xs">
-                全世界マップ表示中（全{FRAMEWORKS.length}枠組み収録）
+                {language === 'ja'
+                  ? `全世界マップ表示中（全${FRAMEWORKS.length}枠組み収録）`
+                  : `Global map view active (${FRAMEWORKS.length} frameworks recorded)`}
               </span>
             </div>
 
             <div className="space-y-2">
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
-                枠組み・条約を選択してください
+                {t('selectFrameworkPrompt')}
               </h2>
               <p className="text-slate-300 text-sm leading-relaxed max-w-3xl">
-                上部のセレクトボックスやカテゴリフィルター、または下記の主要枠組みをクリックすると、加盟国・締結国のグローバル分布、歴史的な拡大タイムライン、詳細データを可視化できます。また、地図上の国を直接クリックするとその国の参加状況を確認できます。
+                {t('selectFrameworkDesc')}
               </p>
-            </div>
-
-            {/* 主要な枠組みクイック選択バッジ */}
-            <div className="pt-2">
-              <div className="text-xs font-semibold text-slate-400 mb-2">主要な枠組みをクイック選択:</div>
-              <div className="flex flex-wrap gap-2">
-                {FRAMEWORKS.slice(0, 8).map((f) => (
-                  <button
-                    key={f.id}
-                    onClick={() => {
-                      onSelectFramework(f);
-                      setSelectedYear(currentMaxYear);
-                    }}
-                    className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <span>{f.acronym}</span>
-                    <span className="text-blue-300 text-[11px] font-normal font-sans">
-                      ({f.nameJa})
-                    </span>
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
         </div>
@@ -318,7 +300,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-800 p-3 px-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
           {/* 凡例 (Legend) */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="font-bold text-slate-500 mr-1">凡例:</span>
+            <span className="font-bold text-slate-500 mr-1">{t('legend')}</span>
             {Object.entries(STATUS_LABELS).map(([k, v]) => {
               const count = statusCounts[k] || 0;
               if (count === 0 && selectedYear === currentMaxYear && !selectedFramework.members.some(m => m.status === k)) {
@@ -334,7 +316,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                     style={{ backgroundColor: v.hex }}
                   ></span>
                   <span className="font-medium text-slate-700 dark:text-slate-300">
-                    {v.labelJa}
+                    {language === 'en' ? v.labelEn : v.labelJa}
                   </span>
                   <span className="font-mono font-bold text-slate-500 dark:text-slate-400 text-[11px] ml-0.5">
                     ({count})
@@ -348,25 +330,25 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
           <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-700 p-1 rounded-xl shrink-0 self-start sm:self-auto">
             <button
               onClick={() => setActiveTab('map')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'map'
                   ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm'
                   : 'text-slate-600 dark:text-slate-300'
               }`}
             >
               <Map className="w-3.5 h-3.5" />
-              地図で見る
+              {t('viewMapTab')}
             </button>
             <button
               onClick={() => setActiveTab('table')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'table'
                   ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm'
                   : 'text-slate-600 dark:text-slate-300'
               }`}
             >
               <Table className="w-3.5 h-3.5" />
-              リスト一覧
+              {t('viewTableTab')}
             </button>
           </div>
         </div>
@@ -374,10 +356,12 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-800 p-3 px-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-            <span>地図上の国をクリックすると、その国の参加枠組み・条約一覧を表示します</span>
+            <span>{t('clickCountryHint')}</span>
           </div>
           <div className="text-slate-400 font-medium">
-            全{FRAMEWORKS.length}枠組みのデータを閲覧可能
+            {language === 'ja'
+              ? `全${FRAMEWORKS.length}枠組みのデータを閲覧可能`
+              : `${FRAMEWORKS.length} ${t('frameworksAvailable')}`}
           </div>
         </div>
       )}
@@ -390,13 +374,20 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
           onSelectCountry={onSelectCountry}
         />
       ) : (
-        <WorldMap
-          countryDataMap={mapData}
-          mode="single"
-          hasFrameworkSelected={Boolean(selectedFramework)}
-          onSelectCountry={onSelectCountry}
-          selectedCountryAlpha3={selectedCountryAlpha3}
-        />
+        <div className="space-y-2">
+          <WorldMap
+            countryDataMap={mapData}
+            mode="single"
+            hasFrameworkSelected={Boolean(selectedFramework)}
+            onSelectCountry={onSelectCountry}
+            selectedCountryAlpha3={selectedCountryAlpha3}
+          />
+          {selectedFramework && (
+            <p className="text-[11px] text-slate-400 dark:text-slate-500 text-right pr-2">
+              {t('smallStatesNotice')}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );

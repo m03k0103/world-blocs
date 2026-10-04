@@ -13,120 +13,120 @@ export const COUNTRIES: Country[] = [
   },
   {
     "numeric": "044",
-    "alpha3": "C044",
-    "alpha2": "C44",
-    "nameJa": "Bahamas",
+    "alpha3": "BHS",
+    "alpha2": "BS",
+    "nameJa": "バハマ",
     "nameEn": "Bahamas",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "南北アメリカ",
+    "flagEmoji": "🇧🇸"
   },
   {
     "numeric": "204",
-    "alpha3": "C204",
-    "alpha2": "C04",
-    "nameJa": "Benin",
+    "alpha3": "BEN",
+    "alpha2": "BJ",
+    "nameJa": "ベナン",
     "nameEn": "Benin",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇧🇯"
   },
   {
     "numeric": "854",
-    "alpha3": "C854",
-    "alpha2": "C54",
-    "nameJa": "Burkina Faso",
+    "alpha3": "BFA",
+    "alpha2": "BF",
+    "nameJa": "ブルキナファソ",
     "nameEn": "Burkina Faso",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇧🇫"
   },
   {
     "numeric": "238",
     "alpha3": "C238",
     "alpha2": "C38",
-    "nameJa": "Falkland Is.",
+    "nameJa": "フォークランド諸島",
     "nameEn": "Falkland Is.",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "南北アメリカ",
+    "flagEmoji": "🇫🇰"
   },
   {
     "numeric": "260",
     "alpha3": "C260",
     "alpha2": "C60",
-    "nameJa": "Fr. S. Antarctic Lands",
+    "nameJa": "フランス領南方・南極地域",
     "nameEn": "Fr. S. Antarctic Lands",
     "region": "その他",
     "flagEmoji": "🌐"
   },
   {
     "numeric": "270",
-    "alpha3": "C270",
-    "alpha2": "C70",
-    "nameJa": "Gambia",
+    "alpha3": "GMB",
+    "alpha2": "GM",
+    "nameJa": "ガンビア",
     "nameEn": "Gambia",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇬🇲"
   },
   {
     "numeric": "324",
-    "alpha3": "C324",
-    "alpha2": "C24",
-    "nameJa": "Guinea",
+    "alpha3": "GIN",
+    "alpha2": "GN",
+    "nameJa": "ギニア",
     "nameEn": "Guinea",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇬🇳"
   },
   {
     "numeric": "624",
-    "alpha3": "C624",
-    "alpha2": "C24",
-    "nameJa": "Guinea-Bissau",
+    "alpha3": "GNB",
+    "alpha2": "GW",
+    "nameJa": "ギニアビサウ",
     "nameEn": "Guinea-Bissau",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇬🇼"
   },
   {
     "numeric": "430",
-    "alpha3": "C430",
-    "alpha2": "C30",
-    "nameJa": "Liberia",
+    "alpha3": "LBR",
+    "alpha2": "LR",
+    "nameJa": "リベリア",
     "nameEn": "Liberia",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇱🇷"
   },
   {
     "numeric": "undefined",
     "alpha3": "Cundefined",
     "alpha2": "Ced",
-    "nameJa": "N. Cyprus",
+    "nameJa": "北キプロス",
     "nameEn": "N. Cyprus",
-    "region": "その他",
+    "region": "ヨーロッパ",
     "flagEmoji": "🌐"
   },
   {
     "numeric": "630",
     "alpha3": "C630",
-    "alpha2": "C30",
-    "nameJa": "Puerto Rico",
+    "alpha2": "PR",
+    "nameJa": "プエルトリコ",
     "nameEn": "Puerto Rico",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "南北アメリカ",
+    "flagEmoji": "🇵🇷"
   },
   {
     "numeric": "694",
-    "alpha3": "C694",
-    "alpha2": "C94",
-    "nameJa": "Sierra Leone",
+    "alpha3": "SLE",
+    "alpha2": "SL",
+    "nameJa": "シエラレオネ",
     "nameEn": "Sierra Leone",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇸🇱"
   },
   {
     "numeric": "768",
-    "alpha3": "C768",
-    "alpha2": "C68",
-    "nameJa": "Togo",
+    "alpha3": "TGO",
+    "alpha2": "TG",
+    "nameJa": "トーゴ",
     "nameEn": "Togo",
-    "region": "その他",
-    "flagEmoji": "🌐"
+    "region": "アフリカ",
+    "flagEmoji": "🇹🇬"
   },
   {
     "numeric": "352",
@@ -1630,12 +1630,256 @@ export const COUNTRIES: Country[] = [
     "nameEn": "Liechtenstein",
     "region": "ヨーロッパ",
     "flagEmoji": "🇱🇮"
+  },
+  {
+    "numeric": "020",
+    "alpha3": "AND",
+    "alpha2": "AD",
+    "nameJa": "アンドラ",
+    "nameEn": "Andorra",
+    "region": "ヨーロッパ",
+    "flagEmoji": "🇦🇩"
+  },
+  {
+    "numeric": "028",
+    "alpha3": "ATG",
+    "alpha2": "AG",
+    "nameJa": "アンティグア・バーブーダ",
+    "nameEn": "Antigua and Barbuda",
+    "region": "南北アメリカ",
+    "flagEmoji": "🇦🇬"
+  },
+  {
+    "numeric": "052",
+    "alpha3": "BRB",
+    "alpha2": "BB",
+    "nameJa": "バルバドス",
+    "nameEn": "Barbados",
+    "region": "南北アメリカ",
+    "flagEmoji": "🇧🇧"
+  },
+  {
+    "numeric": "132",
+    "alpha3": "CPV",
+    "alpha2": "CV",
+    "nameJa": "カーボベルデ",
+    "nameEn": "Cabo Verde",
+    "region": "アフリカ",
+    "flagEmoji": "🇨🇻"
+  },
+  {
+    "numeric": "212",
+    "alpha3": "DMA",
+    "alpha2": "DM",
+    "nameJa": "ドミニカ国",
+    "nameEn": "Dominica",
+    "region": "南北アメリカ",
+    "flagEmoji": "🇩🇲"
+  },
+  {
+    "numeric": "308",
+    "alpha3": "GRD",
+    "alpha2": "GD",
+    "nameJa": "グレナダ",
+    "nameEn": "Grenada",
+    "region": "南北アメリカ",
+    "flagEmoji": "🇬🇩"
+  },
+  {
+    "numeric": "296",
+    "alpha3": "KIR",
+    "alpha2": "KI",
+    "nameJa": "キリバス",
+    "nameEn": "Kiribati",
+    "region": "オセアニア",
+    "flagEmoji": "🇰🇮"
+  },
+  {
+    "numeric": "462",
+    "alpha3": "MDV",
+    "alpha2": "MV",
+    "nameJa": "モルディブ",
+    "nameEn": "Maldives",
+    "region": "アジア",
+    "flagEmoji": "🇲🇻"
+  },
+  {
+    "numeric": "584",
+    "alpha3": "MHL",
+    "alpha2": "MH",
+    "nameJa": "マーシャル諸島",
+    "nameEn": "Marshall Islands",
+    "region": "オセアニア",
+    "flagEmoji": "🇲🇭"
+  },
+  {
+    "numeric": "480",
+    "alpha3": "MUS",
+    "alpha2": "MU",
+    "nameJa": "モーリシャス",
+    "nameEn": "Mauritius",
+    "region": "アフリカ",
+    "flagEmoji": "🇲🇺"
+  },
+  {
+    "numeric": "583",
+    "alpha3": "FSM",
+    "alpha2": "FM",
+    "nameJa": "ミクロネシア連邦",
+    "nameEn": "Micronesia",
+    "region": "オセアニア",
+    "flagEmoji": "🇫🇲"
+  },
+  {
+    "numeric": "492",
+    "alpha3": "MCO",
+    "alpha2": "MC",
+    "nameJa": "モナコ",
+    "nameEn": "Monaco",
+    "region": "ヨーロッパ",
+    "flagEmoji": "🇲🇨"
+  },
+  {
+    "numeric": "520",
+    "alpha3": "NRU",
+    "alpha2": "NR",
+    "nameJa": "ナウル",
+    "nameEn": "Nauru",
+    "region": "オセアニア",
+    "flagEmoji": "🇳🇷"
+  },
+  {
+    "numeric": "585",
+    "alpha3": "PLW",
+    "alpha2": "PW",
+    "nameJa": "パラオ",
+    "nameEn": "Palau",
+    "region": "オセアニア",
+    "flagEmoji": "🇵🇼"
+  },
+  {
+    "numeric": "659",
+    "alpha3": "KNA",
+    "alpha2": "KN",
+    "nameJa": "セントクリストファー・ネイビス",
+    "nameEn": "Saint Kitts and Nevis",
+    "region": "南北アメリカ",
+    "flagEmoji": "🇰🇳"
+  },
+  {
+    "numeric": "662",
+    "alpha3": "LCA",
+    "alpha2": "LC",
+    "nameJa": "セントルシア",
+    "nameEn": "Saint Lucia",
+    "region": "南北アメリカ",
+    "flagEmoji": "🇱🇨"
+  },
+  {
+    "numeric": "670",
+    "alpha3": "VCT",
+    "alpha2": "VC",
+    "nameJa": "セントビンセント・グレナディーン",
+    "nameEn": "Saint Vincent and the Grenadines",
+    "region": "南北アメリカ",
+    "flagEmoji": "🇻🇨"
+  },
+  {
+    "numeric": "882",
+    "alpha3": "WSM",
+    "alpha2": "WS",
+    "nameJa": "サモア",
+    "nameEn": "Samoa",
+    "region": "オセアニア",
+    "flagEmoji": "🇼🇸"
+  },
+  {
+    "numeric": "674",
+    "alpha3": "SMR",
+    "alpha2": "SM",
+    "nameJa": "サンマリノ",
+    "nameEn": "San Marino",
+    "region": "ヨーロッパ",
+    "flagEmoji": "🇸🇲"
+  },
+  {
+    "numeric": "678",
+    "alpha3": "STP",
+    "alpha2": "ST",
+    "nameJa": "サントメ・プリンシペ",
+    "nameEn": "Sao Tome and Principe",
+    "region": "アフリカ",
+    "flagEmoji": "🇸🇹"
+  },
+  {
+    "numeric": "690",
+    "alpha3": "SYC",
+    "alpha2": "SC",
+    "nameJa": "セーシェル",
+    "nameEn": "Seychelles",
+    "region": "アフリカ",
+    "flagEmoji": "🇸🇨"
+  },
+  {
+    "numeric": "776",
+    "alpha3": "TON",
+    "alpha2": "TO",
+    "nameJa": "トンガ",
+    "nameEn": "Tonga",
+    "region": "オセアニア",
+    "flagEmoji": "🇹🇴"
+  },
+  {
+    "numeric": "798",
+    "alpha3": "TUV",
+    "alpha2": "TV",
+    "nameJa": "ツバル",
+    "nameEn": "Tuvalu",
+    "region": "オセアニア",
+    "flagEmoji": "🇹🇻"
+  },
+  {
+    "numeric": "336",
+    "alpha3": "VAT",
+    "alpha2": "VA",
+    "nameJa": "バチカン市国",
+    "nameEn": "Holy See (Vatican)",
+    "region": "ヨーロッパ",
+    "flagEmoji": "🇻🇦"
+  },
+  {
+    "numeric": "184",
+    "alpha3": "COK",
+    "alpha2": "CK",
+    "nameJa": "クック諸島",
+    "nameEn": "Cook Islands",
+    "region": "オセアニア",
+    "flagEmoji": "🇨🇰"
+  },
+  {
+    "numeric": "570",
+    "alpha3": "NIU",
+    "alpha2": "NU",
+    "nameJa": "ニウエ",
+    "nameEn": "Niue",
+    "region": "オセアニア",
+    "flagEmoji": "🇳🇺"
   }
 ];
 
-export const COUNTRY_BY_ALPHA3: Record<string, Country> = Object.fromEntries(
-  COUNTRIES.map(c => [c.alpha3, c])
-);
+export const COUNTRY_BY_ALPHA3: Record<string, Country> = {
+  ...Object.fromEntries(COUNTRIES.map(c => [c.alpha3, c])),
+  // 後方互換性用エイリアス
+  C044: COUNTRIES.find(c => c.alpha3 === 'BHS')!,
+  C204: COUNTRIES.find(c => c.alpha3 === 'BEN')!,
+  C854: COUNTRIES.find(c => c.alpha3 === 'BFA')!,
+  C270: COUNTRIES.find(c => c.alpha3 === 'GMB')!,
+  C324: COUNTRIES.find(c => c.alpha3 === 'GIN')!,
+  C624: COUNTRIES.find(c => c.alpha3 === 'GNB')!,
+  C430: COUNTRIES.find(c => c.alpha3 === 'LBR')!,
+  C694: COUNTRIES.find(c => c.alpha3 === 'SLE')!,
+  C768: COUNTRIES.find(c => c.alpha3 === 'TGO')!,
+};
 
 export const COUNTRY_BY_NUMERIC: Record<string, Country> = Object.fromEntries(
   COUNTRIES.map(c => [c.numeric, c])

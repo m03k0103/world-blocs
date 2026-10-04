@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Play, Pause, RotateCcw, FastForward } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface TimelineSliderProps {
   minYear: number;
@@ -16,6 +17,7 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
   onYearChange,
   milestones = [],
 }) => {
+  const { t, language } = useLanguage();
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState<number>(600); // ms per year
   const intervalRef = useRef<number | null>(null);
@@ -74,6 +76,10 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
     setSpeed(prev => (prev === 600 ? 250 : prev === 250 ? 1000 : 600));
   };
 
+  const yearSuffix = language === 'ja' ? '年' : '';
+  const foundedLabel = language === 'ja' ? '創設' : 'Founded';
+  const latestLabel = language === 'ja' ? '最新' : 'Present';
+
   return (
     <div className="w-full bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -90,20 +96,20 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
             {isPlaying ? (
               <>
                 <Pause className="w-4 h-4 fill-current" />
-                一時停止
+                {t('timelinePause')}
               </>
             ) : (
               <>
                 <Play className="w-4 h-4 fill-current" />
-                歴史を再生
+                {t('timelinePlay')}
               </>
             )}
           </button>
 
           <button
             onClick={toggleSpeed}
-            title={`再生速度変更 (現在: ${speed === 250 ? '速い' : speed === 600 ? '普通' : 'ゆっくり'})`}
-            className="p-1.5 px-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-1 transition-colors"
+            title={t('timelineSpeedTitle')}
+            className="p-1.5 px-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-1 transition-colors cursor-pointer"
           >
             <FastForward className="w-3.5 h-3.5" />
             {speed === 250 ? '2x' : speed === 600 ? '1x' : '0.5x'}
@@ -111,8 +117,8 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
 
           <button
             onClick={handleResetToStart}
-            title="設立年に戻す"
-            className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            title={t('timelineReset')}
+            className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -122,19 +128,19 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
         <div className="flex items-center gap-3">
           <div className="text-right">
             <span className="text-xs uppercase tracking-wider text-slate-400 font-bold block">
-              表示年
+              {t('timelineYear')}
             </span>
             <span className="text-2xl font-black font-mono tracking-tight text-blue-600 dark:text-blue-400">
-              {currentYear}年
+              {currentYear}{yearSuffix}
             </span>
           </div>
 
           {currentYear !== maxYear && (
             <button
               onClick={handleResetToCurrent}
-              className="text-xs bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded-lg font-medium transition-colors"
+              className="text-xs bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded-lg font-medium transition-colors cursor-pointer"
             >
-              最新（現在）へ
+              {t('timelineLatest')}
             </button>
           )}
         </div>
@@ -156,9 +162,9 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
 
         {/* 目盛り / 年表示 */}
         <div className="flex justify-between text-[11px] font-mono text-slate-400 mt-1">
-          <span>{minYear}年（創設）</span>
-          <span>{Math.round((minYear + maxYear) / 2)}年</span>
-          <span className="font-semibold text-slate-600 dark:text-slate-300">{maxYear}年（最新）</span>
+          <span>{minYear}{yearSuffix} ({foundedLabel})</span>
+          <span>{Math.round((minYear + maxYear) / 2)}{yearSuffix}</span>
+          <span className="font-semibold text-slate-600 dark:text-slate-300">{maxYear}{yearSuffix} ({latestLabel})</span>
         </div>
 
         {/* 主要マイルストーン */}
@@ -171,7 +177,7 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
                   setIsPlaying(false);
                   onYearChange(m.year);
                 }}
-                className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                className={`text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer ${
                   currentYear === m.year
                     ? 'bg-blue-600 text-white border-blue-600 font-bold'
                     : 'bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400'
@@ -186,3 +192,4 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
     </div>
   );
 };
+

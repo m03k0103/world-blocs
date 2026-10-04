@@ -3,6 +3,7 @@ import type { MembershipRecord, Country, MembershipStatus } from '../types';
 import { COUNTRY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
 import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface TableViewProps {
   members: (MembershipRecord & { currentStatus: MembershipStatus })[];
@@ -15,6 +16,7 @@ export const TableView: React.FC<TableViewProps> = ({
   frameworkName,
   onSelectCountry,
 }) => {
+  const { t, language } = useLanguage();
   const [search, setSearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
@@ -64,7 +66,9 @@ export const TableView: React.FC<TableViewProps> = ({
 
         let diff = 0;
         if (sortField === 'name') {
-          diff = ca.nameJa.localeCompare(cb.nameJa, 'ja');
+          diff = language === 'en'
+            ? ca.nameEn.localeCompare(cb.nameEn, 'en')
+            : ca.nameJa.localeCompare(cb.nameJa, 'ja');
         } else if (sortField === 'year') {
           const ya = a.ratifiedYear || a.signedYear || a.appliedYear || 9999;
           const yb = b.ratifiedYear || b.signedYear || b.appliedYear || 9999;
@@ -75,7 +79,7 @@ export const TableView: React.FC<TableViewProps> = ({
 
         return sortOrder === 'asc' ? diff : -diff;
       });
-  }, [members, search, selectedRegion, selectedStatus, sortField, sortOrder]);
+  }, [members, search, selectedRegion, selectedStatus, sortField, sortOrder, language]);
 
   const handleSort = (field: 'name' | 'year' | 'status') => {
     if (sortField === field) {
@@ -88,15 +92,22 @@ export const TableView: React.FC<TableViewProps> = ({
 
   // CSVエクスポート
   const handleExportCSV = () => {
-    const headers = ['ISO3', '国名（日）', '国名（英）', '地域', 'ステータス', '加盟/批准/申請年', '備考'];
+    const headers = language === 'ja'
+      ? ['ISO3', '国名（日）', '国名（英）', '地域', 'ステータス', '加盟/批准/申請年', '備考']
+      : ['ISO3', 'Name (JA)', 'Name (EN)', 'Region', 'Status', 'Year (Ratified/Signed/Applied)', 'Notes'];
+
     const rows = filteredMembers.map((m) => {
       const c = COUNTRY_BY_ALPHA3[m.countryCode];
+      const statusLabel = STATUS_LABELS[m.currentStatus]
+        ? (language === 'en' ? STATUS_LABELS[m.currentStatus].labelEn : STATUS_LABELS[m.currentStatus].labelJa)
+        : m.currentStatus;
+
       return [
         m.countryCode,
         c?.nameJa || '',
         c?.nameEn || '',
         c?.region || '',
-        STATUS_LABELS[m.currentStatus]?.labelJa || m.currentStatus,
+        statusLabel,
         m.ratifiedYear || m.signedYear || m.appliedYear || '',
         `"${(m.notes || '').replace(/"/g, '""')}"`,
       ].join(',');
@@ -107,7 +118,7 @@ export const TableView: React.FC<TableViewProps> = ({
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${frameworkName}_参加国一覧.csv`);
+    link.setAttribute('download', `${frameworkName}${t('csvFileSuffix')}`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -123,7 +134,7 @@ export const TableView: React.FC<TableViewProps> = ({
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
-              placeholder="国名やISOコードで検索..."
+              placeholder={t('tableSearchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -136,9 +147,9 @@ export const TableView: React.FC<TableViewProps> = ({
             <select
               value={selectedRegion}
               onChange={(e) => setSelectedRegion(e.target.value)}
-              className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-700 dark:text-slate-200 focus:outline-none"
+              className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
             >
-              <option value="all">すべての地域</option>
+              <option value="all">{t('filterRegionAll')}</option>
               {regions.map((r) => (
                 <option key={r} value={r}>
                   {r}
@@ -151,12 +162,12 @@ export const TableView: React.FC<TableViewProps> = ({
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-700 dark:text-slate-200 focus:outline-none"
+            className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
           >
-            <option value="all">すべてのステータス</option>
+            <option value="all">{t('filterStatusAll')}</option>
             {Object.entries(STATUS_LABELS).map(([k, v]) => (
               <option key={k} value={k}>
-                {v.labelJa}
+                {language === 'en' ? v.labelEn : v.labelJa}
               </option>
             ))}
           </select>
@@ -165,10 +176,10 @@ export const TableView: React.FC<TableViewProps> = ({
         {/* CSVエクスポート */}
         <button
           onClick={handleExportCSV}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-sm"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-sm cursor-pointer"
         >
           <Download className="w-4 h-4" />
-          CSV出力
+          {t('exportCsv')}
         </button>
       </div>
 
@@ -182,17 +193,17 @@ export const TableView: React.FC<TableViewProps> = ({
                 className="py-3 px-4 cursor-pointer hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
               >
                 <div className="flex items-center gap-1.5">
-                  国・地域
+                  {t('tableThCountry')}
                   <ArrowUpDown className="w-3.5 h-3.5" />
                 </div>
               </th>
-              <th className="py-3 px-4">地域</th>
+              <th className="py-3 px-4">{t('tableThRegion')}</th>
               <th
                 onClick={() => handleSort('status')}
                 className="py-3 px-4 cursor-pointer hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
               >
                 <div className="flex items-center gap-1.5">
-                  ステータス
+                  {t('tableThStatus')}
                   <ArrowUpDown className="w-3.5 h-3.5" />
                 </div>
               </th>
@@ -201,18 +212,18 @@ export const TableView: React.FC<TableViewProps> = ({
                 className="py-3 px-4 cursor-pointer hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
               >
                 <div className="flex items-center gap-1.5">
-                  加盟/批准年
+                  {t('tableThYear')}
                   <ArrowUpDown className="w-3.5 h-3.5" />
                 </div>
               </th>
-              <th className="py-3 px-4">備考・特記事項</th>
+              <th className="py-3 px-4">{t('tableThNotes')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-700/60">
             {filteredMembers.length === 0 ? (
               <tr>
                 <td colSpan={5} className="py-8 text-center text-slate-400">
-                  該当する国が見つかりません
+                  {t('tableEmpty')}
                 </td>
               </tr>
             ) : (
@@ -232,10 +243,10 @@ export const TableView: React.FC<TableViewProps> = ({
                         <span className="text-base">{c.flagEmoji || '🌐'}</span>
                         <div>
                           <span className="font-semibold text-slate-800 dark:text-slate-200 block">
-                            {c.nameJa}
+                            {language === 'en' ? c.nameEn : c.nameJa}
                           </span>
                           <span className="text-[11px] text-slate-400 font-mono">
-                            {c.nameEn} ({c.alpha3})
+                            {language === 'en' ? c.nameJa : c.nameEn} ({c.alpha3})
                           </span>
                         </div>
                       </div>
@@ -249,16 +260,18 @@ export const TableView: React.FC<TableViewProps> = ({
                           statusMeta ? statusMeta.color : 'bg-slate-200 text-slate-700'
                         }`}
                       >
-                        {statusMeta ? statusMeta.labelJa : m.currentStatus}
+                        {statusMeta
+                          ? (language === 'en' ? statusMeta.labelEn : statusMeta.labelJa)
+                          : m.currentStatus}
                       </span>
                     </td>
                     <td className="py-3 px-4 font-mono text-xs font-semibold text-slate-700 dark:text-slate-300">
                       {m.ratifiedYear
-                        ? `${m.ratifiedYear}年`
+                        ? `${m.ratifiedYear}${language === 'ja' ? '年' : ''}`
                         : m.signedYear
-                        ? `${m.signedYear}年(署名)`
+                        ? `${m.signedYear}${language === 'ja' ? '年(署名)' : ' (Signed)'}`
                         : m.appliedYear
-                        ? `${m.appliedYear}年(申請)`
+                        ? `${m.appliedYear}${language === 'ja' ? '年(申請)' : ' (Applied)'}`
                         : '—'}
                     </td>
                     <td className="py-3 px-4 text-xs text-slate-500 dark:text-slate-400 max-w-xs truncate">
@@ -272,7 +285,9 @@ export const TableView: React.FC<TableViewProps> = ({
         </table>
       </div>
       <div className="p-3 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 text-right">
-        全 {filteredMembers.length} カ国・地域を表示中
+        {language === 'ja'
+          ? `全 ${filteredMembers.length} カ国・地域を表示中`
+          : `Showing ${filteredMembers.length} countries & territories`}
       </div>
     </div>
   );

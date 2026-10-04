@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import type { ViewMode, Country, Framework } from '../types';
 import { COUNTRIES } from '../data/countries';
 import { FRAMEWORKS } from '../data/frameworks';
-import { Globe, Layers, GitCompare, Search, Shield, ChevronRight } from 'lucide-react';
+import { Globe, Layers, GitCompare, Search, Shield, ChevronRight, Languages } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface NavbarProps {
   currentMode: ViewMode;
@@ -17,6 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectCountry,
   onSelectFramework,
 }) => {
+  const { language, setLanguage, t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
@@ -65,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </h1>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">
-                国際枠組み・条約・同盟の可視化＆比較プラットフォーム
+                {t('appSubTitle')}
               </p>
             </div>
           </button>
@@ -76,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
-                placeholder="枠組み・条約（NATO, CPTPPなど）や国名を検索..."
+                placeholder={t('searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
@@ -91,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {filteredResults.frameworks.length > 0 && (
                   <div className="p-2 border-b border-slate-100 dark:border-slate-700">
                     <div className="text-[10px] font-bold uppercase text-slate-400 px-2 py-1">
-                      枠組み・条約
+                      {t('frameworksList')}
                     </div>
                     {filteredResults.frameworks.map((f) => (
                       <button
@@ -104,7 +106,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         className="w-full flex items-center justify-between p-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg text-left text-xs transition-colors"
                       >
                         <span className="font-semibold text-slate-800 dark:text-slate-200">
-                          {f.acronym} - {f.nameJa}
+                          {f.acronym} - {language === 'en' ? f.nameEn : f.nameJa}
                         </span>
                         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                       </button>
@@ -115,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {filteredResults.countries.length > 0 && (
                   <div className="p-2">
                     <div className="text-[10px] font-bold uppercase text-slate-400 px-2 py-1">
-                      国・地域
+                      {t('countriesList')}
                     </div>
                     {filteredResults.countries.map((c) => (
                       <button
@@ -129,7 +131,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <div className="flex items-center gap-2">
                           <span>{c.flagEmoji || '🌐'}</span>
                           <span className="font-semibold text-slate-800 dark:text-slate-200">
-                            {c.nameJa} ({c.nameEn})
+                            {language === 'en' ? c.nameEn : c.nameJa}
+                            <span className="text-slate-400 font-normal ml-1.5">
+                              ({c.alpha3})
+                            </span>
                           </span>
                         </div>
                         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
@@ -141,44 +146,76 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* ナビゲーションモード切替タブ */}
-          <nav className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-            <button
-              onClick={() => onModeChange('framework')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                currentMode === 'framework'
-                  ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-              }`}
-            >
-              <Layers className="w-4 h-4" />
-              <span>枠組み表示</span>
-            </button>
+          {/* 右側アクション（ナビゲーションタブ ＋ 言語切替） */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* ナビゲーションモード切替タブ */}
+            <nav className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
+              <button
+                onClick={() => onModeChange('framework')}
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                  currentMode === 'framework'
+                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                }`}
+              >
+                <Layers className="w-4 h-4" />
+                <span>{t('navFramework')}</span>
+              </button>
 
-            <button
-              onClick={() => onModeChange('compare')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                currentMode === 'compare'
-                  ? 'bg-white dark:bg-slate-700 text-purple-600 dark:text-purple-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-              }`}
-            >
-              <GitCompare className="w-4 h-4" />
-              <span>掛け合わせ比較</span>
-            </button>
+              <button
+                onClick={() => onModeChange('compare')}
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                  currentMode === 'compare'
+                    ? 'bg-white dark:bg-slate-700 text-purple-600 dark:text-purple-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                }`}
+              >
+                <GitCompare className="w-4 h-4" />
+                <span>{t('navCompare')}</span>
+              </button>
 
-            <button
-              onClick={() => onModeChange('country')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                currentMode === 'country'
-                  ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-              }`}
-            >
-              <Shield className="w-4 h-4" />
-              <span>国から探す</span>
-            </button>
-          </nav>
+              <button
+                onClick={() => onModeChange('country')}
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                  currentMode === 'country'
+                    ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                }`}
+              >
+                <Shield className="w-4 h-4" />
+                <span>{t('navCountry')}</span>
+              </button>
+            </nav>
+
+            {/* 日英切替トグル */}
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold">
+              <div className="flex items-center gap-1 px-1.5 text-slate-400 hidden xl:flex">
+                <Languages className="w-3.5 h-3.5" />
+              </div>
+              <button
+                onClick={() => setLanguage('ja')}
+                className={`px-2 py-1 rounded-lg transition-all ${
+                  language === 'ja'
+                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                }`}
+                title="日本語"
+              >
+                JA
+              </button>
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-1 rounded-lg transition-all ${
+                  language === 'en'
+                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                }`}
+                title="English"
+              >
+                EN
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </header>

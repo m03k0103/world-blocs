@@ -6,7 +6,8 @@ import { FrameworkView } from './components/FrameworkView';
 import { CompareView } from './components/CompareView';
 import { CountryListView } from './components/CountryListView';
 import { CountryProfileModal } from './components/CountryProfileModal';
-import { Globe2 } from 'lucide-react';
+import { Globe } from 'lucide-react';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
 // URLパス・クエリ・ハッシュから枠組みを特定するヘルパー
 function getFrameworkFromUrl(): Framework | null {
@@ -47,7 +48,8 @@ function getFrameworkFromUrl(): Framework | null {
   return null;
 }
 
-export function App() {
+function AppContent() {
+  const { t } = useLanguage();
   const initialFramework = getFrameworkFromUrl();
   const [currentMode, setCurrentMode] = useState<ViewMode>('framework');
   const [selectedFramework, setSelectedFramework] = useState<Framework | null>(initialFramework);
@@ -164,20 +166,26 @@ export function App() {
       <footer className="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 py-6 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Globe2 className="w-4 h-4 text-blue-500" />
-            <span>World Blocs (IR-DB) &copy; 2026</span>
-            <span className="text-slate-300 dark:text-slate-700">|</span>
-            <span>GitHub Pages 完全対応</span>
+            <Globe className="w-4 h-4 text-blue-500" />
+            <span>{t('rights')}</span>
           </div>
 
           <div className="flex items-center gap-6">
-            <span>収録枠組み: {FRAMEWORKS.length}件</span>
-            <span className="text-slate-300 dark:text-slate-700">|</span>
-            <span>ダイレクトURL連携対応</span>
+            <span>
+              {t('footerRecorded')}: {FRAMEWORKS.length}
+            </span>
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

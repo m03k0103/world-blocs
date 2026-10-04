@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import type { Country, Framework, MembershipStatus } from '../types';
 import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
 import { X, Award } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface CountryProfileModalProps {
   country: Country | null;
@@ -14,6 +15,8 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
   onClose,
   onSelectFramework,
 }) => {
+  const { t, language } = useLanguage();
+
   // この国が参加している全枠組みを取得
   const joinedFrameworks = useMemo(() => {
     if (!country) return [];
@@ -85,17 +88,17 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
                 </span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-black mt-1">
-                {country.nameJa}
+                {language === 'en' ? country.nameEn : country.nameJa}
               </h2>
               <div className="text-sm text-slate-300 font-medium">
-                {country.nameEn}
+                {language === 'en' ? country.nameJa : country.nameEn}
               </div>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-full text-slate-300 hover:text-white transition-colors"
+            className="p-2 hover:bg-white/10 rounded-full text-slate-300 hover:text-white transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -107,17 +110,19 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
           <div className="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700/60">
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300">
               <Award className="w-4 h-4 text-amber-500" />
-              登録データベース内での参加枠組み数
+              {t('modalFrameworksCount')}
             </div>
             <div className="text-lg font-black font-mono text-blue-600 dark:text-blue-400">
               {joinedFrameworks.length}
-              <span className="text-xs font-normal text-slate-500 ml-1">件</span>
+              <span className="text-xs font-normal text-slate-500 ml-1">
+                {language === 'ja' ? '件' : 'blocs'}
+              </span>
             </div>
           </div>
 
           {joinedFrameworks.length === 0 ? (
             <div className="text-center py-12 text-slate-400">
-              現在、初期登録データベース内にこの国の参加枠組み情報は登録されていません。
+              {t('modalNoFrameworks')}
             </div>
           ) : (
             <div className="space-y-6">
@@ -127,7 +132,7 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
                 return (
                   <div key={catKey} className="space-y-3">
                     <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                      <span>{catMeta ? catMeta.labelJa : catKey}</span>
+                      <span>{catMeta ? (language === 'en' ? catMeta.labelEn : catMeta.labelJa) : catKey}</span>
                       <span className="text-slate-300 font-mono">({items.length})</span>
                     </h3>
 
@@ -150,7 +155,7 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
                                     {item.framework.acronym}
                                   </span>
                                   <span className="text-xs text-slate-500 dark:text-slate-400">
-                                    {item.framework.nameJa}
+                                    {language === 'en' ? item.framework.nameEn : item.framework.nameJa}
                                   </span>
                                 </div>
 
@@ -167,16 +172,18 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
                                     statusMeta ? statusMeta.color : 'bg-slate-200 text-slate-700'
                                   }`}
                                 >
-                                  {statusMeta ? statusMeta.labelJa : item.status}
+                                  {statusMeta
+                                    ? (language === 'en' ? statusMeta.labelEn : statusMeta.labelJa)
+                                    : item.status}
                                 </span>
 
                                 <div className="text-[11px] font-mono text-slate-400">
                                   {item.ratifiedYear
-                                    ? `${item.ratifiedYear}年加盟`
+                                    ? (language === 'ja' ? `${item.ratifiedYear}年加盟` : `${item.ratifiedYear} Joined`)
                                     : item.signedYear
-                                    ? `${item.signedYear}年署名`
+                                    ? (language === 'ja' ? `${item.signedYear}年署名` : `${item.signedYear} Signed`)
                                     : item.appliedYear
-                                    ? `${item.appliedYear}年申請`
+                                    ? (language === 'ja' ? `${item.appliedYear}年申請` : `${item.appliedYear} Applied`)
                                     : ''}
                                 </div>
                               </div>
@@ -196,12 +203,13 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
         <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-right">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors"
+            className="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors cursor-pointer"
           >
-            閉じる
+            {t('close')}
           </button>
         </div>
       </div>
     </div>
   );
 };
+

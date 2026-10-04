@@ -2,8 +2,10 @@ import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react'
 import * as d3Geo from 'd3-geo';
 import * as topojson from 'topojson-client';
 import { COUNTRY_BY_NUMERIC } from '../data/countries';
+import { STATUS_LABELS } from '../data/frameworks';
 import type { Country, MembershipStatus } from '../types';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export interface CountryMapData {
   status?: MembershipStatus;
@@ -46,6 +48,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   selectedCountryAlpha3,
   hasFrameworkSelected = true,
 }) => {
+  const { t, language } = useLanguage();
   const [geographies, setGeographies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
@@ -175,22 +178,22 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md">
         <button
           onClick={handleZoomIn}
-          title="拡大"
-          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200 transition-colors"
+          title={t('mapZoomIn')}
+          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
         >
           <ZoomIn className="w-5 h-5" />
         </button>
         <button
           onClick={handleZoomOut}
-          title="縮小"
-          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200 transition-colors"
+          title={t('mapZoomOut')}
+          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
         >
           <ZoomOut className="w-5 h-5" />
         </button>
         <button
           onClick={handleReset}
-          title="位置と倍率をリセット"
-          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200 transition-colors"
+          title={t('mapReset')}
+          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
         >
           <RotateCcw className="w-5 h-5" />
         </button>
@@ -198,7 +201,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
 
       {loading ? (
         <div className="flex items-center justify-center w-full h-full text-slate-500 font-medium">
-          世界地図データを読み込み中...
+          {language === 'ja' ? '世界地図データを読み込み中...' : 'Loading world map data...'}
         </div>
       ) : (
         <svg
@@ -286,7 +289,9 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         >
           <div className="flex items-center gap-2 mb-1">
             <span className="text-base">{hoverInfo.country.flagEmoji || '🌐'}</span>
-            <span className="font-bold text-sm">{hoverInfo.country.nameJa}</span>
+            <span className="font-bold text-sm">
+              {language === 'en' ? hoverInfo.country.nameEn : hoverInfo.country.nameJa}
+            </span>
             <span className="text-slate-400 text-[11px] font-mono">({hoverInfo.country.alpha3})</span>
           </div>
 
@@ -295,20 +300,20 @@ export const WorldMap: React.FC<WorldMapProps> = ({
               {hoverInfo.data?.inFrameworkA && hoverInfo.data?.inFrameworkB ? (
                 <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-semibold text-purple-200 bg-purple-900/60">
                   <span className="w-2 h-2 rounded-full bg-purple-400"></span>
-                  両方の枠組みに参加
+                  {language === 'ja' ? '両方の枠組みに参加' : 'Member of both frameworks'}
                 </div>
               ) : hoverInfo.data?.inFrameworkA ? (
                 <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-semibold text-blue-200 bg-blue-900/60">
                   <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-                  {labelA || '枠組みA'} のみ参加
+                  {language === 'ja' ? `${labelA || '枠組みA'} のみ参加` : `Member of ${labelA || 'Framework A'} only`}
                 </div>
               ) : hoverInfo.data?.inFrameworkB ? (
                 <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-semibold text-red-200 bg-red-900/60">
                   <span className="w-2 h-2 rounded-full bg-red-400"></span>
-                  {labelB || '枠組みB'} のみ参加
+                  {language === 'ja' ? `${labelB || '枠組みB'} のみ参加` : `Member of ${labelB || 'Framework B'} only`}
                 </div>
               ) : (
-                <div className="text-slate-400">いずれも非参加</div>
+                <div className="text-slate-400">{language === 'ja' ? 'いずれも非参加' : 'Non-member'}</div>
               )}
             </div>
           ) : (
@@ -317,19 +322,17 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                 {hoverInfo.data?.status ? (
                   <>
                     <div className="flex items-center gap-1.5 font-medium">
-                      <span className="text-slate-300">ステータス:</span>
+                      <span className="text-slate-300">{t('mapStatusLabel')}:</span>
                       <span className="font-semibold text-sky-300">
-                        {hoverInfo.data.status === 'ratified' && '批准・加盟'}
-                        {hoverInfo.data.status === 'signed' && '署名済（未批准）'}
-                        {hoverInfo.data.status === 'observer' && 'オブザーバー'}
-                        {hoverInfo.data.status === 'dialogue' && '対話パートナー'}
-                        {hoverInfo.data.status === 'candidate' && '加盟申請・候補国'}
-                        {hoverInfo.data.status === 'withdrawn' && '脱退・資格停止'}
+                        {STATUS_LABELS[hoverInfo.data.status]?.[language === 'en' ? 'labelEn' : 'labelJa'] || hoverInfo.data.status}
                       </span>
                     </div>
                     {hoverInfo.data.year && (
                       <div className="text-slate-300">
-                        加盟/批准年: <span className="font-semibold text-white">{hoverInfo.data.year}年</span>
+                        {t('mapYearLabel')}:{' '}
+                        <span className="font-semibold text-white">
+                          {hoverInfo.data.year}{language === 'ja' ? '年' : ''}
+                        </span>
                       </div>
                     )}
                     {hoverInfo.data.notes && (
@@ -339,13 +342,13 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                     )}
                   </>
                 ) : (
-                  <div className="text-slate-400">非加盟・非参加</div>
+                  <div className="text-slate-400">{language === 'ja' ? '非加盟・非参加' : 'Non-member'}</div>
                 )}
               </div>
             ) : null
           )}
           <div className="text-[10px] text-slate-400 mt-1.5 border-t border-slate-800 pt-1">
-            クリックで詳細を表示
+            {t('mapClickTip')}
           </div>
         </div>
       )}

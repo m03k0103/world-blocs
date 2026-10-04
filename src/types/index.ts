@@ -49,3 +49,5 @@ export interface Framework {
 }
 
 export type ViewMode = 'framework' | 'compare' | 'country';
+
+export type Language = 'ja' | 'en';
