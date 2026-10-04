@@ -686,6 +686,71 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ZAF', status: 'candidate', notes: 'アフリカ連合（AU）からの常任理事国候補' },
       { countryCode: 'NGA', status: 'candidate', notes: 'アフリカ連合（AU）からの常任理事国候補' }
     ]
+  },
+  {
+    id: 'oecd',
+    nameJa: '経済協力開発機構（OECD）',
+    nameEn: 'Organisation for Economic Co-operation and Development',
+    acronym: 'OECD',
+    category: 'economic',
+    establishedYear: 1961,
+    inForceYear: 1961,
+    secretariat: 'パリ（フランス）',
+    description: '民主主義と市場経済を支持する主要先進国38カ国で構成される「先進国クラブ」。自由貿易と持続可能な経済成長、財政金融の安定、開発途上国支援を推進。1961年欧米20カ国で発足し、1964年に日本が非欧米から初加盟。近年代は中南米や東欧にも拡大。',
+    members: [
+      // 1961年 創設原加盟20カ国
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'GBR', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'FRA', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国（OECD本部所在地）' },
+      { countryCode: 'DEU', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国（西ドイツとして加盟）' },
+      { countryCode: 'ITA', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'CAN', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'NLD', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'BEL', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'LUX', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'AUT', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'DNK', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'NOR', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'SWE', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'CHE', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'ISL', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'IRL', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'PRT', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'ESP', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'GRC', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      { countryCode: 'TUR', status: 'ratified', ratifiedYear: 1961, notes: '原加盟国' },
+      // 1960-70年代の拡大
+      { countryCode: 'JPN', status: 'ratified', ratifiedYear: 1964, notes: '非欧米から初加盟。戦後復興・先進国入りの象徴' },
+      { countryCode: 'FIN', status: 'ratified', ratifiedYear: 1969, notes: '1969年加盟' },
+      { countryCode: 'AUS', status: 'ratified', ratifiedYear: 1971, notes: '1971年加盟' },
+      { countryCode: 'NZL', status: 'ratified', ratifiedYear: 1973, notes: '1973年加盟' },
+      // 1990年代（冷戦後・新興国と中東欧）
+      { countryCode: 'MEX', status: 'ratified', ratifiedYear: 1994, notes: '中南米から初加盟' },
+      { countryCode: 'CZE', status: 'ratified', ratifiedYear: 1995, notes: '旧東欧から初加盟' },
+      { countryCode: 'HUN', status: 'ratified', ratifiedYear: 1996, notes: '1996年加盟' },
+      { countryCode: 'POL', status: 'ratified', ratifiedYear: 1996, notes: '1996年加盟' },
+      { countryCode: 'KOR', status: 'ratified', ratifiedYear: 1996, notes: 'アジアから日本に次ぐ2カ国目の加盟' },
+      // 2000年代以降
+      { countryCode: 'SVK', status: 'ratified', ratifiedYear: 2000, notes: '2000年加盟' },
+      { countryCode: 'CHL', status: 'ratified', ratifiedYear: 2010, notes: '南米から初加盟' },
+      { countryCode: 'SVN', status: 'ratified', ratifiedYear: 2010, notes: '2010年加盟' },
+      { countryCode: 'ISR', status: 'ratified', ratifiedYear: 2010, notes: '中東からトルコに次ぐ加盟' },
+      { countryCode: 'EST', status: 'ratified', ratifiedYear: 2010, notes: 'バルト三国から初加盟' },
+      { countryCode: 'LVA', status: 'ratified', ratifiedYear: 2016, notes: '2016年加盟' },
+      { countryCode: 'LTU', status: 'ratified', ratifiedYear: 2018, notes: '2018年加盟' },
+      { countryCode: 'COL', status: 'ratified', ratifiedYear: 2020, notes: '2020年加盟' },
+      { countryCode: 'CRI', status: 'ratified', ratifiedYear: 2021, notes: '中米から初、第38番目の加盟国' },
+      // 加盟交渉国 (candidate)
+      { countryCode: 'IDN', status: 'candidate', notes: '2024年加盟交渉開始。東南アジアから初の加盟を目指す' },
+      { countryCode: 'BRA', status: 'candidate', notes: '加盟交渉中' },
+      { countryCode: 'ARG', status: 'candidate', notes: '加盟交渉中' },
+      { countryCode: 'PER', status: 'candidate', notes: '加盟交渉中' },
+      { countryCode: 'ROU', status: 'candidate', notes: '加盟交渉中' },
+      { countryCode: 'BGR', status: 'candidate', notes: '加盟交渉中' },
+      { countryCode: 'HRV', status: 'candidate', notes: '加盟交渉中' },
+      // 交渉終了
+      { countryCode: 'RUS', status: 'withdrawn', notes: '2007年交渉開始、2014年クリミア併合により停止、2022年ウクライナ侵攻により正式終了' }
+    ]
   }
 ];
 
