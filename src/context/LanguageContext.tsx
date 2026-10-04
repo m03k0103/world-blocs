@@ -16,15 +16,16 @@ const STORAGE_KEY = 'world_blocs_lang';
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    // 1. localStorage から取得
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'ja' || saved === 'en') {
-      return saved;
+    // 1. localStorage から保存された言語設定を取得
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === 'ja' || saved === 'en') {
+        return saved;
+      }
+    } catch {
+      // localStorage アクセス不可時は無視
     }
-    // 2. ブラウザ言語から判定
-    if (typeof navigator !== 'undefined' && navigator.language) {
-      return navigator.language.toLowerCase().startsWith('ja') ? 'ja' : 'en';
-    }
+    // 2. デフォルトは日本語 (ja)
     return 'ja';
   });
 
