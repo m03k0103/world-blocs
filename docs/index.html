@@ -5,8 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>World Blocs | 国際関係・同盟・条約データベース</title>
     <meta name="description" content="G7, NATO, EU, AUKUS, CPTPP, RCEP, パリ協定などの国際的枠組み・条約の加盟国・締結国を地図とタイムラインでインタラクティブに可視化・比較探索できるWebツール" />
-    <script type="module" crossorigin src="./assets/index-nRrYKeiY.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BHuAM6FC.css">
+    <script type="text/javascript">
+      // 404.html からのリダイレクトを元のURLパスに復元
+      (function(l) {
+        if (l.search[1] === 'p') {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&');
+          });
+          var p = '';
+          var q = '';
+          decoded.forEach(function(s) {
+            if (s.slice(0, 2) === 'p=') p = s.slice(2);
+            else if (s.slice(0, 2) === 'q=') q = '?' + s.slice(2);
+          });
+          if (p) {
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + p + q + l.hash
+            );
+          }
+        }
+      }(window.location));
+    </script>
+    <script type="module" crossorigin src="./assets/index-Bgvvk9Ez.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B57vfYac.css">
   </head>
   <body>
     <div id="root"></div>
