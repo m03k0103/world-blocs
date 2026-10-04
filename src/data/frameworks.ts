@@ -984,15 +984,18 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'PRY', status: 'ratified', signedYear: 1991, ratifiedYear: 1991, notes: '原加盟国' },
       { countryCode: 'URY', status: 'ratified', signedYear: 1991, ratifiedYear: 1991, notes: '原加盟国' },
       { countryCode: 'BOL', status: 'ratified', signedYear: 2015, ratifiedYear: 2024, notes: '2024年7月に議会批准完了し正式加盟' },
+      // 準加盟国 (Associated States / Estados Asociados)
+      { countryCode: 'CHL', status: 'dialogue', appliedYear: 1996, notes: '準加盟国 (1996)' },
+      { countryCode: 'COL', status: 'dialogue', appliedYear: 2004, notes: '準加盟国 (2004)' },
+      { countryCode: 'ECU', status: 'dialogue', appliedYear: 2004, notes: '準加盟国 (2004)' },
+      { countryCode: 'PER', status: 'dialogue', appliedYear: 2003, notes: '準加盟国 (2003)' },
+      { countryCode: 'GUY', status: 'dialogue', appliedYear: 2013, notes: '準加盟国 (2013)' },
+      { countryCode: 'SUR', status: 'dialogue', appliedYear: 2013, notes: '準加盟国 (2013)' },
+      // オブザーバー国 (Observer States / Estados Observadores)
+      { countryCode: 'MEX', status: 'observer', appliedYear: 2006, notes: 'オブザーバー国 (2006)' },
+      { countryCode: 'NZL', status: 'observer', appliedYear: 2010, notes: 'オブザーバー国 (2010)' },
       // 資格停止国
-      { countryCode: 'VEN', status: 'withdrawn', signedYear: 2006, ratifiedYear: 2012, withdrawnYear: 2016, notes: '2012年正式加盟、2016年民主条項（ウスアイア議定書）違反により無期限資格停止' },
-      // 準加盟国 (Associated States)
-      { countryCode: 'CHL', status: 'observer', appliedYear: 1996, notes: '準加盟国 (1996)' },
-      { countryCode: 'COL', status: 'observer', appliedYear: 2004, notes: '準加盟国 (2004)' },
-      { countryCode: 'ECU', status: 'observer', appliedYear: 2004, notes: '準加盟国 (2004)' },
-      { countryCode: 'PER', status: 'observer', appliedYear: 2003, notes: '準加盟国 (2003)' },
-      { countryCode: 'GUY', status: 'observer', appliedYear: 2013, notes: '準加盟国 (2013)' },
-      { countryCode: 'SUR', status: 'observer', appliedYear: 2013, notes: '準加盟国 (2013)' }
+      { countryCode: 'VEN', status: 'withdrawn', signedYear: 2006, ratifiedYear: 2012, withdrawnYear: 2016, notes: '2012年正式加盟、2016年民主条項（ウスアイア議定書）違反により無期限資格停止' }
     ]
   },
   {
