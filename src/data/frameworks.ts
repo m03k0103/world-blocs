@@ -751,6 +751,180 @@ export const FRAMEWORKS: Framework[] = [
       // 交渉終了
       { countryCode: 'RUS', status: 'withdrawn', notes: '2007年交渉開始、2014年クリミア併合により停止、2022年ウクライナ侵攻により正式終了' }
     ]
+  },
+  {
+    id: 'usmca',
+    nameJa: '米国・メキシコ・カナダ協定',
+    nameEn: 'United States-Mexico-Canada Agreement',
+    acronym: 'USMCA',
+    aliases: ['cusma', 'tmec', 'nafta-2'],
+    category: 'economic',
+    establishedYear: 2018,
+    inForceYear: 2020,
+    secretariat: '共同管理（各国政府関係省庁）',
+    description: 'NAFTA（北米自由貿易協定）を現代の経済実態に合わせて全面改定し、2020年7月に発効した自由貿易協定。自動車原産地規則の厳格化、労働環境・為替操作への規律強化、デジタル貿易規定の新設などが盛り込まれている。',
+    members: [
+      { countryCode: 'USA', status: 'ratified', signedYear: 2018, ratifiedYear: 2020, notes: '2020年発効' },
+      { countryCode: 'CAN', status: 'ratified', signedYear: 2018, ratifiedYear: 2020, notes: '2020年発効（カナダ呼称: CUSMA）' },
+      { countryCode: 'MEX', status: 'ratified', signedYear: 2018, ratifiedYear: 2020, notes: '2020年発効（メキシコ呼称: T-MEC）' }
+    ]
+  },
+  {
+    id: 'mercosur',
+    nameJa: '南部共同市場',
+    nameEn: 'Southern Common Market (Mercado Común del Sur)',
+    acronym: 'MERCOSUR',
+    aliases: ['mercosul'],
+    category: 'economic',
+    establishedYear: 1991,
+    inForceYear: 1991,
+    secretariat: 'モンテビデオ（ウルグアイ）',
+    description: '南米諸国の経済統合・関税同盟。1991年のアスンシオン条約により創設。域内関税撤廃や共通対外関税の導入を進める一方、対外FTA交渉や加盟国内の政治的動向による課題も抱える。2024年にボリビアが正式加盟。',
+    members: [
+      // 正加盟国 (原加盟4カ国 + ボリビア)
+      { countryCode: 'ARG', status: 'ratified', signedYear: 1991, ratifiedYear: 1991, notes: '原加盟国' },
+      { countryCode: 'BRA', status: 'ratified', signedYear: 1991, ratifiedYear: 1991, notes: '原加盟国' },
+      { countryCode: 'PRY', status: 'ratified', signedYear: 1991, ratifiedYear: 1991, notes: '原加盟国' },
+      { countryCode: 'URY', status: 'ratified', signedYear: 1991, ratifiedYear: 1991, notes: '原加盟国' },
+      { countryCode: 'BOL', status: 'ratified', signedYear: 2015, ratifiedYear: 2024, notes: '2024年7月に議会批准完了し正式加盟' },
+      // 資格停止国
+      { countryCode: 'VEN', status: 'withdrawn', signedYear: 2006, ratifiedYear: 2012, withdrawnYear: 2016, notes: '2012年正式加盟、2016年民主条項（ウスアイア議定書）違反により無期限資格停止' },
+      // 準加盟国 (Associated States)
+      { countryCode: 'CHL', status: 'observer', signedYear: 1996, notes: '準加盟国 (1996)' },
+      { countryCode: 'COL', status: 'observer', signedYear: 2004, notes: '準加盟国 (2004)' },
+      { countryCode: 'ECU', status: 'observer', signedYear: 2004, notes: '準加盟国 (2004)' },
+      { countryCode: 'PER', status: 'observer', signedYear: 2003, notes: '準加盟国 (2003)' },
+      { countryCode: 'GUY', status: 'observer', signedYear: 2013, notes: '準加盟国 (2013)' },
+      { countryCode: 'SUR', status: 'observer', signedYear: 2013, notes: '準加盟国 (2013)' }
+    ]
+  },
+  {
+    id: 'pacific-alliance',
+    nameJa: '太平洋同盟',
+    nameEn: 'Pacific Alliance (Alianza del Pacífico)',
+    acronym: 'Pacific Alliance',
+    aliases: ['pa', 'alianza-del-pacifico'],
+    category: 'economic',
+    establishedYear: 2011,
+    inForceYear: 2015,
+    secretariat: '輪番制（常設事務局なし）',
+    description: '中南米の太平洋岸4カ国（チリ、コロンビア、メキシコ、ペルー）が市場統合、自由貿易の推進、アジア太平洋地域との経済関係緊密化を目的に2011年に結成した経済同盟。財・サービス・資本・人の移動の自由化を進めている。',
+    members: [
+      { countryCode: 'CHL', status: 'ratified', signedYear: 2012, ratifiedYear: 2015, notes: '原加盟国' },
+      { countryCode: 'COL', status: 'ratified', signedYear: 2012, ratifiedYear: 2015, notes: '原加盟国' },
+      { countryCode: 'MEX', status: 'ratified', signedYear: 2012, ratifiedYear: 2015, notes: '原加盟国' },
+      { countryCode: 'PER', status: 'ratified', signedYear: 2012, ratifiedYear: 2015, notes: '原加盟国' },
+      // 候補国・準加盟交渉
+      { countryCode: 'CRI', status: 'candidate', notes: '正式加盟交渉中' },
+      { countryCode: 'ECU', status: 'candidate', notes: '正式加盟交渉中' },
+      { countryCode: 'SGP', status: 'candidate', notes: '2022年準加盟国（Associate Member）協定署名' }
+    ]
+  },
+  {
+    id: 'afta',
+    nameJa: 'ASEAN自由貿易地域',
+    nameEn: 'ASEAN Free Trade Area',
+    acronym: 'AFTA',
+    aliases: ['atiga'],
+    category: 'economic',
+    establishedYear: 1992,
+    inForceYear: 1993,
+    secretariat: 'ジャカルタ（インドネシア / ASEAN事務局）',
+    description: '東南アジア諸国連合（ASEAN）加盟国間の関税引き下げと非関税障壁撤廃を目的とした自由貿易地域。共通効果特恵関税（CEPT）方式を中核とし、現在はATIGA（ASEAN物品貿易協定）のもとで99%以上の品目で関税撤廃が達成されている。',
+    members: [
+      // 原加盟6カ国 (1992年署名)
+      { countryCode: 'BRN', status: 'ratified', signedYear: 1992, ratifiedYear: 1993, notes: '原加盟国' },
+      { countryCode: 'IDN', status: 'ratified', signedYear: 1992, ratifiedYear: 1993, notes: '原加盟国' },
+      { countryCode: 'MYS', status: 'ratified', signedYear: 1992, ratifiedYear: 1993, notes: '原加盟国' },
+      { countryCode: 'PHL', status: 'ratified', signedYear: 1992, ratifiedYear: 1993, notes: '原加盟国' },
+      { countryCode: 'SGP', status: 'ratified', signedYear: 1992, ratifiedYear: 1993, notes: '原加盟国' },
+      { countryCode: 'THA', status: 'ratified', signedYear: 1992, ratifiedYear: 1993, notes: '原加盟国' },
+      // 新規加盟4カ国 (CLMV)
+      { countryCode: 'VNM', status: 'ratified', signedYear: 1995, ratifiedYear: 1996, notes: '1995年ASEAN加盟に伴い参加' },
+      { countryCode: 'LAO', status: 'ratified', signedYear: 1997, ratifiedYear: 1997, notes: '1997年ASEAN加盟に伴い参加' },
+      { countryCode: 'MMR', status: 'ratified', signedYear: 1997, ratifiedYear: 1997, notes: '1997年ASEAN加盟に伴い参加' },
+      { countryCode: 'KHM', status: 'ratified', signedYear: 1999, ratifiedYear: 1999, notes: '1999年ASEAN加盟に伴い参加' }
+    ]
+  },
+  {
+    id: 'eea',
+    nameJa: '欧州経済領域',
+    nameEn: 'European Economic Area',
+    acronym: 'EEA',
+    aliases: ['see'],
+    category: 'economic',
+    establishedYear: 1992,
+    inForceYear: 1994,
+    secretariat: 'ブリュッセル（ベルギー / EFTA事務局）',
+    description: 'EU（欧州連合）加盟国とEFTA（欧州自由貿易連合）3カ国（ノルウェー、アイスランド、リヒテンシュタイン）の間で結ばれた協定。EU単一市場（人・物・サービス・資本の自由移動）を域外3カ国へ拡張している（スイスは国民投票で不参加）。',
+    members: [
+      // EU加盟27カ国
+      { countryCode: 'AUT', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国 (1994年EFTAとして発効時加盟、1995年EU移行)' },
+      { countryCode: 'BEL', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'BGR', status: 'ratified', ratifiedYear: 2007, notes: 'EU加盟国' },
+      { countryCode: 'HRV', status: 'ratified', ratifiedYear: 2014, notes: 'EU加盟国' },
+      { countryCode: 'CYP', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'CZE', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'DNK', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'EST', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'FIN', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国 (1994年EFTAとして発効時加盟、1995年EU移行)' },
+      { countryCode: 'FRA', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'DEU', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'GRC', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'HUN', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'IRL', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'ITA', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'LVA', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'LTU', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'LUX', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'MLT', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'NLD', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'POL', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'PRT', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'ROU', status: 'ratified', ratifiedYear: 2007, notes: 'EU加盟国' },
+      { countryCode: 'SVK', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'SVN', status: 'ratified', ratifiedYear: 2004, notes: 'EU加盟国' },
+      { countryCode: 'ESP', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国' },
+      { countryCode: 'SWE', status: 'ratified', ratifiedYear: 1994, notes: 'EU加盟国 (1994年EFTAとして発効時加盟、1995年EU移行)' },
+      // EFTA 3カ国
+      { countryCode: 'NOR', status: 'ratified', signedYear: 1992, ratifiedYear: 1994, notes: 'EFTA加盟国' },
+      { countryCode: 'ISL', status: 'ratified', signedYear: 1992, ratifiedYear: 1994, notes: 'EFTA加盟国' },
+      { countryCode: 'LIE', status: 'ratified', signedYear: 1992, ratifiedYear: 1995, notes: 'EFTA加盟国 (関税同盟調整を経て1995年参加)' },
+      // 元加盟国（離脱）
+      { countryCode: 'GBR', status: 'withdrawn', signedYear: 1992, ratifiedYear: 1994, withdrawnYear: 2020, notes: 'EU離脱（ブレグジット）に伴い2020年にEEAからも離脱' }
+    ]
+  },
+  {
+    id: 'gafta',
+    nameJa: '大アラブ自由貿易地域',
+    nameEn: 'Greater Arab Free Trade Area',
+    acronym: 'GAFTA',
+    aliases: ['pfta'],
+    category: 'economic',
+    establishedYear: 1997,
+    inForceYear: 1998,
+    secretariat: 'カイロ（エジプト / アラブ連盟事務局）',
+    description: 'アラブ連盟（AL）加盟国間で締結された包括的自由貿易地域協定。1998年より毎年関税を10%ずつ段階的に削減し、2005年に関税全廃を達成。中東・北アフリカの地域経済統合と共同市場創設の礎石となっている。',
+    members: [
+      { countryCode: 'DZA', status: 'ratified', ratifiedYear: 2009, notes: '2009年加盟' },
+      { countryCode: 'BHR', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'EGY', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'IRQ', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'JOR', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'KWT', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'LBN', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'LBY', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'MAR', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'OMN', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'PSE', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'QAT', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'SAU', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'SDN', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'SYR', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'TUN', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'ARE', status: 'ratified', ratifiedYear: 1998, notes: '原加盟国' },
+      { countryCode: 'YEM', status: 'ratified', ratifiedYear: 2005, notes: '2005年加盟' }
+    ]
   }
 ];
 

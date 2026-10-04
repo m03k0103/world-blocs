@@ -10,14 +10,21 @@ import { Globe2 } from 'lucide-react';
 
 // URLパス・クエリ・ハッシュから枠組みを特定するヘルパー
 function getFrameworkFromUrl(): Framework | null {
+  const matchesKey = (f: Framework, key: string) => {
+    const k = key.toLowerCase();
+    return (
+      f.acronym.toLowerCase() === k ||
+      f.id.toLowerCase() === k ||
+      (f.aliases && f.aliases.some((a) => a.toLowerCase() === k))
+    );
+  };
+
   // 1. パス末尾セグメントから判定（例: /world-blocs/EU -> 'EU'）
   const segments = window.location.pathname.split('/').filter(Boolean);
   if (segments.length > 0) {
-    const last = segments[segments.length - 1].toLowerCase();
+    const last = segments[segments.length - 1];
     if (last !== 'world-blocs' && last !== 'index.html') {
-      const match = FRAMEWORKS.find(
-        (f) => f.acronym.toLowerCase() === last || f.id.toLowerCase() === last
-      );
+      const match = FRAMEWORKS.find((f) => matchesKey(f, last));
       if (match) return match;
     }
   }
@@ -26,19 +33,14 @@ function getFrameworkFromUrl(): Framework | null {
   const params = new URLSearchParams(window.location.search);
   const paramVal = params.get('f') || params.get('framework');
   if (paramVal) {
-    const valLower = paramVal.toLowerCase();
-    const match = FRAMEWORKS.find(
-      (f) => f.acronym.toLowerCase() === valLower || f.id.toLowerCase() === valLower
-    );
+    const match = FRAMEWORKS.find((f) => matchesKey(f, paramVal));
     if (match) return match;
   }
 
   // 3. ハッシュから判定 (#/EU または #EU)
-  const hashVal = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+  const hashVal = window.location.hash.replace(/^#\/?/, '');
   if (hashVal) {
-    const match = FRAMEWORKS.find(
-      (f) => f.acronym.toLowerCase() === hashVal || f.id.toLowerCase() === hashVal
-    );
+    const match = FRAMEWORKS.find((f) => matchesKey(f, hashVal));
     if (match) return match;
   }
 

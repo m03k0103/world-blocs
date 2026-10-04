@@ -89,6 +89,9 @@ export const CompareView: React.FC<CompareViewProps> = ({
   // クイック比較プリセット
   const presets = [
     { title: 'EU × NATO', a: 'eu', b: 'nato', desc: '欧州統合と軍事同盟の重なり' },
+    { title: 'EU × EEA', a: 'eu', b: 'eea', desc: '欧州単一市場とEFTA3カ国の統合関係' },
+    { title: 'MERCOSUR × 太平洋同盟', a: 'mercosur', b: 'pacific-alliance', desc: '南米大西洋側 vs 太平洋側の二大経済圏' },
+    { title: 'USMCA × CPTPP', a: 'usmca', b: 'cptpp', desc: '北米協定 vs アジア太平洋メガFTA' },
     { title: 'P5 × G7', a: 'p5', b: 'g7', desc: '安保理常任理事国 vs 先進主要国' },
     { title: 'OECD × BRICS', a: 'oecd', b: 'brics', desc: '先進国クラブ vs 新興大国連合' },
     { title: 'CPTPP × RCEP', a: 'cptpp', b: 'rcep', desc: 'アジア太平洋のメガFTA比較' },

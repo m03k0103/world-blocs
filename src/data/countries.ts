@@ -1621,6 +1621,15 @@ export const COUNTRIES: Country[] = [
     "nameEn": "North Korea",
     "region": "アジア",
     "flagEmoji": "🇰🇵"
+  },
+  {
+    "numeric": "438",
+    "alpha3": "LIE",
+    "alpha2": "LI",
+    "nameJa": "リヒテンシュタイン",
+    "nameEn": "Liechtenstein",
+    "region": "ヨーロッパ",
+    "flagEmoji": "🇱🇮"
   }
 ];
 

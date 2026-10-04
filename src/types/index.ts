@@ -43,6 +43,7 @@ export interface Framework {
   inForceYear?: number;      // 発効年 (1949)
   description: string;       // 概要・目的
   secretariat?: string;      // 本部・事務局所在地
+  aliases?: string[];        // 別名・代替略称（例: ['pa', 'alianza-del-pacifico']）
   members: MembershipRecord[];
 }
 
