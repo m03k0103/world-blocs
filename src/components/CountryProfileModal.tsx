@@ -14,10 +14,9 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
   onClose,
   onSelectFramework,
 }) => {
-  if (!country) return null;
-
   // この国が参加している全枠組みを取得
   const joinedFrameworks = useMemo(() => {
+    if (!country) return [];
     const list: {
       framework: Framework;
       status: MembershipStatus;
@@ -63,6 +62,8 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
     });
     return map;
   }, [joinedFrameworks]);
+
+  if (!country) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">

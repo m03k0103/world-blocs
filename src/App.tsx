@@ -48,30 +48,37 @@ function getFrameworkFromUrl(): Framework | null {
 }
 
 export function App() {
-  const initialFramework = getFrameworkFromUrl() || FRAMEWORKS[0];
+  const initialFramework = getFrameworkFromUrl();
   const [currentMode, setCurrentMode] = useState<ViewMode>('framework');
-  const [selectedFramework, setSelectedFramework] = useState<Framework>(initialFramework);
+  const [selectedFramework, setSelectedFramework] = useState<Framework | null>(initialFramework);
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
 
   // ベースパス（GitHub Pages では '/world-blocs'、ローカルでは ''）
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   // 枠組み変更時のURL同期ハンドラ
-  const handleSelectFramework = useCallback((framework: Framework) => {
+  const handleSelectFramework = useCallback((framework: Framework | null) => {
     setSelectedFramework(framework);
     setCurrentMode('framework');
 
-    // ブラウザURLを /world-blocs/{ACRONYM} に同期（大文字表記）
-    const targetUrl = `${basePath}/${framework.acronym}`;
-    if (window.location.pathname !== targetUrl) {
-      window.history.pushState({ frameworkId: framework.id }, '', targetUrl);
+    // ブラウザURLを /world-blocs/{ACRONYM} またはベースURLに同期
+    if (framework) {
+      const targetUrl = `${basePath}/${framework.acronym}`;
+      if (window.location.pathname !== targetUrl) {
+        window.history.pushState({ frameworkId: framework.id }, '', targetUrl);
+      }
+    } else {
+      const targetUrl = `${basePath}/`;
+      if (window.location.pathname !== targetUrl) {
+        window.history.pushState({ frameworkId: null }, '', targetUrl);
+      }
     }
   }, [basePath]);
 
   // モード切替ハンドラ
   const handleModeChange = useCallback((mode: ViewMode) => {
     setCurrentMode(mode);
-    if (mode !== 'framework') {
+    if (mode !== 'framework' || !selectedFramework) {
       const targetUrl = `${basePath}/`;
       window.history.pushState({ mode }, '', targetUrl);
     } else {
@@ -88,7 +95,8 @@ export function App() {
         setSelectedFramework(matched);
         setCurrentMode('framework');
       } else {
-        // パス末尾に枠組み名がない場合はベース画面
+        // パス末尾に枠組み名がない場合はベース画面（枠組み未選択）
+        setSelectedFramework(null);
         setCurrentMode('framework');
       }
     };

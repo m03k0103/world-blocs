@@ -8,7 +8,7 @@ interface NavbarProps {
   currentMode: ViewMode;
   onModeChange: (mode: ViewMode) => void;
   onSelectCountry: (country: Country) => void;
-  onSelectFramework: (framework: Framework) => void;
+  onSelectFramework: (framework: Framework | null) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -47,8 +47,14 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           {/* ロゴ & タイトル */}
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+          <button
+            onClick={() => {
+              onSelectFramework(null);
+              onModeChange('framework');
+            }}
+            className="flex items-center gap-3 shrink-0 text-left cursor-pointer group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
               <Globe className="w-6 h-6 animate-pulse" />
             </div>
             <div>
@@ -62,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 国際枠組み・条約・同盟の可視化＆比較プラットフォーム
               </p>
             </div>
-          </div>
+          </button>
 
           {/* グローバル検索バー */}
           <div className="relative flex-1 max-w-md hidden md:block">

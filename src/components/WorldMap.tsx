@@ -24,6 +24,7 @@ interface WorldMapProps {
   labelB?: string;
   onSelectCountry?: (country: Country) => void;
   selectedCountryAlpha3?: string | null;
+  hasFrameworkSelected?: boolean;
 }
 
 interface HoverInfo {
@@ -43,6 +44,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   labelB = '枠組みB',
   onSelectCountry,
   selectedCountryAlpha3,
+  hasFrameworkSelected = true,
 }) => {
   const [geographies, setGeographies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -310,35 +312,37 @@ export const WorldMap: React.FC<WorldMapProps> = ({
               )}
             </div>
           ) : (
-            <div className="space-y-1 pt-1 border-t border-slate-700/60">
-              {hoverInfo.data?.status ? (
-                <>
-                  <div className="flex items-center gap-1.5 font-medium">
-                    <span className="text-slate-300">ステータス:</span>
-                    <span className="font-semibold text-sky-300">
-                      {hoverInfo.data.status === 'ratified' && '批准・加盟'}
-                      {hoverInfo.data.status === 'signed' && '署名済（未批准）'}
-                      {hoverInfo.data.status === 'observer' && 'オブザーバー'}
-                      {hoverInfo.data.status === 'dialogue' && '対話パートナー'}
-                      {hoverInfo.data.status === 'candidate' && '加盟申請・候補国'}
-                      {hoverInfo.data.status === 'withdrawn' && '脱退・資格停止'}
-                    </span>
-                  </div>
-                  {hoverInfo.data.year && (
-                    <div className="text-slate-300">
-                      加盟/批准年: <span className="font-semibold text-white">{hoverInfo.data.year}年</span>
+            hasFrameworkSelected ? (
+              <div className="space-y-1 pt-1 border-t border-slate-700/60">
+                {hoverInfo.data?.status ? (
+                  <>
+                    <div className="flex items-center gap-1.5 font-medium">
+                      <span className="text-slate-300">ステータス:</span>
+                      <span className="font-semibold text-sky-300">
+                        {hoverInfo.data.status === 'ratified' && '批准・加盟'}
+                        {hoverInfo.data.status === 'signed' && '署名済（未批准）'}
+                        {hoverInfo.data.status === 'observer' && 'オブザーバー'}
+                        {hoverInfo.data.status === 'dialogue' && '対話パートナー'}
+                        {hoverInfo.data.status === 'candidate' && '加盟申請・候補国'}
+                        {hoverInfo.data.status === 'withdrawn' && '脱退・資格停止'}
+                      </span>
                     </div>
-                  )}
-                  {hoverInfo.data.notes && (
-                    <div className="text-slate-400 text-[11px] italic mt-0.5">
-                      {hoverInfo.data.notes}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="text-slate-400">非加盟・非参加</div>
-              )}
-            </div>
+                    {hoverInfo.data.year && (
+                      <div className="text-slate-300">
+                        加盟/批准年: <span className="font-semibold text-white">{hoverInfo.data.year}年</span>
+                      </div>
+                    )}
+                    {hoverInfo.data.notes && (
+                      <div className="text-slate-400 text-[11px] italic mt-0.5">
+                        {hoverInfo.data.notes}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-slate-400">非加盟・非参加</div>
+                )}
+              </div>
+            ) : null
           )}
           <div className="text-[10px] text-slate-400 mt-1.5 border-t border-slate-800 pt-1">
             クリックで詳細を表示
