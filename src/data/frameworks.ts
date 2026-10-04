@@ -598,6 +598,67 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'VEN', status: 'observer', notes: '2006年オブザーバー参加' },
       { countryCode: 'IND', status: 'observer', notes: '2007年オブザーバー参加' }
     ]
+  },
+  {
+    id: 'unclos',
+    nameJa: '国連海洋法条約（UNCLOS）',
+    nameEn: 'United Nations Convention on the Law of the Sea',
+    acronym: 'UNCLOS',
+    category: 'global_treaty',
+    establishedYear: 1982,
+    inForceYear: 1994,
+    secretariat: 'キングストン（国際海底機構）/ ハンブルク（国際海洋法裁判所）',
+    description: '「海の憲法」とも呼ばれる包括的海洋秩序条約。領海（12海里）、排他的経済水域（EEZ・200海里）、大陸棚、公海、深海底の法的地位、航行の自由、海洋資源利用や海洋環境保護を包括的に規定。169の国・地域が締約。大国の中でアメリカ合衆国が未締結（未批准）である点が国際海洋秩序の焦点。',
+    members: [
+      // 主要締約国
+      { countryCode: 'JPN', status: 'ratified', signedYear: 1983, ratifiedYear: 1996, notes: '1983年署名、1996年批准。国内法でEEZ・接続水域を設定' },
+      { countryCode: 'CHN', status: 'ratified', signedYear: 1982, ratifiedYear: 1996, notes: '1996年批准。南シナ海での権利主張に対し2016年常設仲裁裁判所が判決' },
+      { countryCode: 'RUS', status: 'ratified', signedYear: 1982, ratifiedYear: 1997, notes: '1997年批准。北極海大陸棚限界画定などを申請' },
+      { countryCode: 'GBR', status: 'ratified', ratifiedYear: 1997, notes: '1997年加入（原署名は見送り、1994年実施協定後に加入）' },
+      { countryCode: 'FRA', status: 'ratified', signedYear: 1982, ratifiedYear: 1996 },
+      { countryCode: 'DEU', status: 'ratified', ratifiedYear: 1994, notes: '1994年加入。ハンブルクに国際海洋法裁判所（ITLOS）を誘致' },
+      { countryCode: 'ITA', status: 'ratified', signedYear: 1984, ratifiedYear: 1995 },
+      { countryCode: 'CAN', status: 'ratified', signedYear: 1982, ratifiedYear: 2003 },
+      { countryCode: 'AUS', status: 'ratified', signedYear: 1982, ratifiedYear: 1994 },
+      { countryCode: 'NZL', status: 'ratified', signedYear: 1982, ratifiedYear: 1996 },
+      { countryCode: 'KOR', status: 'ratified', signedYear: 1983, ratifiedYear: 1996 },
+      { countryCode: 'IND', status: 'ratified', signedYear: 1982, ratifiedYear: 1995 },
+      { countryCode: 'IDN', status: 'ratified', signedYear: 1982, ratifiedYear: 1986, notes: '群島国家概念を提唱・制度化' },
+      { countryCode: 'PHL', status: 'ratified', signedYear: 1982, ratifiedYear: 1984, notes: '1984年批准。2013年に南シナ海問題を常設仲裁裁判所に提訴' },
+      { countryCode: 'VNM', status: 'ratified', signedYear: 1982, ratifiedYear: 1994 },
+      { countryCode: 'MYS', status: 'ratified', signedYear: 1982, ratifiedYear: 1996 },
+      { countryCode: 'SGP', status: 'ratified', signedYear: 1982, ratifiedYear: 1994 },
+      { countryCode: 'THA', status: 'ratified', signedYear: 1982, ratifiedYear: 2011 },
+      { countryCode: 'BRA', status: 'ratified', signedYear: 1982, ratifiedYear: 1988 },
+      { countryCode: 'MEX', status: 'ratified', signedYear: 1982, ratifiedYear: 1983 },
+      { countryCode: 'ARG', status: 'ratified', signedYear: 1984, ratifiedYear: 1995 },
+      { countryCode: 'CHL', status: 'ratified', signedYear: 1982, ratifiedYear: 1997 },
+      { countryCode: 'ZAF', status: 'ratified', signedYear: 1984, ratifiedYear: 1997 },
+      { countryCode: 'EGY', status: 'ratified', signedYear: 1982, ratifiedYear: 1983 },
+      { countryCode: 'SAU', status: 'ratified', ratifiedYear: 1996 },
+      { countryCode: 'ESP', status: 'ratified', signedYear: 1984, ratifiedYear: 1997 },
+      { countryCode: 'NLD', status: 'ratified', signedYear: 1982, ratifiedYear: 1996 },
+      { countryCode: 'NOR', status: 'ratified', signedYear: 1982, ratifiedYear: 1996 },
+      { countryCode: 'SWE', status: 'ratified', signedYear: 1982, ratifiedYear: 1996 },
+      { countryCode: 'FIN', status: 'ratified', signedYear: 1982, ratifiedYear: 1996 },
+      { countryCode: 'DNK', status: 'ratified', signedYear: 1982, ratifiedYear: 2004 },
+      { countryCode: 'GRC', status: 'ratified', signedYear: 1982, ratifiedYear: 1995 },
+      { countryCode: 'POL', status: 'ratified', signedYear: 1982, ratifiedYear: 1998 },
+      { countryCode: 'UKR', status: 'ratified', signedYear: 1982, ratifiedYear: 1999 },
+      // 内陸国も多数締約
+      { countryCode: 'CHE', status: 'ratified', signedYear: 1982, ratifiedYear: 2009, notes: '内陸国として批准' },
+      { countryCode: 'AUT', status: 'ratified', signedYear: 1982, ratifiedYear: 1995, notes: '内陸国として批准' },
+      { countryCode: 'MNG', status: 'ratified', signedYear: 1982, ratifiedYear: 1996, notes: '内陸国として批准' },
+      // 未批准・非締約国
+      { countryCode: 'USA', status: 'withdrawn', notes: '未締結・未批准。深海底鉱物資源管理（第11部）条項への懸念から上院で批准未了。ただし大部分の条項を慣習国際法として遵守' },
+      { countryCode: 'TUR', status: 'withdrawn', notes: '非署名・不参加。エーゲ海における領海・領空拡張問題を理由に反対' },
+      { countryCode: 'ISR', status: 'withdrawn', notes: '非署名・不参加' },
+      { countryCode: 'PER', status: 'withdrawn', notes: '非署名・不参加。独自の200海里領海主張との齟齬から' },
+      { countryCode: 'VEN', status: 'withdrawn', notes: '非署名・不参加。隣国との海域画定問題を理由に反対' },
+      { countryCode: 'COL', status: 'signed', signedYear: 1982, notes: '署名のみで未批准' },
+      { countryCode: 'PRK', status: 'signed', signedYear: 1982, notes: '署名のみで未批准' },
+      { countryCode: 'IRN', status: 'signed', signedYear: 1982, notes: '署名のみで未批准。ホルムズ海峡の通航権等を巡り批准留保' }
+    ]
   }
 ];
 
