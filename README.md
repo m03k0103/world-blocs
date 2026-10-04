@@ -39,7 +39,7 @@ GitHub Pages で完全静的ホスティング（サーバーレス）として�
 
 | カテゴリ | 枠組み・条約 |
 | :--- | :--- |
-| **安全保障・同盟** | NATO, AUKUS, Quad, Five Eyes |
+| **安全保障・同盟・大国** | P5（国連安保理常任理事国）, NATO, AUKUS, Quad, Five Eyes |
 | **地域統合・地域機構** | EU, ASEAN, SCO（上海協力機構）, アラブ連盟（Arab League） |
 | **首脳サミット・多国間** | G7, G20, BRICS |
 | **経済連携・メガFTA・フォーラム** | APEC（アジア太平洋経済協力）, CPTPP, RCEP |

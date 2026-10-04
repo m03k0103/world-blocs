@@ -659,6 +659,33 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'PRK', status: 'signed', signedYear: 1982, notes: '署名のみで未批准' },
       { countryCode: 'IRN', status: 'signed', signedYear: 1982, notes: '署名のみで未批准。ホルムズ海峡の通航権等を巡り批准留保' }
     ]
+  },
+  {
+    id: 'p5',
+    nameJa: '国連安保理常任理事国（P5）',
+    nameEn: 'Permanent Members of the UN Security Council (P5)',
+    acronym: 'P5',
+    category: 'security',
+    establishedYear: 1945,
+    inForceYear: 1945,
+    secretariat: 'ニューヨーク（国連本部）',
+    description: '国際連合安全保障理事会において恒久的な議席と絶対的拒否権（Veto）を有する5大国。第二次世界大戦の主要戦勝国であり、国連憲章上、世界の平和と安全の維持に主要な責任を負う。核兵器不拡散条約（NPT）上の公認核兵器保有国と一致。日本・ドイツ・インド・ブラジル（G4）が常任理事国拡大を要求中。',
+    members: [
+      { countryCode: 'USA', status: 'ratified', ratifiedYear: 1945, notes: '国連憲章起草・原常任理事国' },
+      { countryCode: 'GBR', status: 'ratified', ratifiedYear: 1945, notes: '原常任理事国' },
+      { countryCode: 'FRA', status: 'ratified', ratifiedYear: 1945, notes: '原常任理事国' },
+      { countryCode: 'RUS', status: 'ratified', ratifiedYear: 1945, notes: '1945年ソ連として創設、1991年ソ連崩壊に伴いロシア連邦が議席を承継' },
+      { countryCode: 'CHN', status: 'ratified', ratifiedYear: 1971, notes: '1945年中華民国が加盟。1971年国連総会決議2758号により中華人民共和国が代表権を承継' },
+      // 過去に代表権を有していた台湾
+      { countryCode: 'TWN', status: 'withdrawn', ratifiedYear: 1945, withdrawnYear: 1971, notes: '1945-1971年まで中華民国として安保理常任理事国の議席を保持' },
+      // 常任理事国拡大を目指す主要国（G4など）
+      { countryCode: 'JPN', status: 'candidate', notes: 'G4の一角として常任理事国入りを目指す。非常任理事国当選回数は国連最多' },
+      { countryCode: 'DEU', status: 'candidate', notes: 'G4の一角として常任理事国入りを目指す' },
+      { countryCode: 'IND', status: 'candidate', notes: 'G4の一角として常任理事国入りを目指す。世界最多の人口を代表' },
+      { countryCode: 'BRA', status: 'candidate', notes: 'G4の一角として中南米からの常任理事国入りを目指す' },
+      { countryCode: 'ZAF', status: 'candidate', notes: 'アフリカ連合（AU）からの常任理事国候補' },
+      { countryCode: 'NGA', status: 'candidate', notes: 'アフリカ連合（AU）からの常任理事国候補' }
+    ]
   }
 ];
 
