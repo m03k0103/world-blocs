@@ -92,9 +92,22 @@ export const TableView: React.FC<TableViewProps> = ({
 
   // CSVエクスポート
   const handleExportCSV = () => {
+    // CSV Formula Injection (DDE/数式実行) 対策サニタイズ
+    const sanitizeCsvCell = (val: string | number | undefined | null): string => {
+      if (val === null || val === undefined) return '""';
+      let str = String(val);
+      // セル先頭が =, +, -, @, \t, \r の場合、シングルクォートでエスケープ
+      if (/^[=+\-@\t\r]/.test(str)) {
+        str = `'${str}`;
+      }
+      return `"${str.replace(/"/g, '""')}"`;
+    };
+
     const headers = language === 'ja'
       ? ['ISO3', '国名（日）', '国名（英）', '地域', 'ステータス', '加盟/批准/申請年', '備考']
       : ['ISO3', 'Name (JA)', 'Name (EN)', 'Region', 'Status', 'Year (Ratified/Signed/Applied)', 'Notes'];
+
+    const headerRow = headers.map(h => sanitizeCsvCell(h)).join(',');
 
     const rows = filteredMembers.map((m) => {
       const c = COUNTRY_BY_ALPHA3[m.countryCode];
@@ -103,17 +116,17 @@ export const TableView: React.FC<TableViewProps> = ({
         : m.currentStatus;
 
       return [
-        m.countryCode,
-        c?.nameJa || '',
-        c?.nameEn || '',
-        c?.region || '',
-        statusLabel,
-        m.ratifiedYear || m.signedYear || m.appliedYear || '',
-        `"${(m.notes || '').replace(/"/g, '""')}"`,
+        sanitizeCsvCell(m.countryCode),
+        sanitizeCsvCell(c?.nameJa || ''),
+        sanitizeCsvCell(c?.nameEn || ''),
+        sanitizeCsvCell(c?.region || ''),
+        sanitizeCsvCell(statusLabel),
+        sanitizeCsvCell(m.ratifiedYear || m.signedYear || m.appliedYear || ''),
+        sanitizeCsvCell(m.notes || ''),
       ].join(',');
     });
 
-    const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+    const csvContent = '\uFEFF' + [headerRow, ...rows].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -122,6 +135,7 @@ export const TableView: React.FC<TableViewProps> = ({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
