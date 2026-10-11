@@ -23,21 +23,17 @@ export const CompareView: React.FC<CompareViewProps> = ({
   onCompareChange,
 }) => {
   const { t, language } = useLanguage();
-  const [frameworkAId, setFrameworkAId] = useState<string>(propFrameworkAId || 'waico');
-  const [frameworkBId, setFrameworkBId] = useState<string>(propFrameworkBId || 'pax_silica');
+  const [frameworkAId, setFrameworkAId] = useState<string>(propFrameworkAId || '');
+  const [frameworkBId, setFrameworkBId] = useState<string>(propFrameworkBId || '');
   const [filterIntersection, setFilterIntersection] = useState<'all' | 'both' | 'a_only' | 'b_only'>('all');
 
   // 親から渡された props の変更を反映
   React.useEffect(() => {
-    if (propFrameworkAId && propFrameworkAId !== frameworkAId) {
-      setFrameworkAId(propFrameworkAId);
-    }
+    setFrameworkAId(propFrameworkAId || '');
   }, [propFrameworkAId]);
 
   React.useEffect(() => {
-    if (propFrameworkBId && propFrameworkBId !== frameworkBId) {
-      setFrameworkBId(propFrameworkBId);
-    }
+    setFrameworkBId(propFrameworkBId || '');
   }, [propFrameworkBId]);
 
   const handleSelectFrameworkA = (newA: string) => {
@@ -56,11 +52,18 @@ export const CompareView: React.FC<CompareViewProps> = ({
     onCompareChange?.(newA, newB);
   };
 
-  const frameworkA = useMemo(() => FRAMEWORKS.find((f) => f.id === frameworkAId) || FRAMEWORKS[0], [frameworkAId]);
-  const frameworkB = useMemo(() => FRAMEWORKS.find((f) => f.id === frameworkBId) || FRAMEWORKS[1], [frameworkBId]);
+  const frameworkA = useMemo(
+    () => (frameworkAId ? FRAMEWORKS.find((f) => f.id === frameworkAId) || null : null),
+    [frameworkAId]
+  );
+  const frameworkB = useMemo(
+    () => (frameworkBId ? FRAMEWORKS.find((f) => f.id === frameworkBId) || null : null),
+    [frameworkBId]
+  );
 
   // 有効な参加国コードを取得（批准または正式加盟）
   const validMembersA = useMemo(() => {
+    if (!frameworkA) return new Set<string>();
     return new Set(
       frameworkA.members
         .filter((m) => m.status === 'ratified' || m.status === 'signed' || m.status === 'candidate')
@@ -69,6 +72,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
   }, [frameworkA]);
 
   const validMembersB = useMemo(() => {
+    if (!frameworkB) return new Set<string>();
     return new Set(
       frameworkB.members
         .filter((m) => m.status === 'ratified' || m.status === 'signed' || m.status === 'candidate')
@@ -182,15 +186,22 @@ export const CompareView: React.FC<CompareViewProps> = ({
             onChange={(e) => handleSelectFrameworkA(e.target.value)}
             className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-blue-300 dark:border-blue-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
+            <option value="">{t('compareSelectPlaceholder')}</option>
             {FRAMEWORKS.map((f) => (
               <option key={f.id} value={f.id}>
                 {f.acronym} - {language === 'en' ? f.nameEn : f.nameJa}
               </option>
             ))}
           </select>
-          <div className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-1">
-            {frameworkA.description}
-          </div>
+          {frameworkA ? (
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-1">
+              {frameworkA.description}
+            </div>
+          ) : (
+            <div className="text-xs text-slate-400 dark:text-slate-500 mt-2 italic">
+              {language === 'ja' ? '枠組み A を選択してください' : 'Please select Framework A'}
+            </div>
+          )}
         </div>
 
         {/* 枠組みB */}
@@ -206,15 +217,22 @@ export const CompareView: React.FC<CompareViewProps> = ({
             onChange={(e) => handleSelectFrameworkB(e.target.value)}
             className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-red-300 dark:border-red-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
           >
+            <option value="">{t('compareSelectPlaceholder')}</option>
             {FRAMEWORKS.map((f) => (
               <option key={f.id} value={f.id}>
                 {f.acronym} - {language === 'en' ? f.nameEn : f.nameJa}
               </option>
             ))}
           </select>
-          <div className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-1">
-            {frameworkB.description}
-          </div>
+          {frameworkB ? (
+            <div className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-1">
+              {frameworkB.description}
+            </div>
+          ) : (
+            <div className="text-xs text-slate-400 dark:text-slate-500 mt-2 italic">
+              {language === 'ja' ? '枠組み B を選択してください' : 'Please select Framework B'}
+            </div>
+          )}
         </div>
       </div>
 
@@ -231,16 +249,18 @@ export const CompareView: React.FC<CompareViewProps> = ({
         >
           <div className="flex items-center justify-between">
             <div className="text-xs font-bold uppercase tracking-wider opacity-80">
-              {frameworkA.acronym} {t('compareAOnlyCount')}
+              {frameworkA ? `${frameworkA.acronym} ${t('compareAOnlyCount')}` : (language === 'ja' ? '枠組み A のみ' : 'Framework A only')}
             </div>
             <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
           </div>
           <div className="text-3xl font-black font-mono mt-2">
-            {comparisonResults.aOnly.length}
+            {frameworkA ? comparisonResults.aOnly.length : 0}
             <span className="text-sm font-normal ml-1">{t('countriesSuffix')}</span>
           </div>
           <div className="text-xs opacity-75 mt-1 truncate">
-            {comparisonResults.aOnly.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? 'なし' : 'None')}
+            {frameworkA
+              ? (comparisonResults.aOnly.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? 'なし' : 'None'))
+              : '-'}
           </div>
         </div>
 
@@ -260,11 +280,13 @@ export const CompareView: React.FC<CompareViewProps> = ({
             <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
           </div>
           <div className="text-3xl font-black font-mono mt-2 text-purple-900 dark:text-purple-100">
-            {comparisonResults.both.length}
+            {frameworkA && frameworkB ? comparisonResults.both.length : 0}
             <span className="text-sm font-normal ml-1">{t('countriesSuffix')}</span>
           </div>
           <div className="text-xs text-purple-600 dark:text-purple-300 mt-1 truncate">
-            {comparisonResults.both.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? '該当なし' : 'None')}
+            {frameworkA && frameworkB
+              ? (comparisonResults.both.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? '該当なし' : 'None'))
+              : '-'}
           </div>
         </div>
 
@@ -279,16 +301,18 @@ export const CompareView: React.FC<CompareViewProps> = ({
         >
           <div className="flex items-center justify-between">
             <div className="text-xs font-bold uppercase tracking-wider opacity-80">
-              {frameworkB.acronym} {t('compareBOnlyCount')}
+              {frameworkB ? `${frameworkB.acronym} ${t('compareBOnlyCount')}` : (language === 'ja' ? '枠組み B のみ' : 'Framework B only')}
             </div>
             <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
           </div>
           <div className="text-3xl font-black font-mono mt-2">
-            {comparisonResults.bOnly.length}
+            {frameworkB ? comparisonResults.bOnly.length : 0}
             <span className="text-sm font-normal ml-1">{t('countriesSuffix')}</span>
           </div>
           <div className="text-xs opacity-75 mt-1 truncate">
-            {comparisonResults.bOnly.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? 'なし' : 'None')}
+            {frameworkB
+              ? (comparisonResults.bOnly.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? 'なし' : 'None'))
+              : '-'}
           </div>
         </div>
       </div>
@@ -303,11 +327,11 @@ export const CompareView: React.FC<CompareViewProps> = ({
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span>
-              {language === 'ja' ? `${frameworkA.acronym} のみ` : `${frameworkA.acronym} only`}
+              {frameworkA ? `${frameworkA.acronym} ${language === 'ja' ? 'のみ' : 'only'}` : (language === 'ja' ? '枠組みAのみ' : 'Framework A only')}
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded-full bg-[#ef4444]"></span>
-              {language === 'ja' ? `${frameworkB.acronym} のみ` : `${frameworkB.acronym} only`}
+              {frameworkB ? `${frameworkB.acronym} ${language === 'ja' ? 'のみ' : 'only'}` : (language === 'ja' ? '枠組みBのみ' : 'Framework B only')}
             </span>
           </div>
           <div>{t('mapClickTip')}</div>
@@ -319,8 +343,9 @@ export const CompareView: React.FC<CompareViewProps> = ({
           colorA="#3b82f6"
           colorB="#ef4444"
           colorBoth="#8b5cf6"
-          labelA={frameworkA.acronym}
-          labelB={frameworkB.acronym}
+          labelA={frameworkA?.acronym || (language === 'ja' ? '枠組みA' : 'Framework A')}
+          labelB={frameworkB?.acronym || (language === 'ja' ? '枠組みB' : 'Framework B')}
+          hasFrameworkSelected={Boolean(frameworkA || frameworkB)}
           onSelectCountry={onSelectCountry}
           selectedCountryAlpha3={selectedCountryAlpha3}
         />
@@ -340,7 +365,13 @@ export const CompareView: React.FC<CompareViewProps> = ({
           )}
         </h3>
 
-        {(filterIntersection === 'all' || filterIntersection === 'both') && comparisonResults.both.length > 0 && (
+        {!frameworkA && !frameworkB && (
+          <div className="text-center py-6 text-slate-400 dark:text-slate-500 text-xs italic">
+            {t('compareSelectHint')}
+          </div>
+        )}
+
+        {(filterIntersection === 'all' || filterIntersection === 'both') && frameworkA && frameworkB && comparisonResults.both.length > 0 && (
           <div className="p-3 rounded-xl bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800">
             <div className="text-xs font-bold text-purple-800 dark:text-purple-300 mb-2">
               ★ {language === 'ja'
@@ -362,7 +393,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
         )}
 
-        {(filterIntersection === 'all' || filterIntersection === 'a_only') && comparisonResults.aOnly.length > 0 && (
+        {(filterIntersection === 'all' || filterIntersection === 'a_only') && frameworkA && comparisonResults.aOnly.length > 0 && (
           <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
             <div className="text-xs font-bold text-blue-800 dark:text-blue-300 mb-2">
               {language === 'ja'
@@ -384,7 +415,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
         )}
 
-        {(filterIntersection === 'all' || filterIntersection === 'b_only') && comparisonResults.bOnly.length > 0 && (
+        {(filterIntersection === 'all' || filterIntersection === 'b_only') && frameworkB && comparisonResults.bOnly.length > 0 && (
           <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800">
             <div className="text-xs font-bold text-red-800 dark:text-red-300 mb-2">
               {language === 'ja'

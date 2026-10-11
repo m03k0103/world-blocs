@@ -37,26 +37,12 @@ function formatFrameworkSlug(f: Framework): string {
 export interface ParsedRoute {
   mode: ViewMode;
   framework: Framework | null;
-  compareA: Framework;
-  compareB: Framework;
-}
-
-const DEFAULT_COMPARE_A_ID = 'waico';
-const DEFAULT_COMPARE_B_ID = 'pax_silica';
-
-function getDefaultFrameworkA(): Framework {
-  return findFramework(DEFAULT_COMPARE_A_ID) || FRAMEWORKS[0];
-}
-
-function getDefaultFrameworkB(): Framework {
-  return findFramework(DEFAULT_COMPARE_B_ID) || FRAMEWORKS[1] || FRAMEWORKS[0];
+  compareA: Framework | null;
+  compareB: Framework | null;
 }
 
 // URLからルート情報（mode, framework, compareA, compareB）を特定するパーサー
 function parseRouteFromUrl(basePath: string): ParsedRoute {
-  const defaultA = getDefaultFrameworkA();
-  const defaultB = getDefaultFrameworkB();
-
   // 1. パス解析
   const pathname = decodeURIComponent(window.location.pathname);
   let relativePath = pathname;
@@ -88,8 +74,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
     return {
       mode: 'compare',
       framework: null,
-      compareA: compA || defaultA,
-      compareB: compB || defaultB,
+      compareA: compA,
+      compareB: compB,
     };
   }
 
@@ -101,8 +87,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
     return {
       mode: 'country',
       framework: null,
-      compareA: defaultA,
-      compareB: defaultB,
+      compareA: null,
+      compareB: null,
     };
   }
 
@@ -113,8 +99,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
       return {
         mode: 'framework',
         framework: matched,
-        compareA: defaultA,
-        compareB: defaultB,
+        compareA: null,
+        compareB: null,
       };
     }
   }
@@ -142,8 +128,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
     return {
       mode: 'compare',
       framework: null,
-      compareA: compA || defaultA,
-      compareB: compB || defaultB,
+      compareA: compA,
+      compareB: compB,
     };
   }
 
@@ -151,8 +137,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
     return {
       mode: 'country',
       framework: null,
-      compareA: defaultA,
-      compareB: defaultB,
+      compareA: null,
+      compareB: null,
     };
   }
 
@@ -162,8 +148,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
       return {
         mode: 'framework',
         framework: matched,
-        compareA: defaultA,
-        compareB: defaultB,
+        compareA: null,
+        compareB: null,
       };
     }
   }
@@ -178,8 +164,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
       return {
         mode: 'compare',
         framework: null,
-        compareA: compA || defaultA,
-        compareB: compB || defaultB,
+        compareA: compA,
+        compareB: compB,
       };
     }
     if (hashSegments.length > 0) {
@@ -188,8 +174,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
         return {
           mode: 'framework',
           framework: matched,
-          compareA: defaultA,
-          compareB: defaultB,
+          compareA: null,
+          compareB: null,
         };
       }
     }
@@ -199,8 +185,8 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
   return {
     mode: 'framework',
     framework: null,
-    compareA: defaultA,
-    compareB: defaultB,
+    compareA: null,
+    compareB: null,
   };
 }
 
@@ -209,11 +195,17 @@ function getTargetUrl(
   basePath: string,
   mode: ViewMode,
   framework: Framework | null,
-  compA: Framework,
-  compB: Framework
+  compA: Framework | null,
+  compB: Framework | null
 ): string {
   if (mode === 'compare') {
-    return `${basePath}/compare/${formatFrameworkSlug(compA)}/${formatFrameworkSlug(compB)}`;
+    if (compA && compB) {
+      return `${basePath}/compare/${formatFrameworkSlug(compA)}/${formatFrameworkSlug(compB)}`;
+    }
+    if (compA) {
+      return `${basePath}/compare/${formatFrameworkSlug(compA)}`;
+    }
+    return `${basePath}/compare`;
   }
   if (mode === 'country') {
     return `${basePath}/countries`;
@@ -231,8 +223,8 @@ function AppContent() {
   const initialRoute = parseRouteFromUrl(basePath);
   const [currentMode, setCurrentMode] = useState<ViewMode>(initialRoute.mode);
   const [selectedFramework, setSelectedFramework] = useState<Framework | null>(initialRoute.framework);
-  const [compareAId, setCompareAId] = useState<string>(initialRoute.compareA.id);
-  const [compareBId, setCompareBId] = useState<string>(initialRoute.compareB.id);
+  const [compareAId, setCompareAId] = useState<string>(initialRoute.compareA?.id || '');
+  const [compareBId, setCompareBId] = useState<string>(initialRoute.compareB?.id || '');
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
 
   // 枠組み変更時のURL同期ハンドラ
@@ -240,8 +232,8 @@ function AppContent() {
     setSelectedFramework(framework);
     setCurrentMode('framework');
 
-    const fA = findFramework(compareAId) || getDefaultFrameworkA();
-    const fB = findFramework(compareBId) || getDefaultFrameworkB();
+    const fA = findFramework(compareAId);
+    const fB = findFramework(compareBId);
     const targetUrl = getTargetUrl(basePath, 'framework', framework, fA, fB);
     if (window.location.pathname !== targetUrl) {
       window.history.pushState({ mode: 'framework', frameworkId: framework?.id }, '', targetUrl);
@@ -254,8 +246,8 @@ function AppContent() {
     setCompareBId(bId);
     setCurrentMode('compare');
 
-    const fA = findFramework(aId) || getDefaultFrameworkA();
-    const fB = findFramework(bId) || getDefaultFrameworkB();
+    const fA = findFramework(aId);
+    const fB = findFramework(bId);
     const targetUrl = getTargetUrl(basePath, 'compare', null, fA, fB);
     if (window.location.pathname !== targetUrl) {
       window.history.pushState({ mode: 'compare', compareAId: aId, compareBId: bId }, '', targetUrl);
@@ -266,8 +258,8 @@ function AppContent() {
   const handleModeChange = useCallback((mode: ViewMode) => {
     setCurrentMode(mode);
 
-    const fA = findFramework(compareAId) || getDefaultFrameworkA();
-    const fB = findFramework(compareBId) || getDefaultFrameworkB();
+    const fA = findFramework(compareAId);
+    const fB = findFramework(compareBId);
     const targetUrl = getTargetUrl(basePath, mode, selectedFramework, fA, fB);
     if (window.location.pathname !== targetUrl) {
       window.history.pushState({ mode }, '', targetUrl);
@@ -280,15 +272,15 @@ function AppContent() {
       const route = parseRouteFromUrl(basePath);
       setCurrentMode(route.mode);
       setSelectedFramework(route.framework);
-      setCompareAId(route.compareA.id);
-      setCompareBId(route.compareB.id);
+      setCompareAId(route.compareA?.id || '');
+      setCompareBId(route.compareB?.id || '');
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, [basePath]);
 
-  // 初回ロード時、URLを正規化（例: /compare -> /compare/WAICO/Pax-Silica）
+  // 初回ロード時、URLを正規化
   useEffect(() => {
     const route = parseRouteFromUrl(basePath);
     const normalizedUrl = getTargetUrl(

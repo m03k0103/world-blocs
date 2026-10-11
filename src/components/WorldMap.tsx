@@ -66,7 +66,8 @@ export const WorldMap: React.FC<WorldMapProps> = ({
 
   // TopoJSONデータ読み込み
   useEffect(() => {
-    fetch('./data/countries-110m.json')
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+    fetch(`${basePath}/data/countries-110m.json`)
       .then(res => res.json())
       .then(topology => {
         const geojson: any = topojson.feature(topology, topology.objects.countries);

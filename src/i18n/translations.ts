@@ -67,6 +67,7 @@ export const translations = {
 
     // 比較ビュー
     compareFeaturedPresets: '注目の比較プリセット',
+    compareSelectPlaceholder: '-- 枠組みを選択してください --',
     compareSelectA: '枠組み A を選択',
     compareSelectB: '枠組み B を選択',
     compareIntersectionFilterAll: '全参加国を表示',
@@ -179,6 +180,7 @@ export const translations = {
 
     // Compare View
     compareFeaturedPresets: 'Featured Comparison Presets',
+    compareSelectPlaceholder: '-- Select Framework --',
     compareSelectA: 'Select Framework A',
     compareSelectB: 'Select Framework B',
     compareIntersectionFilterAll: 'Show All',
