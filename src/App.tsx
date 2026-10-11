@@ -9,112 +9,301 @@ import { CountryProfileModal } from './components/CountryProfileModal';
 import { Globe } from 'lucide-react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
-// URLパス・クエリ・ハッシュから枠組みを特定するヘルパー
-function getFrameworkFromUrl(): Framework | null {
-  const matchesKey = (f: Framework, key: string) => {
-    const k = key.toLowerCase();
-    return (
-      f.acronym.toLowerCase() === k ||
-      f.id.toLowerCase() === k ||
-      (f.aliases && f.aliases.some((a) => a.toLowerCase() === k))
-    );
-  };
+// 文字列を正規化して比較（ハイフン・アンダースコア・スペースを無視）
+function normalizeKey(str: string): string {
+  return str.toLowerCase().replace(/[-_\s]+/g, '');
+}
 
-  // 1. パス末尾セグメントから判定（例: /world-blocs/EU -> 'EU'）
-  const segments = window.location.pathname.split('/').filter(Boolean);
-  if (segments.length > 0) {
-    const last = segments[segments.length - 1];
-    if (last !== 'world-blocs' && last !== 'index.html') {
-      const match = FRAMEWORKS.find((f) => matchesKey(f, last));
-      if (match) return match;
+// 枠組みを特定するヘルパー
+export function findFramework(key: string | null | undefined): Framework | null {
+  if (!key) return null;
+  const decoded = decodeURIComponent(key).trim();
+  const norm = normalizeKey(decoded);
+  return (
+    FRAMEWORKS.find((f) => {
+      if (normalizeKey(f.id) === norm) return true;
+      if (normalizeKey(f.acronym) === norm) return true;
+      if (f.aliases && f.aliases.some((a) => normalizeKey(a) === norm)) return true;
+      return false;
+    }) || null
+  );
+}
+
+// URL用スラッグの生成（スペースをハイフンに変換）
+function formatFrameworkSlug(f: Framework): string {
+  return encodeURIComponent(f.acronym.replace(/\s+/g, '-'));
+}
+
+export interface ParsedRoute {
+  mode: ViewMode;
+  framework: Framework | null;
+  compareA: Framework;
+  compareB: Framework;
+}
+
+const DEFAULT_COMPARE_A_ID = 'waico';
+const DEFAULT_COMPARE_B_ID = 'pax_silica';
+
+function getDefaultFrameworkA(): Framework {
+  return findFramework(DEFAULT_COMPARE_A_ID) || FRAMEWORKS[0];
+}
+
+function getDefaultFrameworkB(): Framework {
+  return findFramework(DEFAULT_COMPARE_B_ID) || FRAMEWORKS[1] || FRAMEWORKS[0];
+}
+
+// URLからルート情報（mode, framework, compareA, compareB）を特定するパーサー
+function parseRouteFromUrl(basePath: string): ParsedRoute {
+  const defaultA = getDefaultFrameworkA();
+  const defaultB = getDefaultFrameworkB();
+
+  // 1. パス解析
+  const pathname = decodeURIComponent(window.location.pathname);
+  let relativePath = pathname;
+  if (basePath && relativePath.toLowerCase().startsWith(basePath.toLowerCase())) {
+    relativePath = relativePath.slice(basePath.length);
+  }
+  const segments = relativePath.split('/').filter(Boolean);
+
+  // 1-1. 掛け合わせ比較パス: /compare/...
+  if (segments.length > 0 && segments[0].toLowerCase() === 'compare') {
+    let compA: Framework | null = null;
+    let compB: Framework | null = null;
+
+    if (segments.length >= 3) {
+      compA = findFramework(segments[1]);
+      compB = findFramework(segments[2]);
+    } else if (segments.length === 2) {
+      // /compare/A-vs-B や /compare/AxB
+      const combined = segments[1];
+      const vsMatch = combined.split(/-vs-|x/i);
+      if (vsMatch.length === 2) {
+        compA = findFramework(vsMatch[0]);
+        compB = findFramework(vsMatch[1]);
+      } else {
+        compA = findFramework(combined);
+      }
+    }
+
+    return {
+      mode: 'compare',
+      framework: null,
+      compareA: compA || defaultA,
+      compareB: compB || defaultB,
+    };
+  }
+
+  // 1-2. 国一覧パス: /countries または /country
+  if (
+    segments.length > 0 &&
+    (segments[0].toLowerCase() === 'countries' || segments[0].toLowerCase() === 'country')
+  ) {
+    return {
+      mode: 'country',
+      framework: null,
+      compareA: defaultA,
+      compareB: defaultB,
+    };
+  }
+
+  // 1-3. 枠組み個別パス: /{ACRONYM}（例: /NATO, /Pax-Silica）
+  if (segments.length > 0 && segments[0] !== 'index.html') {
+    const matched = findFramework(segments[0]);
+    if (matched) {
+      return {
+        mode: 'framework',
+        framework: matched,
+        compareA: defaultA,
+        compareB: defaultB,
+      };
     }
   }
 
-  // 2. クエリパラメータから判定 (?f=EU または ?framework=EU)
+  // 2. クエリパラメータフォールバック
   const params = new URLSearchParams(window.location.search);
-  const paramVal = params.get('f') || params.get('framework');
-  if (paramVal) {
-    const match = FRAMEWORKS.find((f) => matchesKey(f, paramVal));
-    if (match) return match;
+  const qMode = params.get('mode') || params.get('tab');
+  const qCompare = params.get('compare');
+  const qParamA = params.get('a');
+  const qParamB = params.get('b');
+  const qFramework = params.get('f') || params.get('framework');
+
+  if (qMode === 'compare' || qCompare || qParamA || qParamB) {
+    let compA: Framework | null = null;
+    let compB: Framework | null = null;
+
+    if (qCompare) {
+      const parts = qCompare.split(',');
+      if (parts[0]) compA = findFramework(parts[0]);
+      if (parts[1]) compB = findFramework(parts[1]);
+    }
+    if (qParamA) compA = findFramework(qParamA);
+    if (qParamB) compB = findFramework(qParamB);
+
+    return {
+      mode: 'compare',
+      framework: null,
+      compareA: compA || defaultA,
+      compareB: compB || defaultB,
+    };
   }
 
-  // 3. ハッシュから判定 (#/EU または #EU)
+  if (qMode === 'country' || qMode === 'countries') {
+    return {
+      mode: 'country',
+      framework: null,
+      compareA: defaultA,
+      compareB: defaultB,
+    };
+  }
+
+  if (qFramework) {
+    const matched = findFramework(qFramework);
+    if (matched) {
+      return {
+        mode: 'framework',
+        framework: matched,
+        compareA: defaultA,
+        compareB: defaultB,
+      };
+    }
+  }
+
+  // 3. ハッシュフォールバック: #/compare/... や #/NATO
   const hashVal = window.location.hash.replace(/^#\/?/, '');
   if (hashVal) {
-    const match = FRAMEWORKS.find((f) => matchesKey(f, hashVal));
-    if (match) return match;
+    const hashSegments = hashVal.split('/').filter(Boolean);
+    if (hashSegments.length > 0 && hashSegments[0].toLowerCase() === 'compare') {
+      const compA = hashSegments[1] ? findFramework(hashSegments[1]) : null;
+      const compB = hashSegments[2] ? findFramework(hashSegments[2]) : null;
+      return {
+        mode: 'compare',
+        framework: null,
+        compareA: compA || defaultA,
+        compareB: compB || defaultB,
+      };
+    }
+    if (hashSegments.length > 0) {
+      const matched = findFramework(hashSegments[0]);
+      if (matched) {
+        return {
+          mode: 'framework',
+          framework: matched,
+          compareA: defaultA,
+          compareB: defaultB,
+        };
+      }
+    }
   }
 
-  return null;
+  // デフォルト: 枠組み未選択（ホーム画面）
+  return {
+    mode: 'framework',
+    framework: null,
+    compareA: defaultA,
+    compareB: defaultB,
+  };
+}
+
+// 状態から目標URLを生成するヘルパー
+function getTargetUrl(
+  basePath: string,
+  mode: ViewMode,
+  framework: Framework | null,
+  compA: Framework,
+  compB: Framework
+): string {
+  if (mode === 'compare') {
+    return `${basePath}/compare/${formatFrameworkSlug(compA)}/${formatFrameworkSlug(compB)}`;
+  }
+  if (mode === 'country') {
+    return `${basePath}/countries`;
+  }
+  if (framework) {
+    return `${basePath}/${formatFrameworkSlug(framework)}`;
+  }
+  return `${basePath}/`;
 }
 
 function AppContent() {
   const { t } = useLanguage();
-  const initialFramework = getFrameworkFromUrl();
-  const [currentMode, setCurrentMode] = useState<ViewMode>('framework');
-  const [selectedFramework, setSelectedFramework] = useState<Framework | null>(initialFramework);
-  const [modalCountry, setModalCountry] = useState<Country | null>(null);
-
-  // ベースパス（GitHub Pages では '/world-blocs'、ローカルでは ''）
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+  const initialRoute = parseRouteFromUrl(basePath);
+  const [currentMode, setCurrentMode] = useState<ViewMode>(initialRoute.mode);
+  const [selectedFramework, setSelectedFramework] = useState<Framework | null>(initialRoute.framework);
+  const [compareAId, setCompareAId] = useState<string>(initialRoute.compareA.id);
+  const [compareBId, setCompareBId] = useState<string>(initialRoute.compareB.id);
+  const [modalCountry, setModalCountry] = useState<Country | null>(null);
 
   // 枠組み変更時のURL同期ハンドラ
   const handleSelectFramework = useCallback((framework: Framework | null) => {
     setSelectedFramework(framework);
     setCurrentMode('framework');
 
-    // ブラウザURLを /world-blocs/{ACRONYM} またはベースURLに同期
-    if (framework) {
-      const targetUrl = `${basePath}/${framework.acronym}`;
-      if (window.location.pathname !== targetUrl) {
-        window.history.pushState({ frameworkId: framework.id }, '', targetUrl);
-      }
-    } else {
-      const targetUrl = `${basePath}/`;
-      if (window.location.pathname !== targetUrl) {
-        window.history.pushState({ frameworkId: null }, '', targetUrl);
-      }
+    const fA = findFramework(compareAId) || getDefaultFrameworkA();
+    const fB = findFramework(compareBId) || getDefaultFrameworkB();
+    const targetUrl = getTargetUrl(basePath, 'framework', framework, fA, fB);
+    if (window.location.pathname !== targetUrl) {
+      window.history.pushState({ mode: 'framework', frameworkId: framework?.id }, '', targetUrl);
+    }
+  }, [basePath, compareAId, compareBId]);
+
+  // 掛け合わせ比較変更時のURL同期ハンドラ
+  const handleCompareChange = useCallback((aId: string, bId: string) => {
+    setCompareAId(aId);
+    setCompareBId(bId);
+    setCurrentMode('compare');
+
+    const fA = findFramework(aId) || getDefaultFrameworkA();
+    const fB = findFramework(bId) || getDefaultFrameworkB();
+    const targetUrl = getTargetUrl(basePath, 'compare', null, fA, fB);
+    if (window.location.pathname !== targetUrl) {
+      window.history.pushState({ mode: 'compare', compareAId: aId, compareBId: bId }, '', targetUrl);
     }
   }, [basePath]);
 
   // モード切替ハンドラ
   const handleModeChange = useCallback((mode: ViewMode) => {
     setCurrentMode(mode);
-    if (mode !== 'framework' || !selectedFramework) {
-      const targetUrl = `${basePath}/`;
+
+    const fA = findFramework(compareAId) || getDefaultFrameworkA();
+    const fB = findFramework(compareBId) || getDefaultFrameworkB();
+    const targetUrl = getTargetUrl(basePath, mode, selectedFramework, fA, fB);
+    if (window.location.pathname !== targetUrl) {
       window.history.pushState({ mode }, '', targetUrl);
-    } else {
-      const targetUrl = `${basePath}/${selectedFramework.acronym}`;
-      window.history.pushState({ frameworkId: selectedFramework.id }, '', targetUrl);
     }
-  }, [basePath, selectedFramework]);
+  }, [basePath, selectedFramework, compareAId, compareBId]);
 
   // ブラウザの戻る・進むボタン（popstate）対応
   useEffect(() => {
     const handlePopState = () => {
-      const matched = getFrameworkFromUrl();
-      if (matched) {
-        setSelectedFramework(matched);
-        setCurrentMode('framework');
-      } else {
-        // パス末尾に枠組み名がない場合はベース画面（枠組み未選択）
-        setSelectedFramework(null);
-        setCurrentMode('framework');
-      }
+      const route = parseRouteFromUrl(basePath);
+      setCurrentMode(route.mode);
+      setSelectedFramework(route.framework);
+      setCompareAId(route.compareA.id);
+      setCompareBId(route.compareB.id);
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  }, [basePath]);
 
-  // 初回ロード時、URLに指定された枠組みがあればURLを正規化
+  // 初回ロード時、URLを正規化（例: /compare -> /compare/WAICO/Pax-Silica）
   useEffect(() => {
-    const matched = getFrameworkFromUrl();
-    if (matched) {
-      const normalizedUrl = `${basePath}/${matched.acronym}`;
-      if (window.location.pathname.toLowerCase() !== normalizedUrl.toLowerCase()) {
-        window.history.replaceState({ frameworkId: matched.id }, '', normalizedUrl);
-      }
+    const route = parseRouteFromUrl(basePath);
+    const normalizedUrl = getTargetUrl(
+      basePath,
+      route.mode,
+      route.framework,
+      route.compareA,
+      route.compareB
+    );
+    if (
+      window.location.pathname.toLowerCase() !== normalizedUrl.toLowerCase() &&
+      window.location.pathname !== `${basePath}/` &&
+      window.location.pathname !== `${basePath}`
+    ) {
+      window.history.replaceState({ mode: route.mode }, '', normalizedUrl);
     }
   }, [basePath]);
 
@@ -147,6 +336,9 @@ function AppContent() {
           <CompareView
             onSelectCountry={handleSelectCountry}
             selectedCountryAlpha3={modalCountry?.alpha3}
+            frameworkAId={compareAId}
+            frameworkBId={compareBId}
+            onCompareChange={handleCompareChange}
           />
         )}
 

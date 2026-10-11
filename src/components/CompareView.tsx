@@ -10,16 +10,51 @@ import { useLanguage } from '../context/LanguageContext';
 interface CompareViewProps {
   onSelectCountry: (country: Country) => void;
   selectedCountryAlpha3?: string | null;
+  frameworkAId?: string;
+  frameworkBId?: string;
+  onCompareChange?: (frameworkAId: string, frameworkBId: string) => void;
 }
 
 export const CompareView: React.FC<CompareViewProps> = ({
   onSelectCountry,
   selectedCountryAlpha3,
+  frameworkAId: propFrameworkAId,
+  frameworkBId: propFrameworkBId,
+  onCompareChange,
 }) => {
   const { t, language } = useLanguage();
-  const [frameworkAId, setFrameworkAId] = useState<string>('eu');
-  const [frameworkBId, setFrameworkBId] = useState<string>('nato');
+  const [frameworkAId, setFrameworkAId] = useState<string>(propFrameworkAId || 'waico');
+  const [frameworkBId, setFrameworkBId] = useState<string>(propFrameworkBId || 'pax_silica');
   const [filterIntersection, setFilterIntersection] = useState<'all' | 'both' | 'a_only' | 'b_only'>('all');
+
+  // 親から渡された props の変更を反映
+  React.useEffect(() => {
+    if (propFrameworkAId && propFrameworkAId !== frameworkAId) {
+      setFrameworkAId(propFrameworkAId);
+    }
+  }, [propFrameworkAId]);
+
+  React.useEffect(() => {
+    if (propFrameworkBId && propFrameworkBId !== frameworkBId) {
+      setFrameworkBId(propFrameworkBId);
+    }
+  }, [propFrameworkBId]);
+
+  const handleSelectFrameworkA = (newA: string) => {
+    setFrameworkAId(newA);
+    onCompareChange?.(newA, frameworkBId);
+  };
+
+  const handleSelectFrameworkB = (newB: string) => {
+    setFrameworkBId(newB);
+    onCompareChange?.(frameworkAId, newB);
+  };
+
+  const handleSelectPreset = (newA: string, newB: string) => {
+    setFrameworkAId(newA);
+    setFrameworkBId(newB);
+    onCompareChange?.(newA, newB);
+  };
 
   const frameworkA = useMemo(() => FRAMEWORKS.find((f) => f.id === frameworkAId) || FRAMEWORKS[0], [frameworkAId]);
   const frameworkB = useMemo(() => FRAMEWORKS.find((f) => f.id === frameworkBId) || FRAMEWORKS[1], [frameworkBId]);
@@ -96,18 +131,15 @@ export const CompareView: React.FC<CompareViewProps> = ({
 
   // クイック比較プリセット
   const presets = [
-    { title: 'EU × NATO', a: 'eu', b: 'nato', descJa: '欧州統合と軍事同盟の重なり', descEn: 'European integration & defense alliance' },
-    { title: 'NATO × OSCE', a: 'nato', b: 'osce', descJa: '西側防衛同盟 vs 包括的地域安保機構', descEn: 'Western defense alliance vs Comprehensive regional security' },
-    { title: 'EU × EEA', a: 'eu', b: 'eea', descJa: '欧州単一市場とEFTA3カ国の統合関係', descEn: 'EU single market & EFTA integration' },
-    { title: 'MERCOSUR × 太平洋同盟', a: 'mercosur', b: 'pacific-alliance', descJa: '南米大西洋側 vs 太平洋側の二大経済圏', descEn: 'Atlantic vs Pacific Latin American blocs' },
-    { title: 'USMCA × CPTPP', a: 'usmca', b: 'cptpp', descJa: '北米協定 vs アジア太平洋メガFTA', descEn: 'North America vs Asia-Pacific mega-FTA' },
-    { title: 'P5 × G7', a: 'p5', b: 'g7', descJa: '安保理常任理事国 vs 先進主要国', descEn: 'UNSC P5 vs Advanced G7 nations' },
-    { title: 'OECD × BRICS', a: 'oecd', b: 'brics', descJa: '先進国クラブ vs 新興大国連合', descEn: 'Advanced economies vs Emerging powers' },
-    { title: 'CPTPP × RCEP', a: 'cptpp', b: 'rcep', descJa: 'アジア太平洋のメガFTA比較', descEn: 'Asia-Pacific mega-FTAs compared' },
-    { title: 'AUKUS × Quad', a: 'aukus', b: 'quad', descJa: 'インド太平洋の先端防衛協力', descEn: 'Indo-Pacific advanced security partnerships' },
-    { title: 'G7 × BRICS', a: 'g7', b: 'brics', descJa: '主要先進国 vs 新興大国連合', descEn: 'G7 advanced nations vs BRICS powers' },
-    { title: 'ICC × G7', a: 'icc', b: 'g7', descJa: '国際司法と主要国（米国の不参加）', descEn: 'International justice & G7 (US non-party)' },
-    { title: 'NPT × TPNW', a: 'npt', b: 'tpnw', descJa: '核不拡散条約 vs 核兵器禁止条約', descEn: 'Non-Proliferation vs Prohibition of Nuclear Weapons' },
+    { title: 'WAICO × Pax Silica', a: 'waico', b: 'pax_silica' },
+    { title: 'EU × NATO', a: 'eu', b: 'nato' },
+    { title: 'NATO × OSCE', a: 'nato', b: 'osce' },
+    { title: 'EU × EEA', a: 'eu', b: 'eea' },
+    { title: 'P5 × G7', a: 'p5', b: 'g7' },
+    { title: 'OECD × BRICS', a: 'oecd', b: 'brics' },
+    { title: 'CPTPP × RCEP', a: 'cptpp', b: 'rcep' },
+    { title: 'G7 × BRICS', a: 'g7', b: 'brics' },
+    { title: 'NPT × TPNW', a: 'npt', b: 'tpnw' },
   ];
 
   return (
@@ -118,24 +150,18 @@ export const CompareView: React.FC<CompareViewProps> = ({
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           {t('compareFeaturedPresets')}
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2">
           {presets.map((p) => (
             <button
               key={p.title}
-              onClick={() => {
-                setFrameworkAId(p.a);
-                setFrameworkBId(p.b);
-              }}
-              className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+              onClick={() => handleSelectPreset(p.a, p.b)}
+              className={`py-2 px-2 rounded-xl border text-center transition-all cursor-pointer ${
                 frameworkAId === p.a && frameworkBId === p.b
-                  ? 'bg-purple-50 dark:bg-purple-900/30 border-purple-500 text-purple-900 dark:text-purple-200 shadow-sm'
-                  : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 hover:border-purple-300 text-slate-700 dark:text-slate-300'
+                  ? 'bg-purple-50 dark:bg-purple-900/30 border-purple-500 text-purple-900 dark:text-purple-200 shadow-sm font-bold'
+                  : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 hover:border-purple-300 text-slate-700 dark:text-slate-300 font-semibold'
               }`}
             >
-              <div className="font-bold text-xs sm:text-sm">{p.title}</div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">
-                {language === 'en' ? p.descEn : p.descJa}
-              </div>
+              <div className="text-xs sm:text-xs whitespace-nowrap overflow-hidden text-ellipsis">{p.title}</div>
             </button>
           ))}
         </div>
@@ -153,7 +179,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
           <select
             value={frameworkAId}
-            onChange={(e) => setFrameworkAId(e.target.value)}
+            onChange={(e) => handleSelectFrameworkA(e.target.value)}
             className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-blue-300 dark:border-blue-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             {FRAMEWORKS.map((f) => (
@@ -177,7 +203,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
           <select
             value={frameworkBId}
-            onChange={(e) => setFrameworkBId(e.target.value)}
+            onChange={(e) => handleSelectFrameworkB(e.target.value)}
             className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-red-300 dark:border-red-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
           >
             {FRAMEWORKS.map((f) => (
