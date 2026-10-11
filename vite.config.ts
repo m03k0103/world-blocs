@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: './',
+  base: '/world-blocs/',
   build: {
     outDir: 'docs',
     emptyOutDir: true,

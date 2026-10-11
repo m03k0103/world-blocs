@@ -46,10 +46,13 @@ function parseRouteFromUrl(basePath: string): ParsedRoute {
   // 1. パス解析
   const pathname = decodeURIComponent(window.location.pathname);
   let relativePath = pathname;
-  if (basePath && relativePath.toLowerCase().startsWith(basePath.toLowerCase())) {
+  if (basePath && basePath !== '.' && relativePath.toLowerCase().startsWith(basePath.toLowerCase())) {
     relativePath = relativePath.slice(basePath.length);
   }
   const segments = relativePath.split('/').filter(Boolean);
+  if (segments.length > 0 && segments[0].toLowerCase() === 'world-blocs') {
+    segments.shift();
+  }
 
   // 1-1. 掛け合わせ比較パス: /compare/...
   if (segments.length > 0 && segments[0].toLowerCase() === 'compare') {
