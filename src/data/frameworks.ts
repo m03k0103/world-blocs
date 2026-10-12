@@ -1704,7 +1704,6 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'SLV', status: 'member', joined: '202606', signed: '202606', notes: '2026年6月署名' },
       { countryCode: 'KAZ', status: 'member', joined: '202606', signed: '202606', notes: '2026年6月署名（重要鉱物・ウラン / WAICOにも加盟）' },
       { countryCode: 'PAN', status: 'member', joined: '202606', signed: '202606', notes: '2026年6月署名（物流・回線要衝）' },
-      { countryCode: 'PRT', status: 'member', joined: '202606', signed: '202606', notes: '2026年6月署名（EU加盟国）' },
       { countryCode: 'ITA', status: 'member', joined: '202607', signed: '202607', notes: '2026年7月署名（EU加盟国）' },
       // オブザーバー・協議参加国
       { countryCode: 'CAN', status: 'observer', firstParticipated: '2025', notes: '協議参加・オブザーバー' },
