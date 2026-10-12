@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import type { Framework } from '../types';
-import { CATEGORY_LABELS } from '../data/frameworks';
 import { Search, ChevronDown, X, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -30,11 +29,11 @@ export const FrameworkCombobox: React.FC<FrameworkComboboxProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxRef = useRef<HTMLUListElement>(null);
 
-  // 表示名（選択中の枠組みのアクロニム＋名称）
+  // 表示名（日本語名/英語名の後にアクロニムを表示）
   const selectedLabel = useMemo(() => {
     if (!selectedFramework) return '';
     const name = language === 'en' ? selectedFramework.nameEn : selectedFramework.nameJa;
-    return `${selectedFramework.acronym} - ${name}`;
+    return `${name} (${selectedFramework.acronym})`;
   }, [selectedFramework, language]);
 
   // 入力欄に表示するテキスト
@@ -51,12 +50,8 @@ export const FrameworkCombobox: React.FC<FrameworkComboboxProps> = ({
       const matchJa = f.nameJa.toLowerCase().includes(q);
       const matchEn = f.nameEn.toLowerCase().includes(q);
       const matchId = f.id.toLowerCase().includes(q);
-      const catLabel = CATEGORY_LABELS[f.category];
-      const matchCat =
-        catLabel &&
-        (catLabel.labelJa.toLowerCase().includes(q) || catLabel.labelEn.toLowerCase().includes(q));
 
-      return matchAcronym || matchJa || matchEn || matchId || matchCat;
+      return matchAcronym || matchJa || matchEn || matchId;
     });
   }, [frameworks, searchQuery]);
 
@@ -236,8 +231,7 @@ export const FrameworkCombobox: React.FC<FrameworkComboboxProps> = ({
               filteredFrameworks.map((f, idx) => {
                 const isSelected = selectedFramework?.id === f.id;
                 const isHighlighted = idx === highlightedIndex;
-                const cat = CATEGORY_LABELS[f.category];
-                const catName = cat ? (language === 'en' ? cat.labelEn : cat.labelJa) : '';
+                const name = language === 'en' ? f.nameEn : f.nameJa;
 
                 return (
                   <li
@@ -254,31 +248,24 @@ export const FrameworkCombobox: React.FC<FrameworkComboboxProps> = ({
                         : 'text-slate-700 dark:text-slate-300'
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="truncate">
+                        {name}
+                      </span>
                       <span
-                        className={`px-2 py-0.5 rounded-md font-mono font-black text-[11px] shrink-0 ${
+                        className={`px-1.5 py-0.5 rounded font-mono font-bold text-[11px] shrink-0 ${
                           isSelected
                             ? 'bg-blue-600 text-white'
-                            : 'bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200'
+                            : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                         }`}
                       >
                         {f.acronym}
                       </span>
-                      <span className="truncate">
-                        {language === 'en' ? f.nameEn : f.nameJa}
-                      </span>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
-                      {catName && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
-                          {catName}
-                        </span>
-                      )}
-                      {isSelected && (
-                        <Check className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      )}
-                    </div>
+                    {isSelected && (
+                      <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                    )}
                   </li>
                 );
               })
