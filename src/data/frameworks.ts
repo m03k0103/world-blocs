@@ -1705,10 +1705,8 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'KAZ', status: 'member', joined: '202606', signed: '202606', notes: '2026年6月署名（重要鉱物・ウラン / WAICOにも加盟）' },
       { countryCode: 'PAN', status: 'member', joined: '202606', signed: '202606', notes: '2026年6月署名（物流・回線要衝）' },
       { countryCode: 'ITA', status: 'member', joined: '202607', signed: '202607', notes: '2026年7月署名（EU加盟国）' },
-      // オブザーバー・協議参加国
-      { countryCode: 'CAN', status: 'observer', firstParticipated: '2025', notes: '協議参加・オブザーバー' },
-      { countryCode: 'TWN', status: 'observer', firstParticipated: '2025', notes: 'サミット参加・オブザーバー（TSMC等先端半導体製造）' },
-      { countryCode: 'EST', status: 'observer', firstParticipated: '202606', signed: '202606', notes: '2026年6月オブザーバー参加・宣言署名' }
+      // 非署名参加国（米国国務省公式: 宣言の原則をエンドース・サミット参加）
+      { countryCode: 'TWN', status: 'partner', firstParticipated: '20251212', notes: '非署名参加国（米国国務省公式発表: Pax Silica宣言の原則を支持・エンドース。TSMC等先端半導体製造拠点）' }
     ]
   },
   {
