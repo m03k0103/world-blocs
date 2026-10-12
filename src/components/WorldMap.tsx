@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import * as d3Geo from 'd3-geo';
 import * as topojson from 'topojson-client';
-import { COUNTRY_BY_NUMERIC } from '../data/countries';
+import { COUNTRY_BY_NUMERIC, COUNTRY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
 import type { Country, MembershipStatus } from '../types';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
@@ -91,6 +91,48 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   const pathGenerator = useMemo(() => {
     return d3Geo.geoPath().projection(projection);
   }, [projection]);
+
+  // 地図上のポリゴンに存在する alpha3 の集合
+  const mappedAlpha3Set = useMemo(() => {
+    const set = new Set<string>();
+    geographies.forEach(geo => {
+      const numericId = String(geo.id).padStart(3, '0');
+      const country = COUNTRY_BY_NUMERIC[numericId];
+      if (country) {
+        set.add(country.alpha3);
+      }
+    });
+    return set;
+  }, [geographies]);
+
+  // 地域統合体・非国家メンバー（EUR: 欧州連合, AFU: アフリカ連合 等）
+  const regionalBlocMembers = useMemo(() => {
+    const list: { country: Country; data: CountryMapData }[] = [];
+    ['EUR', 'AFU'].forEach(code => {
+      const data = countryDataMap[code];
+      const country = COUNTRY_BY_ALPHA3[code];
+      if (country && data && (data.status || data.inFrameworkA || data.inFrameworkB)) {
+        list.push({ country, data });
+      }
+    });
+    return list;
+  }, [countryDataMap]);
+
+  // 低解像度 TopoJSON 110m でポリゴンが存在しない参加国・小島嶼国（SGP, MLT, VAT, AND, MCO, LIE等）
+  const microstateMembers = useMemo(() => {
+    const list: { country: Country; data: CountryMapData }[] = [];
+    Object.entries(countryDataMap).forEach(([alpha3, data]) => {
+      if (alpha3 === 'EUR' || alpha3 === 'AFU') return;
+      if (!data.status && !data.inFrameworkA && !data.inFrameworkB) return;
+      if (!mappedAlpha3Set.has(alpha3)) {
+        const country = COUNTRY_BY_ALPHA3[alpha3];
+        if (country) {
+          list.push({ country, data });
+        }
+      }
+    });
+    return list.sort((a, b) => a.country.nameJa.localeCompare(b.country.nameJa, 'ja'));
+  }, [countryDataMap, mappedAlpha3Set]);
 
   // 色判定関数
   const getCountryFill = useCallback(
@@ -211,6 +253,91 @@ export const WorldMap: React.FC<WorldMapProps> = ({
           <RotateCcw className="w-5 h-5" />
         </button>
       </div>
+
+      {/* 地域統合体・非国家メンバー（EUR, AFU） */}
+      {regionalBlocMembers.length > 0 && (
+        <div className="absolute top-4 left-4 z-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md flex flex-col gap-1.5 max-w-[260px]">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            {language === 'ja' ? '地域組織・非国家参加' : 'Regional / Non-state Members'}
+          </div>
+          <div className="flex flex-col gap-1">
+            {regionalBlocMembers.map(({ country, data }) => {
+              const isSelected = selectedCountryAlpha3 === country.alpha3;
+              const fill = getCountryFill(country.alpha3, false, isSelected);
+              const statusLabel =
+                data.status && STATUS_LABELS[data.status]
+                  ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
+                  : data.status;
+
+              return (
+                <button
+                  key={country.alpha3}
+                  onClick={() => onSelectCountry?.(country)}
+                  className={`flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-left text-xs transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-orange-100 dark:bg-orange-950/60 border border-orange-500 text-orange-900 dark:text-orange-200 font-semibold shadow-sm'
+                      : 'hover:bg-slate-100 dark:hover:bg-slate-700/60 border border-slate-200/60 dark:border-slate-700 text-slate-800 dark:text-slate-200'
+                  }`}
+                  title={country.nameJa}
+                >
+                  <div className="flex items-center gap-1.5 truncate">
+                    <span className="text-sm shrink-0">{country.flagEmoji || '🌐'}</span>
+                    <span className="truncate font-medium">
+                      {language === 'en' ? country.nameEn : country.nameJa}
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400 shrink-0">({country.alpha3})</span>
+                  </div>
+                  {mode === 'compare' ? (
+                    <span
+                      className="w-2.5 h-2.5 rounded-full shrink-0"
+                      style={{ backgroundColor: fill }}
+                      title={data.inFrameworkA && data.inFrameworkB ? 'Both' : data.inFrameworkA ? labelA : labelB}
+                    />
+                  ) : (
+                    statusLabel && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded font-medium shrink-0 bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300">
+                        {statusLabel}
+                      </span>
+                    )
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 110m解像度地図ポリゴン外の参加国・小島嶼国（SGP, MLT, VAT, AND, MCO, LIE等） */}
+      {microstateMembers.length > 0 && (
+        <div className="absolute bottom-3 left-4 right-4 z-10 flex flex-wrap items-center gap-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md max-h-24 overflow-y-auto">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 shrink-0 mr-1">
+            {language === 'ja' ? '地図未表示の参加国:' : 'Other participating states:'}
+          </span>
+          {microstateMembers.map(({ country, data }) => {
+            const isSelected = selectedCountryAlpha3 === country.alpha3;
+            const fill = getCountryFill(country.alpha3, false, isSelected);
+            return (
+              <button
+                key={country.alpha3}
+                onClick={() => onSelectCountry?.(country)}
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] transition-all cursor-pointer border ${
+                  isSelected
+                    ? 'bg-orange-100 dark:bg-orange-950/60 border-orange-500 text-orange-900 dark:text-orange-200 font-bold'
+                    : 'bg-slate-100/90 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-600 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200'
+                }`}
+                title={`${country.nameJa} (${country.alpha3}) - ${data.status || ''}`}
+              >
+                <span className="text-xs">{country.flagEmoji || '🌐'}</span>
+                <span>{language === 'en' ? country.nameEn : country.nameJa}</span>
+                <span
+                  className="w-1.5 h-1.5 rounded-full shrink-0 ml-0.5"
+                  style={{ backgroundColor: fill }}
+                />
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {loading ? (
         <div className="flex items-center justify-center w-full h-full text-slate-500 font-medium">

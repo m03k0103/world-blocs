@@ -877,7 +877,7 @@ export const FRAMEWORKS: Framework[] = [
       // 領土・自治地域（宗主国管轄）
       { countryCode: 'GRL', status: 'party', ratifiedYear: 1969, notes: 'デンマーク領として条約適用' },
       { countryCode: 'NCL', status: 'party', ratifiedYear: 1992, notes: 'フランス海外領土として条約適用' },
-      { countryCode: 'C630', status: 'party', ratifiedYear: 1970, notes: 'プエルトリコ（米国自治領として条約適用）' },
+      { countryCode: 'PRI', status: 'party', ratified: '1970', notes: 'プエルトリコ（米国自治領として条約適用）' },
 
       // 脱退宣言国（第10条の法的効力・地位に議論あり）
       { countryCode: 'PRK', status: 'withdrawn', accessionYear: 1985, ratifiedYear: 1985, withdrawnYear: 2003, notes: '1985年加入。1993年の脱退通告保留後、2003年に条約第10条に基づく脱退を宣言。ただしIAEAや国連安保理、多くの締約国は手続き要件や義務の観点から脱退の法的効力を認めておらず、国際法上の地位については議論が続いている' },

@@ -4,12 +4,12 @@ import type { Country } from '../types';
 export const COUNTRIES: Country[] = [
   {
     "numeric": "010",
-    "alpha3": "C010",
-    "alpha2": "C10",
-    "nameJa": "Antarctica",
+    "alpha3": "ATA",
+    "alpha2": "AQ",
+    "nameJa": "南極",
     "nameEn": "Antarctica",
     "region": "その他",
-    "flagEmoji": "🌐"
+    "flagEmoji": "🇦🇶"
   },
   {
     "numeric": "044",
@@ -40,21 +40,21 @@ export const COUNTRIES: Country[] = [
   },
   {
     "numeric": "238",
-    "alpha3": "C238",
-    "alpha2": "C38",
+    "alpha3": "FLK",
+    "alpha2": "FK",
     "nameJa": "フォークランド諸島",
-    "nameEn": "Falkland Is.",
+    "nameEn": "Falkland Islands",
     "region": "南北アメリカ",
     "flagEmoji": "🇫🇰"
   },
   {
     "numeric": "260",
-    "alpha3": "C260",
-    "alpha2": "C60",
+    "alpha3": "ATF",
+    "alpha2": "TF",
     "nameJa": "フランス領南方・南極地域",
-    "nameEn": "Fr. S. Antarctic Lands",
+    "nameEn": "French Southern Territories",
     "region": "その他",
-    "flagEmoji": "🌐"
+    "flagEmoji": "🇹🇫"
   },
   {
     "numeric": "270",
@@ -103,7 +103,7 @@ export const COUNTRIES: Country[] = [
   },
   {
     "numeric": "630",
-    "alpha3": "C630",
+    "alpha3": "PRI",
     "alpha2": "PR",
     "nameJa": "プエルトリコ",
     "nameEn": "Puerto Rico",
