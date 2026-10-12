@@ -1,0 +1,28 @@
+# プロジェクト共通修正ルール
+
+## 共通修正ルール
+1. 既存の `signedYear`、`ratifiedYear`、`accessionYear`、`inForceYear`、`joinedYear`、`firstParticipatedYear`、`declarationSignedYear`、`appliedYear`、`candidateYear`、`negotiationsStartedYear`、`suspendedYear`、`withdrawnYear` を、新しいフィールド定義に従って整理する。単純な機械的置換は禁止する。
+2. 各日付は、公式資料で確認できる実際の法的・制度的イベントに対応させる。
+   - 条約への署名：`signed`
+   - 批准・受諾・承認：`ratified`
+   - 署名を経ない加入：`accession`
+   - 当該国に対する協定発効：`inForce`
+   - 機構・地域統合・枠組みへの加盟：`joined`
+   - 非条約フォーラムへの初参加：`firstParticipated`
+   - 共同宣言・創設宣言への署名：`declarationSigned`
+   - 正式な加盟申請：`applied`
+   - 公式な加盟候補国認定：`candidate`
+   - 実際の加盟交渉開始：`negotiationsStarted`
+   - 参加資格停止：`suspended`
+   - 脱退通告：`withdrawalNotified`
+   - 脱退の法的発効：`withdrawn`
+3. `signed`、`ratified`、`accession`、`inForce`、`joined` は互換ではない。資料に記載された出来事に合うフィールドだけを設定する。
+4. 非条約型フォーラムに `ratified` を設定しない。参加・加盟を表す場合は `joined`、初参加を表す場合は `firstParticipated`、共同宣言に署名した場合は `declarationSigned` を使用する。
+5. 条約の締約国と、当該条約が適用される国・地域を区別する。海外領域や非独立地域を締約国として登録する場合は、法的根拠を確認する。
+6. 脱退については `withdrawalNotified` と `withdrawn` を分ける。脱退通告があっても、発効前は脱退済みとして扱わない。署名の撤回は、締約国の脱退と区別する。
+7. `candidate` は公式な候補資格を得た日付に限定する。加盟希望、申請済み、協議参加、候補国認定、交渉開始を同じ状態として扱わない。
+8. 日付は `yyyy`、`yyyymm`、`yyyymmdd` のいずれかで格納する。資料が年しか示していない場合に、推測で月日を補わない。
+9. 公式資料で確認できない日付は推測で埋めず、該当フィールドを省略する。既存の `notes` は補足情報として保持し、構造化フィールドと矛盾する場合は修正する。
+10. 各枠組みについて、条約の締約国・機構の加盟国・フォーラムの参加者・候補国・オブザーバーを区別し、現行の `status` の値と日付フィールドの整合性も確認する。
+11. 修正後、旧フィールド名が残っていないこと、同一イベントが複数フィールドに重複登録されていないこと、現在の状態と履歴が矛盾していないことを検証する。
+12. 日付と状態は、可能な限り条約本文、寄託者（depositary）の記録、各機構の公式加盟国一覧・公式発表を根拠に確認する。確認できなかった項目は、推測で修正せず未確認事項として報告する。
