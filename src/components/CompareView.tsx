@@ -4,6 +4,7 @@ import { FRAMEWORKS } from '../data/frameworks';
 import { COUNTRY_BY_ALPHA3 } from '../data/countries';
 import { WorldMap } from './WorldMap';
 import type { CountryMapData } from './WorldMap';
+import { FrameworkCombobox } from './FrameworkCombobox';
 import { Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -197,18 +198,13 @@ export const CompareView: React.FC<CompareViewProps> = ({
               {language === 'ja' ? '枠組み A（青色）' : 'Framework A (Blue)'}
             </span>
           </div>
-          <select
-            value={frameworkAId}
-            onChange={(e) => handleSelectFrameworkA(e.target.value)}
-            className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-blue-300 dark:border-blue-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-          >
-            <option value="">{t('compareSelectPlaceholder')}</option>
-            {FRAMEWORKS.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.acronym} - {language === 'en' ? f.nameEn : f.nameJa}
-              </option>
-            ))}
-          </select>
+          <FrameworkCombobox
+            frameworks={FRAMEWORKS}
+            selectedFramework={frameworkA}
+            onSelect={(f) => handleSelectFrameworkA(f?.id || '')}
+            variant="blue"
+            placeholder={t('compareSelectPlaceholder') as string}
+          />
           {frameworkA ? (
             <div className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-1">
               {frameworkA.description}
@@ -228,18 +224,13 @@ export const CompareView: React.FC<CompareViewProps> = ({
               {language === 'ja' ? '枠組み B（赤色）' : 'Framework B (Red)'}
             </span>
           </div>
-          <select
-            value={frameworkBId}
-            onChange={(e) => handleSelectFrameworkB(e.target.value)}
-            className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-red-300 dark:border-red-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
-          >
-            <option value="">{t('compareSelectPlaceholder')}</option>
-            {FRAMEWORKS.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.acronym} - {language === 'en' ? f.nameEn : f.nameJa}
-              </option>
-            ))}
-          </select>
+          <FrameworkCombobox
+            frameworks={FRAMEWORKS}
+            selectedFramework={frameworkB}
+            onSelect={(f) => handleSelectFrameworkB(f?.id || '')}
+            variant="red"
+            placeholder={t('compareSelectPlaceholder') as string}
+          />
           {frameworkB ? (
             <div className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-1">
               {frameworkB.description}

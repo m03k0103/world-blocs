@@ -16,6 +16,8 @@ export const translations = {
     
     // 枠組みビュー
     frameworkPlaceholder: '-- 枠組み・条約を選択してください --',
+    comboboxSearchPlaceholder: '枠組み・条約を検索・選択...',
+    noFrameworkFound: '一致する枠組みが見つかりません',
     clearSelection: '解除',
     categoryFilterAll: 'すべてのカテゴリ',
     milestonesTitle: '主要マイルストーン',
@@ -129,6 +131,8 @@ export const translations = {
 
     // Framework View
     frameworkPlaceholder: '-- Select Framework or Treaty --',
+    comboboxSearchPlaceholder: 'Search or select framework...',
+    noFrameworkFound: 'No matching framework found',
     clearSelection: 'Clear',
     categoryFilterAll: 'All Categories',
     milestonesTitle: 'Key Milestones',

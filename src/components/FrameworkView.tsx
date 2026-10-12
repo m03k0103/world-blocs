@@ -5,6 +5,7 @@ import { WorldMap } from './WorldMap';
 import type { CountryMapData } from './WorldMap';
 import { TimelineSlider } from './TimelineSlider';
 import { TableView } from './TableView';
+import { FrameworkCombobox } from './FrameworkCombobox';
 import { Map, Table, Building2, Globe } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { extractYear, getEffectiveMembershipYear } from '../utils/date';
@@ -221,41 +222,18 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
             ))}
           </div>
 
-          {/* 枠組みドロップダウン */}
-          <div className="flex items-center gap-2 min-w-[280px]">
-            <select
-              value={selectedFramework?.id || ''}
-              onChange={(e) => {
-                const val = e.target.value;
-                if (!val) {
-                  onSelectFramework(null);
-                } else {
-                  const found = FRAMEWORKS.find((f) => f.id === val);
-                  if (found) {
-                    onSelectFramework(found);
-                    setSelectedYear(currentMaxYear);
-                  }
+          {/* 枠組み検索・選択コンボボックス */}
+          <div className="w-full md:w-auto min-w-[280px] sm:min-w-[340px]">
+            <FrameworkCombobox
+              frameworks={filteredFrameworks}
+              selectedFramework={selectedFramework}
+              onSelect={(found) => {
+                onSelectFramework(found);
+                if (found) {
+                  setSelectedYear(currentMaxYear);
                 }
               }}
-              className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-            >
-              <option value="">{t('frameworkPlaceholder')}</option>
-              {filteredFrameworks.map((f) => (
-                <option key={f.id} value={f.id}>
-                  {f.acronym} - {language === 'en' ? f.nameEn : f.nameJa}
-                </option>
-              ))}
-            </select>
-            {selectedFramework && (
-              <button
-                type="button"
-                onClick={() => onSelectFramework(null)}
-                className="px-2.5 py-2 text-xs font-semibold text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors whitespace-nowrap cursor-pointer"
-                title={t('clearSelection')}
-              >
-                {t('clearSelection')}
-              </button>
-            )}
+            />
           </div>
         </div>
       </div>
