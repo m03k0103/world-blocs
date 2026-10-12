@@ -99,6 +99,26 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
         </div>
       </div>
 
+      {/* 件数サマリー（上部表示） */}
+      <div className="flex items-center justify-between text-xs text-slate-500 px-1 -mt-2">
+        <span className="font-semibold text-slate-700 dark:text-slate-300">
+          {language === 'ja'
+            ? `計 ${filteredCountries.length} カ国・地域を表示中`
+            : `Showing ${filteredCountries.length} countries & territories`}
+        </span>
+        {(search || selectedRegion !== 'all') && (
+          <button
+            onClick={() => {
+              setSearch('');
+              setSelectedRegion('all');
+            }}
+            className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer font-medium"
+          >
+            {language === 'ja' ? '絞り込みをリセット' : 'Reset filters'}
+          </button>
+        )}
+      </div>
+
       {/* 国カード一覧グリッド */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
         {filteredCountries.map((country) => {

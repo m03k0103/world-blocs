@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { MembershipRecord, Country, MembershipStatus } from '../types';
 import { COUNTRY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
@@ -33,6 +33,30 @@ export const TableView: React.FC<TableViewProps> = ({
     });
     return Array.from(set).sort();
   }, [members]);
+
+  // 当該枠組みに実際に存在するステータス一覧
+  const availableStatuses = useMemo(() => {
+    const set = new Set<string>();
+    members.forEach((m) => {
+      if (m.currentStatus) set.add(m.currentStatus);
+    });
+    const order = Object.keys(STATUS_LABELS);
+    return Array.from(set).sort((a, b) => {
+      const idxA = order.indexOf(a);
+      const idxB = order.indexOf(b);
+      if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+      if (idxA !== -1) return -1;
+      if (idxB !== -1) return 1;
+      return a.localeCompare(b);
+    });
+  }, [members]);
+
+  // 枠組み切り替え等で選択中ステータスが存在しなくなった場合の安全フォールバック
+  useEffect(() => {
+    if (selectedStatus !== 'all' && !availableStatuses.includes(selectedStatus)) {
+      setSelectedStatus('all');
+    }
+  }, [availableStatuses, selectedStatus]);
 
   // フィルタ & ソート
   const filteredMembers = useMemo(() => {
@@ -175,18 +199,24 @@ export const TableView: React.FC<TableViewProps> = ({
             </select>
           </div>
 
-          {/* ステータスフィルタ */}
+          {/* ステータスフィルタ（実際に存在する選択肢のみ表示） */}
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
             className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
           >
             <option value="all">{t('filterStatusAll')}</option>
-            {Object.entries(STATUS_LABELS).map(([k, v]) => (
-              <option key={k} value={k}>
-                {language === 'en' ? v.labelEn : v.labelJa}
-              </option>
-            ))}
+            {availableStatuses.map((k) => {
+              const labelObj = STATUS_LABELS[k];
+              const label = labelObj
+                ? (language === 'en' ? labelObj.labelEn : labelObj.labelJa)
+                : k;
+              return (
+                <option key={k} value={k}>
+                  {label}
+                </option>
+              );
+            })}
           </select>
         </div>
 
@@ -198,6 +228,27 @@ export const TableView: React.FC<TableViewProps> = ({
           <Download className="w-4 h-4" />
           {t('exportCsv')}
         </button>
+      </div>
+
+      {/* 件数サマリーバー（上部表示） */}
+      <div className="px-4 py-2.5 bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+        <span className="font-semibold text-slate-700 dark:text-slate-200">
+          {language === 'ja'
+            ? `全 ${filteredMembers.length} カ国・地域を表示中`
+            : `Showing ${filteredMembers.length} countries & territories`}
+        </span>
+        {(search || selectedRegion !== 'all' || selectedStatus !== 'all') && (
+          <button
+            onClick={() => {
+              setSearch('');
+              setSelectedRegion('all');
+              setSelectedStatus('all');
+            }}
+            className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer font-medium"
+          >
+            {language === 'ja' ? '絞り込みをリセット' : 'Reset filters'}
+          </button>
+        )}
       </div>
 
       {/* テーブル本体 */}
