@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
-import type { Country, Framework, MembershipStatus } from '../types';
+import type { Country, Framework } from '../types';
 import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
 import { X, Award } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
 
 interface CountryProfileModalProps {
   country: Country | null;
@@ -20,35 +21,22 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
   // この国が参加している全枠組みを取得
   const joinedFrameworks = useMemo(() => {
     if (!country) return [];
-    const list: {
-      framework: Framework;
-      status: MembershipStatus;
-      signedYear?: number;
-      ratifiedYear?: number;
-      appliedYear?: number;
-      withdrawnYear?: number;
-      notes?: string;
-    }[] = [];
+    const list: (Framework['members'][number] & { framework: Framework })[] = [];
 
     FRAMEWORKS.forEach((f) => {
       const mem = f.members.find((m) => m.countryCode === country.alpha3);
       if (mem) {
         list.push({
+          ...mem,
           framework: f,
-          status: mem.status,
-          signedYear: mem.signedYear,
-          ratifiedYear: mem.ratifiedYear,
-          appliedYear: mem.appliedYear,
-          withdrawnYear: mem.withdrawnYear,
-          notes: mem.notes,
         });
       }
     });
 
     // 加盟年順にソート
     return list.sort((a, b) => {
-      const ya = a.ratifiedYear || a.signedYear || a.appliedYear || 9999;
-      const yb = b.ratifiedYear || b.signedYear || b.appliedYear || 9999;
+      const ya = getEffectiveMembershipYear(a) ?? 9999;
+      const yb = getEffectiveMembershipYear(b) ?? 9999;
       return ya - yb;
     });
   }, [country]);
@@ -178,13 +166,14 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
                                 </span>
 
                                 <div className="text-[11px] font-mono text-slate-400">
-                                  {item.ratifiedYear
-                                    ? (language === 'ja' ? `${item.ratifiedYear}年加盟` : `${item.ratifiedYear} Joined`)
-                                    : item.signedYear
-                                    ? (language === 'ja' ? `${item.signedYear}年署名` : `${item.signedYear} Signed`)
-                                    : item.appliedYear
-                                    ? (language === 'ja' ? `${item.appliedYear}年申請` : `${item.appliedYear} Applied`)
-                                    : ''}
+                                  {getMembershipDateDetail(item, language).displayText}
+                                  {(item.inForce || item.inForceDate) && (
+                                    <span className="ml-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
+                                      {language === 'ja'
+                                        ? `(${formatDateString(item.inForce || item.inForceDate, language)}発効)`
+                                        : `(In force ${formatDateString(item.inForce || item.inForceDate, language)})`}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                             </div>

@@ -120,18 +120,30 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       }
 
       switch (data.status) {
+        case 'member':
+        case 'party':
+        case 'participating_state':
         case 'ratified':
-          return isHovered ? '#1d4ed8' : '#2563eb'; // 濃い青
+          return isHovered ? '#1d4ed8' : '#2563eb'; // 濃い青（正式加盟・締約国・参加国）
+        case 'signatory':
         case 'signed':
-          return isHovered ? '#0284c7' : '#38bdf8'; // 水色
-        case 'observer':
-          return isHovered ? '#d97706' : '#f59e0b'; // 黄色・アンバー
-        case 'dialogue':
-          return isHovered ? '#7c3aed' : '#a78bfa'; // 薄紫
+          return isHovered ? '#0284c7' : '#38bdf8'; // 水色（署名国）
+        case 'unsigned':
+          return isHovered ? '#e11d48' : '#f43f5e'; // ローズレッド（署名撤回）
         case 'candidate':
-          return isHovered ? '#059669' : '#10b981'; // エメラルドグリーン
+          return isHovered ? '#059669' : '#10b981'; // エメラルドグリーン（候補国）
+        case 'partner':
+        case 'dialogue':
+          return isHovered ? '#7c3aed' : '#a78bfa'; // 薄紫（パートナー・対話）
+        case 'observer':
+          return isHovered ? '#d97706' : '#f59e0b'; // 黄色・アンバー（オブザーバー）
+        case 'suspended':
+          return isHovered ? '#9a3412' : '#c2410c'; // 赤褐色・アンバー濃（資格停止）
         case 'withdrawn':
-          return isHovered ? '#64748b' : '#94a3b8'; // スレートグレー
+          return isHovered ? '#475569' : '#64748b'; // スレートグレー（脱退）
+        case 'non_party':
+        case 'non-party':
+          return isHovered ? '#94a3b8' : '#cbd5e1'; // ニュートラルグレー（非当事国）
         default:
           return 'var(--map-neutral, #e2e8f0)';
       }

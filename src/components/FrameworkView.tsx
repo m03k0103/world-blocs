@@ -7,6 +7,7 @@ import { TimelineSlider } from './TimelineSlider';
 import { TableView } from './TableView';
 import { Map, Table, Building2, Globe } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { extractYear, getEffectiveMembershipYear } from '../utils/date';
 
 interface FrameworkViewProps {
   selectedFramework: Framework | null;
@@ -39,44 +40,86 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
     return selectedFramework.members
       .map((m) => {
         let currentStatus: MembershipStatus | null = null;
+        const effectiveJoinYear = getEffectiveMembershipYear(m);
+        const candidateStartYear =
+          extractYear(m.candidate) ||
+          extractYear(m.negotiationsStarted) ||
+          extractYear(m.applied) ||
+          m.candidateYear ||
+          m.negotiationsStartedYear ||
+          m.appliedYear;
+        const signedYear = extractYear(m.signed) || m.signedYear;
+        const withdrawnYear = extractYear(m.withdrawn) || extractYear(m.withdrawalNotified) || m.withdrawnYear;
+        const suspendedYear = extractYear(m.suspended) || m.suspendedYear;
 
-        // 1. 加盟申請・候補国、オブザーバー、対話パートナーの場合（ステータス種別を最優先）
-        if (m.status === 'candidate' || m.status === 'observer' || m.status === 'dialogue') {
-          const startYear = m.appliedYear || m.signedYear;
+        // 1. 加盟候補国、オブザーバー、パートナー、対話パートナーの場合
+        if (m.status === 'candidate' || m.status === 'observer' || m.status === 'partner' || m.status === 'dialogue') {
+          const startYear = candidateStartYear || signedYear;
           if (startYear) {
             currentStatus = selectedYear >= startYear ? m.status : null;
           } else {
             currentStatus = selectedYear >= selectedFramework.establishedYear ? m.status : null;
           }
         }
-        // 2. 脱退・資格停止国の場合
+        // 2. 脱退国の場合
         else if (m.status === 'withdrawn') {
-          if (m.withdrawnYear && selectedYear >= m.withdrawnYear) {
+          if (withdrawnYear && selectedYear >= withdrawnYear) {
             currentStatus = 'withdrawn';
-          } else if (m.ratifiedYear && selectedYear >= m.ratifiedYear) {
-            // 脱退前かつ批准年以降は ratified
-            currentStatus = 'ratified';
-          } else if (m.signedYear && selectedYear >= m.signedYear) {
-            // 脱退前かつ署名年以降は signed
-            currentStatus = 'signed';
+          } else if (effectiveJoinYear && selectedYear >= effectiveJoinYear) {
+            currentStatus = (m.joined || m.joinedYear) ? 'member' : 'party';
+          } else if (signedYear && selectedYear >= signedYear) {
+            currentStatus = 'signatory';
           } else {
             currentStatus = null;
           }
         }
-        // 3. 正加盟・批准国 (ratified)
-        else if (m.status === 'ratified') {
-          if (m.ratifiedYear && selectedYear >= m.ratifiedYear) {
-            currentStatus = 'ratified';
-          } else if (m.signedYear && selectedYear >= m.signedYear) {
-            currentStatus = 'signed';
+        // 3. 参加資格停止国の場合 (suspended)
+        else if (m.status === 'suspended') {
+          if (suspendedYear && selectedYear >= suspendedYear) {
+            currentStatus = 'suspended';
+          } else if (effectiveJoinYear && selectedYear >= effectiveJoinYear) {
+            currentStatus = (m.joined || m.joinedYear) ? 'member' : 'party';
+          } else if (signedYear && selectedYear >= signedYear) {
+            currentStatus = 'signatory';
           } else {
             currentStatus = null;
           }
         }
-        // 4. 署名のみ未批准 (signed)
-        else if (m.status === 'signed') {
-          if (m.signedYear && selectedYear >= m.signedYear) {
-            currentStatus = 'signed';
+        // 4. 署名撤回国 (unsigned)
+        else if (m.status === 'unsigned') {
+          if (withdrawnYear && selectedYear >= withdrawnYear) {
+            currentStatus = 'unsigned';
+          } else if (signedYear && selectedYear >= signedYear) {
+            currentStatus = 'signatory';
+          } else {
+            currentStatus = null;
+          }
+        }
+        // 5. 未締結・非当事国 (non_party / non-party)
+        else if (m.status === 'non_party' || m.status === 'non-party') {
+          currentStatus = selectedYear >= selectedFramework.establishedYear ? 'non_party' : null;
+        }
+        // 6. 正式加盟国・条約締約国・参加国 (member / party / participating_state / ratified)
+        else if (
+          m.status === 'member' ||
+          m.status === 'party' ||
+          m.status === 'participating_state' ||
+          m.status === 'ratified'
+        ) {
+          if (effectiveJoinYear && selectedYear >= effectiveJoinYear) {
+            currentStatus = m.status;
+          } else if (signedYear && selectedYear >= signedYear) {
+            currentStatus = 'signatory';
+          } else if (candidateStartYear && selectedYear >= candidateStartYear) {
+            currentStatus = 'candidate';
+          } else {
+            currentStatus = null;
+          }
+        }
+        // 7. 署名国 (signatory / signed)
+        else if (m.status === 'signatory' || m.status === 'signed') {
+          if (signedYear && selectedYear >= signedYear) {
+            currentStatus = m.status;
           } else {
             currentStatus = null;
           }
@@ -94,10 +137,19 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
   const mapData = useMemo(() => {
     const res: Record<string, CountryMapData> = {};
     computedMembership.forEach((m) => {
+      const year =
+        getEffectiveMembershipYear(m) ||
+        extractYear(m.signed) ||
+        extractYear(m.candidate) ||
+        extractYear(m.applied) ||
+        m.signedYear ||
+        m.candidateYear ||
+        m.appliedYear;
+
       res[m.countryCode] = {
         status: m.currentStatus,
         notes: m.notes,
-        year: m.ratifiedYear || m.signedYear || m.appliedYear,
+        year,
       };
     });
     return res;
@@ -121,8 +173,9 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
     // 大きな加盟年を抽出
     const yearCounts: Record<number, number> = {};
     selectedFramework.members.forEach((m) => {
-      if (m.ratifiedYear && m.ratifiedYear !== selectedFramework.establishedYear) {
-        yearCounts[m.ratifiedYear] = (yearCounts[m.ratifiedYear] || 0) + 1;
+      const joinYear = getEffectiveMembershipYear(m);
+      if (joinYear && joinYear !== selectedFramework.establishedYear) {
+        yearCounts[joinYear] = (yearCounts[joinYear] || 0) + 1;
       }
     });
 

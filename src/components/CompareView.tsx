@@ -66,7 +66,15 @@ export const CompareView: React.FC<CompareViewProps> = ({
     if (!frameworkA) return new Set<string>();
     return new Set(
       frameworkA.members
-        .filter((m) => m.status === 'ratified' || m.status === 'signed' || m.status === 'candidate')
+        .filter((m) =>
+          m.status === 'member' ||
+          m.status === 'party' ||
+          m.status === 'participating_state' ||
+          m.status === 'signatory' ||
+          m.status === 'candidate' ||
+          m.status === 'ratified' ||
+          m.status === 'signed'
+        )
         .map((m) => m.countryCode)
     );
   }, [frameworkA]);
@@ -75,7 +83,15 @@ export const CompareView: React.FC<CompareViewProps> = ({
     if (!frameworkB) return new Set<string>();
     return new Set(
       frameworkB.members
-        .filter((m) => m.status === 'ratified' || m.status === 'signed' || m.status === 'candidate')
+        .filter((m) =>
+          m.status === 'member' ||
+          m.status === 'party' ||
+          m.status === 'participating_state' ||
+          m.status === 'signatory' ||
+          m.status === 'candidate' ||
+          m.status === 'ratified' ||
+          m.status === 'signed'
+        )
         .map((m) => m.countryCode)
     );
   }, [frameworkB]);

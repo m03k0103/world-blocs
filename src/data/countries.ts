@@ -1864,11 +1864,32 @@ export const COUNTRIES: Country[] = [
     "nameEn": "Niue",
     "region": "オセアニア",
     "flagEmoji": "🇳🇺"
+  },
+  {
+    "numeric": "999",
+    "alpha3": "EUR",
+    "alpha2": "EU",
+    "nameJa": "欧州連合",
+    "nameEn": "European Union",
+    "region": "ヨーロッパ",
+    "flagEmoji": "🇪🇺"
+  },
+  {
+    "numeric": "998",
+    "alpha3": "AFU",
+    "alpha2": "AU",
+    "nameJa": "アフリカ連合",
+    "nameEn": "African Union",
+    "region": "アフリカ",
+    "flagEmoji": "🌍"
   }
 ];
 
 export const COUNTRY_BY_ALPHA3: Record<string, Country> = {
   ...Object.fromEntries(COUNTRIES.map(c => [c.alpha3, c])),
+  // 特別参加主体・地域組織エイリアス
+  EU: COUNTRIES.find(c => c.alpha3 === 'EUR')!,
+  AU: COUNTRIES.find(c => c.alpha3 === 'AFU')!,
   // 後方互換性用エイリアス
   C044: COUNTRIES.find(c => c.alpha3 === 'BHS')!,
   C204: COUNTRIES.find(c => c.alpha3 === 'BEN')!,

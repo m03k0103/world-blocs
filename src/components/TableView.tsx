@@ -4,6 +4,7 @@ import { COUNTRY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
 import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
 
 interface TableViewProps {
   members: (MembershipRecord & { currentStatus: MembershipStatus })[];
@@ -70,8 +71,8 @@ export const TableView: React.FC<TableViewProps> = ({
             ? ca.nameEn.localeCompare(cb.nameEn, 'en')
             : ca.nameJa.localeCompare(cb.nameJa, 'ja');
         } else if (sortField === 'year') {
-          const ya = a.ratifiedYear || a.signedYear || a.appliedYear || 9999;
-          const yb = b.ratifiedYear || b.signedYear || b.appliedYear || 9999;
+          const ya = getEffectiveMembershipYear(a) ?? 9999;
+          const yb = getEffectiveMembershipYear(b) ?? 9999;
           diff = ya - yb;
         } else if (sortField === 'status') {
           diff = a.currentStatus.localeCompare(b.currentStatus);
@@ -115,13 +116,15 @@ export const TableView: React.FC<TableViewProps> = ({
         ? (language === 'en' ? STATUS_LABELS[m.currentStatus].labelEn : STATUS_LABELS[m.currentStatus].labelJa)
         : m.currentStatus;
 
+      const dateDetail = getMembershipDateDetail(m, language);
+
       return [
         sanitizeCsvCell(m.countryCode),
         sanitizeCsvCell(c?.nameJa || ''),
         sanitizeCsvCell(c?.nameEn || ''),
         sanitizeCsvCell(c?.region || ''),
         sanitizeCsvCell(statusLabel),
-        sanitizeCsvCell(m.ratifiedYear || m.signedYear || m.appliedYear || ''),
+        sanitizeCsvCell(dateDetail.displayText || dateDetail.dateText || ''),
         sanitizeCsvCell(m.notes || ''),
       ].join(',');
     });
@@ -280,16 +283,25 @@ export const TableView: React.FC<TableViewProps> = ({
                       </span>
                     </td>
                     <td className="py-3 px-4 font-mono text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      {m.ratifiedYear
-                        ? `${m.ratifiedYear}${language === 'ja' ? '年' : ''}`
-                        : m.signedYear
-                        ? `${m.signedYear}${language === 'ja' ? '年(署名)' : ' (Signed)'}`
-                        : m.appliedYear
-                        ? `${m.appliedYear}${language === 'ja' ? '年(申請)' : ' (Applied)'}`
-                        : '—'}
+                      <div>
+                        {getMembershipDateDetail(m, language).displayText || '—'}
+                      </div>
+                      {(m.inForce || m.inForceDate) && (
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-normal">
+                          {language === 'ja'
+                            ? `発効: ${formatDateString(m.inForce || m.inForceDate, language)}`
+                            : `In force: ${formatDateString(m.inForce || m.inForceDate, language)}`}
+                        </div>
+                      )}
                     </td>
-                    <td className="py-3 px-4 text-xs text-slate-500 dark:text-slate-400 max-w-xs truncate">
-                      {m.notes || '—'}
+                    <td className="py-3 px-4 text-xs text-slate-500 dark:text-slate-400 max-w-xs" title={m.notes}>
+                      <div className="truncate">{m.notes || '—'}</div>
+                      {m.bilateralInForceDates && (
+                        <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                          {language === 'ja' ? '二国間発効: ' : 'Bilateral: '}
+                          {Object.entries(m.bilateralInForceDates).map(([k, v]) => `${k} (${formatDateString(v, language)})`).join(', ')}
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );
