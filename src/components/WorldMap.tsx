@@ -255,101 +255,96 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       </div>
 
       {/* 左上フローティングパネル：地域組織・非国家参加 & 地図未表示の参加国 */}
-      {(regionalBlocMembers.length > 0 || microstateMembers.length > 0) && (
-        <div className="absolute top-4 left-4 z-10 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md flex flex-col gap-2.5 max-w-[280px] sm:max-w-[320px] max-h-[calc(100%-2rem)] overflow-y-auto">
-          {/* 地域統合体・非国家メンバー（EUR, AFU） */}
-          {regionalBlocMembers.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                {language === 'ja' ? '地域組織・非国家参加' : 'Regional / Non-state Members'}
+      {(() => {
+        const renderMemberItem = (country: Country, data: CountryMapData) => {
+          const isSelected = selectedCountryAlpha3 === country.alpha3;
+          const fill = getCountryFill(country.alpha3, false, isSelected);
+          const statusLabel =
+            data.status && STATUS_LABELS[data.status]
+              ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
+              : data.status;
+
+          return (
+            <button
+              key={country.alpha3}
+              onClick={() => onSelectCountry?.(country)}
+              className={`w-full flex items-center justify-between gap-2 px-2 py-1 text-left text-xs transition-colors cursor-pointer rounded ${
+                isSelected
+                  ? 'text-orange-600 dark:text-orange-400 font-semibold bg-orange-50/70 dark:bg-orange-950/40'
+                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/70 dark:hover:bg-slate-700/40'
+              }`}
+              title={language === 'en' ? country.nameEn : country.nameJa}
+            >
+              <div className="flex items-center gap-1.5 truncate">
+                <span className="text-sm shrink-0">{country.flagEmoji || '🌐'}</span>
+                <span className="truncate font-medium">
+                  {language === 'en' ? country.nameEn : country.nameJa}
+                </span>
               </div>
+              {mode === 'compare' ? (
+                <span className="flex items-center gap-1.5 text-[11px] shrink-0 text-slate-500 dark:text-slate-400">
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: fill }}
+                  />
+                  <span className="truncate max-w-[84px]">
+                    {data.inFrameworkA && data.inFrameworkB
+                      ? (language === 'ja' ? '両方' : 'Both')
+                      : data.inFrameworkA
+                      ? labelA
+                      : labelB}
+                  </span>
+                </span>
+              ) : (
+                statusLabel && (
+                  <span className="flex items-center gap-1.5 text-[11px] shrink-0 text-slate-500 dark:text-slate-400">
+                    <span
+                      className="w-2 h-2 rounded-full shrink-0"
+                      style={{ backgroundColor: fill }}
+                    />
+                    <span className="truncate max-w-[84px]">{statusLabel}</span>
+                  </span>
+                )
+              )}
+            </button>
+          );
+        };
+
+        if (regionalBlocMembers.length === 0 && microstateMembers.length === 0) return null;
+
+        return (
+          <div className="absolute top-4 left-4 z-10 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md flex flex-col gap-2.5 max-w-[280px] sm:max-w-[320px] max-h-[calc(100%-2rem)] overflow-y-auto">
+            {/* 地域組織・非国家参加 */}
+            {regionalBlocMembers.length > 0 && (
               <div className="flex flex-col gap-1">
-                {regionalBlocMembers.map(({ country, data }) => {
-                  const isSelected = selectedCountryAlpha3 === country.alpha3;
-                  const fill = getCountryFill(country.alpha3, false, isSelected);
-                  const statusLabel =
-                    data.status && STATUS_LABELS[data.status]
-                      ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
-                      : data.status;
-
-                  return (
-                    <button
-                      key={country.alpha3}
-                      onClick={() => onSelectCountry?.(country)}
-                      className={`flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-left text-xs transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-orange-100 dark:bg-orange-950/60 border border-orange-500 text-orange-900 dark:text-orange-200 font-semibold shadow-sm'
-                          : 'hover:bg-slate-100 dark:hover:bg-slate-700/60 border border-slate-200/60 dark:border-slate-700 text-slate-800 dark:text-slate-200'
-                      }`}
-                      title={country.nameJa}
-                    >
-                      <div className="flex items-center gap-1.5 truncate">
-                        <span className="text-sm shrink-0">{country.flagEmoji || '🌐'}</span>
-                        <span className="truncate font-medium">
-                          {language === 'en' ? country.nameEn : country.nameJa}
-                        </span>
-                        <span className="text-[10px] font-mono text-slate-400 shrink-0">({country.alpha3})</span>
-                      </div>
-                      {mode === 'compare' ? (
-                        <span
-                          className="w-2.5 h-2.5 rounded-full shrink-0"
-                          style={{ backgroundColor: fill }}
-                          title={data.inFrameworkA && data.inFrameworkB ? 'Both' : data.inFrameworkA ? labelA : labelB}
-                        />
-                      ) : (
-                        statusLabel && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded font-medium shrink-0 bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300">
-                            {statusLabel}
-                          </span>
-                        )
-                      )}
-                    </button>
-                  );
-                })}
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">
+                  {language === 'ja' ? '地域組織・非国家参加' : 'Regional / Non-state Members'}
+                </div>
+                <div className="flex flex-col">
+                  {regionalBlocMembers.map(({ country, data }) => renderMemberItem(country, data))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* セパレーター */}
-          {regionalBlocMembers.length > 0 && microstateMembers.length > 0 && (
-            <div className="border-t border-slate-200 dark:border-slate-700/80" />
-          )}
+            {/* セパレーター */}
+            {regionalBlocMembers.length > 0 && microstateMembers.length > 0 && (
+              <div className="border-t border-slate-200 dark:border-slate-700/80" />
+            )}
 
-          {/* 110m解像度地図ポリゴン外の参加国・小島嶼国（SGP, MLT, VAT, AND, MCO, LIE等） */}
-          {microstateMembers.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                {language === 'ja' ? '地図未表示の参加国' : 'Other participating states'}
+            {/* 地図未表示の参加国 */}
+            {microstateMembers.length > 0 && (
+              <div className="flex flex-col gap-1">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">
+                  {language === 'ja' ? '地図未表示の参加国' : 'Other participating states'}
+                </div>
+                <div className="flex flex-col">
+                  {microstateMembers.map(({ country, data }) => renderMemberItem(country, data))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-1">
-                {microstateMembers.map(({ country, data }) => {
-                  const isSelected = selectedCountryAlpha3 === country.alpha3;
-                  const fill = getCountryFill(country.alpha3, false, isSelected);
-                  return (
-                    <button
-                      key={country.alpha3}
-                      onClick={() => onSelectCountry?.(country)}
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] transition-all cursor-pointer border ${
-                        isSelected
-                          ? 'bg-orange-100 dark:bg-orange-950/60 border-orange-500 text-orange-900 dark:text-orange-200 font-bold'
-                          : 'bg-slate-100/90 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-600 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200'
-                      }`}
-                      title={`${country.nameJa} (${country.alpha3}) - ${data.status || ''}`}
-                    >
-                      <span className="text-xs">{country.flagEmoji || '🌐'}</span>
-                      <span>{language === 'en' ? country.nameEn : country.nameJa}</span>
-                      <span
-                        className="w-1.5 h-1.5 rounded-full shrink-0 ml-0.5"
-                        style={{ backgroundColor: fill }}
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        );
+      })()}
 
       {loading ? (
         <div className="flex items-center justify-center w-full h-full text-slate-500 font-medium">
