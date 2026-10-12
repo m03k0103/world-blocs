@@ -13,8 +13,8 @@
   1. **修正着手前の Implementation Plan（実装計画）の事前承認**（「進めてください」「OKです」等のユーザー指示確認）
   2. **メインブランチ（main）への マージ・プッシュ前の確認**（成果報告提示後のユーザー指示確認）
 
-### DROPS.md の最新化タイミング（Implementation Plan 作成時 & main マージ時・必須）
-- **Implementation Plan 作成時**: 新規機能開発や Drop 着手時は、`implementation_plan.md` の提示と連動して `DROPS.md` の対象 Drop の背景・狙い・技術仕様および進捗ステータスを最新化すること。
+### DROPS.md の最新化タイミング（Implementation 着手・計画作成時 & main マージ時・必須）
+- **Implementation（実装計画作成・実装着手時）**: 新機能開発、データ改修、Drop / Track の着手や実装を進める際は、`implementation_plan.md` の作成・更新と**同時に必ず `DROPS.md`（または `Drops.md`）を更新すること**。対象 Drop の背景・狙い・技術仕様および進捗ステータス（着手中等）を最新状態に同期する。
 - **main マージ時**: `main` ブランチへのマージ完了時は、達成された定量数値（成功数・成功率等）、完了ステータス（【完了】）、および次期構想の差分を反映して `DROPS.md` を直ちに最新化すること。
 
 ---
