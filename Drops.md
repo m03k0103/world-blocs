@@ -20,7 +20,8 @@
 | **Drop 9** | **スキーマ刷新**<br>(年次・日付設計) | **加盟国日付スキーマの Year サフィックス撤廃 & String型（`yyyy`/`yyyymm`/`yyyymmdd`）化**<br>`ratifiedYear` 等の旧プロパティを廃止し、`signed`, `ratified`, `accession`, `inForce`, `joined`, `firstParticipated`, `declarationSigned`, `applied`, `candidate`, `negotiationsStarted`, `suspended`, `withdrawalNotified`, `withdrawn` へ完全移行。共通日付ユーティリティ（`src/utils/date.ts`）新設 | **法的イベントと日付の厳密分離 & 柔軟な年月日パース基盤確立** | 完了 |
 | **Drop 10** | **運用規約確立**<br>(ルール定義) | **プロジェクト共通修正ルールの策定 & `Agent.md` への反映**<br>機械的置換の禁止、一次資料・寄託者記録重視、条約締約国と適用領域の区別、脱退通告と脱退発効の分離、公式候補国資格の限定、推測日付排除など全12条の共通修正ルールを確立 | **データ品質ガード & AIエージェント行動規範の恒久化** | 完了 |
 | **Drop 12** | **規格統一・UI拡充**<br>(ISOコード & 地図) | **国際規格 ISO 3166-1 alpha-3（PRI, ATA, FLK, ATF等）へのマスターデータ直接統一 & 地図脱落防止UI**<br>非公式コード（C630等）を廃止しデータ側で正式ISOコード（PRI等）に統一（Agent.md第13条反映）。地図ポリゴンを持たない地域統合体（EUR, AFU）および低解像度地図で省略される小島嶼国・微小国（SGP, MLT, VAT等）のフローティング描画・モーダル連携を実装 | **双方向マップ不要の決定論的マッチ & 非国家・島嶼国の完全可視化** | **【完了】** |
-| **Drop 13** | **最新の完了Drop**<br>(データ完全同期) | **パリ協定（気候変動）の国連条約集（UNTC）公式記録（Parties: 194, Signatories: 194）への完全同期**<br>国連公式記録（XXVII-7-d）に基づき、全198参加者（194締約当事者［193カ国+EU］、未批准署名国3カ国［IRN, LBY, YEM］、脱退国1カ国［USA: 2026年1月27日脱退発効］、直接加入3カ国［VAT, NIC, SYR］）を個別特定。Yearサフィックスを完全一掃し `signed`, `ratified`, `accession`, `withdrawn` へ移行 | **国連公式記録との100%完全一致 & 全締約国194網羅** | **【完了】** |
+| **Drop 13** | **データ完全同期**<br>(パリ協定) | **パリ協定（気候変動）の国連条約集（UNTC）公式記録（Parties: 194, Signatories: 194）への完全同期**<br>国連公式記録（XXVII-7-d）に基づき、全198参加者（194締約当事者［193カ国+EU］、未批准署名国3カ国［IRN, LBY, YEM］、脱退国1カ国［USA: 2026年1月27日脱退発効］、直接加入3カ国［VAT, NIC, SYR］）を個別特定。Yearサフィックスを完全一掃し `signed`, `ratified`, `accession`, `withdrawn` へ移行 | **国連公式記録との100%完全一致 & 全締約国194網羅** | 完了 |
+| **Drop 14** | **最新の着手Drop**<br>(先端枠組み是正) | **Track [New-Blocs]: 新興最先端協力枠組み（Pax Silica & WAICO）のデータ是正**<br>Pax Silica (`pax_silica`) への EU（`EUR`）追加、オランダ（`NLD`）の非署名参加と正式署名の分離、非条約政治合意からの `ratified` 全廃。WAICO (`waico`) 設立協定署名（20260716）からの `ratified` 排除とバングラデシュのオブザーバー整理 | **最先端AI・半導体外交枠組みのデータ整合性確保** | **着手中** |
 
 ---
 
@@ -67,16 +68,16 @@
 
 | Track ID | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
-| **Track [New-Blocs]** | **新興・最先端協力枠組みのデータ是正** | **Pax Silica (`pax_silica`), WAICO (`waico`)**<br>- Pax Silica への EU（`EUR`）追加、オランダ署名年適正化<br>- 非条約宣言における `ratified` 排除<br>- WAICO 設立署名（20260716）と批准・発効の法的区別 | 最先端AI・半導体外交枠組みのデータ完全性確保 | **次期着手予定 (Drop 12)** |
-| **Track [Trade-Econ]** | **経済統合・地域協力枠組みの全面再整理** | **CPTPP, RCEP, ASEAN, BRICS, SCO, APEC, アラブ連盟, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, EEA, GAFTA, AZEC（計15枠組み）**<br>- メルコスール ベネズエラ `withdrawn` 削除<br>- OECD ロシア `withdrawn` $\to$ `non_party` 是正<br>- BRICS, APEC, AZEC の `ratified` 削除<br>- CPTPP 申請国年月日・英国11カ国二国間発効日補完<br>- SCO 面積比率の是正 | 経済・通商枠組みの国際法・公式発表完全同期 | 構想・準備中 (Drop 13) |
-| **Track [Treaty-Law]** | **条約・国際法枠組みの厳密ファクトチェック** | **パリ協定, NPT, TPNW, ICC, UNCLOS, P5（計6枠組み）**<br>- NPT 従属地域（GRL, NCL, C630）締約国計上除外<br>- NPT / P5 台湾の歴史的代表権移行注記<br>- ICC 脱退通告・寄託日・発効日厳密化<br>- TPNW 寄託日＋90日発効ルールの再計算<br>- パリ協定 未確認寄託通知番号クリーンアップ | 国際条約データベースとの完全突合・領域適用明確化 | 構想中 (Drop 14) |
-| **Track [Platform-UI]** | **UI表現・地図レンダリング・型定義の最適化** | **フロントエンド基盤・可視化**<br>- 地図における非国家主体（EU, AU）および海外領土の表示対応<br>- 同一色ステータス（member/party/participating_state）の凡例統合<br>- 従属地域集計除外フラグ（`isTerritory`）の型・集計ロジック対応 | データの可視化精度向上 & ユーザー体験改善 | 構想中 (Drop 15) |
+| **Track [New-Blocs]** | **新興・最先端協力枠組みのデータ是正** | **Pax Silica (`pax_silica`), WAICO (`waico`)**<br>- Pax Silica への EU（`EUR`）追加、オランダ署名年適正化<br>- 非条約宣言における `ratified` 排除<br>- WAICO 設立署名（20260716）と批准・発効の法的区別 | 最先端AI・半導体外交枠組みのデータ完全性確保 | **着手中 (Drop 14)** |
+| **Track [Trade-Econ]** | **経済統合・地域協力枠組みの全面再整理** | **CPTPP, RCEP, ASEAN, BRICS, SCO, APEC, アラブ連盟, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, EEA, GAFTA, AZEC（計15枠組み）**<br>- メルコスール ベネズエラ `withdrawn` 削除<br>- OECD ロシア `withdrawn` $\to$ `non_party` 是正<br>- BRICS, APEC, AZEC の `ratified` 削除<br>- CPTPP 申請国年月日・英国11カ国二国間発効日補完<br>- SCO 面積比率の是正 | 経済・通商枠組みの国際法・公式発表完全同期 | 構想・準備中 (Drop 15) |
+| **Track [Treaty-Law]** | **条約・国際法枠組みの厳密ファクトチェック** | **NPT, TPNW, ICC, UNCLOS, P5（計5枠組み）**<br>- NPT 従属地域（GRL, NCL, C630）締約国計上除外<br>- NPT / P5 台湾の歴史的代表権移行注記<br>- ICC 脱退通告・寄託日・発効日厳密化<br>- TPNW 寄託日＋90日発効ルールの再計算 | 国際条約データベースとの完全突合・領域適用明確化 | 構想中 (Drop 16) |
+| **Track [Platform-UI]** | **UI表現・地図レンダリング・型定義の最適化** | **フロントエンド基盤・可視化**<br>- 地図における非国家主体（EU, AU）および海外領土の表示対応<br>- 同一色ステータス（member/party/participating_state）の凡例統合<br>- 従属地域集計除外フラグ（`isTerritory`）の型・集計ロジック対応 | データの可視化精度向上 & ユーザー体験改善 | 構想中 (Drop 17) |
 
 ---
 
 ## 4. Track 詳細計画
 
-### 【次期リリース構想】Track [New-Blocs]: 新興最先端協力枠組み（Pax Silica & WAICO）のデータ是正（Drop 12予定）
+### 【着手Drop】Track [New-Blocs]: 新興最先端協力枠組み（Pax Silica & WAICO）のデータ是正（Drop 14）
 
 Gemini および Claude の指摘に基づき、直近で新設された2大先端枠組みについて、公式事実との不整合を是正する。
 
