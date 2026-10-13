@@ -1882,6 +1882,15 @@ export const COUNTRIES: Country[] = [
     "nameEn": "African Union",
     "region": "アフリカ",
     "flagEmoji": "🌍"
+  },
+  {
+    "numeric": "383",
+    "alpha3": "XKX",
+    "alpha2": "XK",
+    "nameJa": "コソボ",
+    "nameEn": "Kosovo",
+    "region": "ヨーロッパ",
+    "flagEmoji": "🇽🇰"
   }
 ];
 
@@ -1890,6 +1899,7 @@ export const COUNTRY_BY_ALPHA3: Record<string, Country> = {
   // 特別参加主体・地域組織エイリアス
   EU: COUNTRIES.find(c => c.alpha3 === 'EUR')!,
   AU: COUNTRIES.find(c => c.alpha3 === 'AFU')!,
+  KOS: COUNTRIES.find(c => c.alpha3 === 'XKX')!,
   // 後方互換性用エイリアス
   C044: COUNTRIES.find(c => c.alpha3 === 'BHS')!,
   C204: COUNTRIES.find(c => c.alpha3 === 'BEN')!,

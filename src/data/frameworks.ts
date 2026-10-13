@@ -1673,6 +1673,64 @@ export const FRAMEWORKS: Framework[] = [
       // オブザーバー
       { countryCode: 'BGD', status: 'observer', firstParticipated: '2026', notes: 'オブザーバー参加' }
     ]
+  },
+  {
+    id: 'board_of_peace',
+    nameJa: '平和協議会',
+    nameEn: 'Board of Peace',
+    acronym: 'BOP',
+    aliases: ['bop', 'board-of-peace', '平和評議会'],
+    category: 'security',
+    established: '20260122',
+    establishedYear: 2026,
+    inForce: '20260122',
+    inForceYear: 2026,
+    secretariat: 'ワシントンD.C.（アメリカ合衆国）',
+    description: '米国ドナルド・トランプ大統領の主導により、国連安保理決議2803号を背景として2026年1月22日（ダボス会議）に設立憲章が調印された国際機構（初代議長: ドナルド・トランプ）。パレスチナ・ガザ地区の停戦合意後の非武装化、統治改革、国際安定化部隊（ISF）の展開、大規模復興を監督・推進することを主目的とし、将来的には世界各地の紛争解決・平和維持への関与を視野に入れる。中東湾岸諸国、中南米、東欧・中央アジア、アジア諸国など28カ国・地域が参加・署名（国連非加盟地域のコソボも署名参加）。英仏独など西欧主要国は国連体制との重複や権限に対する懸念から参加に慎重姿勢を示す。',
+    sources: [
+      {
+        titleJa: 'JETRO ビジネス短信（ダボスでの平和評議会憲章署名式）',
+        titleEn: 'JETRO (Board of Peace Charter Signed in Davos)',
+        url: 'https://www.jetro.go.jp/biznews/2026/01/5e7bb23e66bbd019.html',
+        type: 'official'
+      },
+      {
+        titleJa: '国際連合安全保障理事会 決議2803号（2025年11月）',
+        titleEn: 'UN Security Council Resolution 2803',
+        url: 'https://undocs.org/S/RES/2803(2025)',
+        type: 'treaty'
+      }
+    ],
+    members: [
+      { countryCode: 'USA', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '主導国・初代議長国（トランプ大統領）' },
+      { countryCode: 'ALB', status: 'member', joined: '2026', declarationSigned: '2026', notes: '2026年参加' },
+      { countryCode: 'ARG', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'ARM', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'AZE', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'BHR', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名（アブラハム合意締結国）' },
+      { countryCode: 'BLR', status: 'member', joined: '2026', declarationSigned: '2026', notes: '2026年参加' },
+      { countryCode: 'BGR', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'KHM', status: 'member', joined: '2026', declarationSigned: '2026', notes: '2026年参加' },
+      { countryCode: 'EGY', status: 'member', joined: '2026', declarationSigned: '2026', notes: 'ガザ隣接当事国・2026年参加' },
+      { countryCode: 'SLV', status: 'member', joined: '2026', declarationSigned: '2026', notes: '2026年参加' },
+      { countryCode: 'HUN', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'IDN', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'ISR', status: 'member', joined: '2026', declarationSigned: '2026', notes: '当事国・招待受諾参加' },
+      { countryCode: 'JOR', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'KAZ', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'XKX', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名（※国連非加盟地域）' },
+      { countryCode: 'KWT', status: 'member', joined: '2026', declarationSigned: '2026', notes: '2026年参加' },
+      { countryCode: 'MNG', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'MAR', status: 'member', joined: '2026', declarationSigned: '2026', notes: 'アブラハム合意締結国・2026年参加' },
+      { countryCode: 'PAK', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'PRY', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'QAT', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名（ガザ停戦仲介国）' },
+      { countryCode: 'SAU', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'TUR', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'ARE', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名（アブラハム合意締結国）' },
+      { countryCode: 'UZB', status: 'member', joined: '20260122', declarationSigned: '20260122', notes: '2026年1月22日憲章署名' },
+      { countryCode: 'VNM', status: 'member', joined: '2026', declarationSigned: '2026', notes: '2026年参加' }
+    ]
   }
 ];
 
