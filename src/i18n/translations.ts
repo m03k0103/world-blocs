@@ -11,7 +11,7 @@ export const translations = {
     countriesList: '国・地域',
     close: '閉じる',
     footerRecorded: '収録枠組み',
-    rights: 'World Blocs (IR-DB) © 2026',
+    rights: 'World Blocs 2026',
     all: 'すべて表示',
     
     // 枠組みビュー
@@ -126,7 +126,7 @@ export const translations = {
     countriesList: 'Countries & Territories',
     close: 'Close',
     footerRecorded: 'Frameworks Recorded',
-    rights: 'World Blocs (IR-DB) © 2026',
+    rights: 'World Blocs 2026',
     all: 'Show All',
 
     // Framework View
