@@ -1670,11 +1670,11 @@ export const CATEGORY_LABELS: Record<string, { labelJa: string; labelEn: string;
 
 export const STATUS_LABELS: Record<string, { labelJa: string; labelEn: string; color: string; hex: string }> = {
   member: { labelJa: '正式加盟・メンバー', labelEn: 'Member', color: 'bg-blue-600 text-white', hex: '#2563eb' },
-  party: { labelJa: '条約締約国', labelEn: 'State Party', color: 'bg-blue-600 text-white', hex: '#2563eb' },
-  participating_state: { labelJa: '参加国', labelEn: 'Participating State', color: 'bg-blue-600 text-white', hex: '#2563eb' },
+  party: { labelJa: '条約締約国', labelEn: 'State Party', color: 'bg-indigo-600 text-white', hex: '#4f46e5' },
+  participating_state: { labelJa: '参加国', labelEn: 'Participating State', color: 'bg-sky-600 text-white', hex: '#0284c7' },
   signatory: { labelJa: '署名国（未発効・未批准）', labelEn: 'Signatory', color: 'bg-sky-400 text-white', hex: '#38bdf8' },
   candidate: { labelJa: '加盟候補国', labelEn: 'Candidate / Applicant', color: 'bg-emerald-500 text-white', hex: '#10b981' },
-  partner: { labelJa: 'パートナー国', labelEn: 'Partner Country', color: 'bg-violet-400 text-white', hex: '#a78bfa' },
+  partner: { labelJa: 'パートナー国', labelEn: 'Partner Country', color: 'bg-violet-500 text-white', hex: '#8b5cf6' },
   dialogue: { labelJa: '対話パートナー', labelEn: 'Dialogue Partner', color: 'bg-violet-400 text-white', hex: '#a78bfa' },
   observer: { labelJa: 'オブザーバー', labelEn: 'Observer', color: 'bg-amber-500 text-white', hex: '#f59e0b' },
   suspended: { labelJa: '参加資格停止', labelEn: 'Suspended', color: 'bg-amber-700 text-white', hex: '#b45309' },
@@ -1683,7 +1683,7 @@ export const STATUS_LABELS: Record<string, { labelJa: string; labelEn: string; c
   unsigned: { labelJa: '署名撤回（批准意思放棄）', labelEn: 'Unsigned / Not Ratifying', color: 'bg-rose-500 text-white', hex: '#f43f5e' },
 
   // 後方互換用エイリアス
-  ratified: { labelJa: '批准・受諾', labelEn: 'Ratified / Accepted', color: 'bg-blue-600 text-white', hex: '#2563eb' },
+  ratified: { labelJa: '批准・受諾', labelEn: 'Ratified / Accepted', color: 'bg-indigo-600 text-white', hex: '#4f46e5' },
   signed: { labelJa: '署名のみ（未批准）', labelEn: 'Signatory only', color: 'bg-sky-400 text-white', hex: '#38bdf8' },
   'non-party': { labelJa: '未締結・非当事国', labelEn: 'Non-Party', color: 'bg-slate-300 text-slate-700 dark:bg-slate-600 dark:text-slate-200', hex: '#94a3b8' }
 };

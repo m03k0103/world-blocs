@@ -163,20 +163,23 @@ export const WorldMap: React.FC<WorldMapProps> = ({
 
       switch (data.status) {
         case 'member':
+          return isHovered ? '#1d4ed8' : '#2563eb'; // ロイヤルブルー（正式加盟・メンバー）
         case 'party':
-        case 'participating_state':
         case 'ratified':
-          return isHovered ? '#1d4ed8' : '#2563eb'; // 濃い青（正式加盟・締約国・参加国）
+          return isHovered ? '#4338ca' : '#4f46e5'; // インディゴ（条約締約国）
+        case 'participating_state':
+          return isHovered ? '#0369a1' : '#0284c7'; // ディープスカイブルー（参加国）
         case 'signatory':
         case 'signed':
-          return isHovered ? '#0284c7' : '#38bdf8'; // 水色（署名国）
+          return isHovered ? '#0284c7' : '#38bdf8'; // ライトスカイブルー（署名国）
         case 'unsigned':
           return isHovered ? '#e11d48' : '#f43f5e'; // ローズレッド（署名撤回）
         case 'candidate':
           return isHovered ? '#059669' : '#10b981'; // エメラルドグリーン（候補国）
         case 'partner':
+          return isHovered ? '#7c3aed' : '#8b5cf6'; // バイオレット（パートナー国）
         case 'dialogue':
-          return isHovered ? '#7c3aed' : '#a78bfa'; // 薄紫（パートナー・対話）
+          return isHovered ? '#8b5cf6' : '#a78bfa'; // ライトバイオレット（対話パートナー）
         case 'observer':
           return isHovered ? '#d97706' : '#f59e0b'; // 黄色・アンバー（オブザーバー）
         case 'suspended':

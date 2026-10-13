@@ -333,6 +333,9 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="font-bold text-slate-500 mr-1">{t('legend')}</span>
             {Object.entries(STATUS_LABELS).map(([k, v]) => {
+              // 後方互換用エイリアスキーは凡例から除外
+              if (k === 'ratified' || k === 'signed' || k === 'non-party') return null;
+
               const count = statusCounts[k] || 0;
               if (count === 0 && selectedYear === currentMaxYear && !selectedFramework.members.some(m => m.status === k)) {
                 return null;
@@ -340,10 +343,10 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
               return (
                 <div
                   key={k}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-700/80"
                 >
                   <span
-                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    className="w-2.5 h-2.5 rounded-full shrink-0 ring-1 ring-black/10 dark:ring-white/20"
                     style={{ backgroundColor: v.hex }}
                   ></span>
                   <span className="font-medium text-slate-700 dark:text-slate-300">
