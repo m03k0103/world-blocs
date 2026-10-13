@@ -1689,9 +1689,9 @@ export const FRAMEWORKS: Framework[] = [
     description: '米国ドナルド・トランプ大統領の主導により、国連安保理決議2803号を背景として2026年1月22日（ダボス会議）に設立憲章が調印された国際機構（初代議長: ドナルド・トランプ）。パレスチナ・ガザ地区の停戦合意後の非武装化、統治改革、国際安定化部隊（ISF）の展開、大規模復興を監督・推進することを主目的とし、将来的には世界各地の紛争解決・平和維持への関与を視野に入れる。中東湾岸諸国、中南米、東欧・中央アジア、アジア諸国など28カ国・地域が参加・署名（国連非加盟地域のコソボも署名参加）。英仏独など西欧主要国は国連体制との重複や権限に対する懸念から参加に慎重姿勢を示す。',
     sources: [
       {
-        titleJa: 'JETRO ビジネス短信（ダボスでの平和評議会憲章署名式）',
-        titleEn: 'JETRO (Board of Peace Charter Signed in Davos)',
-        url: 'https://www.jetro.go.jp/biznews/2026/01/5e7bb23e66bbd019.html',
+        titleJa: '平和協議会 公式サイト',
+        titleEn: 'Board of Peace Official Website',
+        url: 'https://boardofpeace.org/',
         type: 'official'
       },
       {
