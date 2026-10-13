@@ -80,6 +80,13 @@ export interface MembershipRecord {
   appliedYear?: number;
 }
 
+export interface FrameworkSource {
+  titleJa: string;           // 一次資料・公式記録の日本語名称（例: "米国国務省（寄託者記録）"）
+  titleEn: string;           // 一次資料の英語名称（例: "U.S. Department of State (Depositary)"）
+  url: string;               // 一次資料の公式URL
+  type?: 'depositary' | 'official' | 'treaty'; // 資料区分
+}
+
 export interface Framework {
   id: string;                // "nato", "cptpp"
   nameJa: string;            // "北大西洋条約機構"
@@ -93,6 +100,7 @@ export interface Framework {
   description: string;       // 概要・目的
   secretariat?: string;      // 本部・事務局所在地
   aliases?: string[];        // 別名・代替略称（例: ['pa', 'alianza-del-pacifico']）
+  sources?: FrameworkSource[]; // 公式寄託記録・条約本文等の一次データソース
   members: MembershipRecord[];
 }
 

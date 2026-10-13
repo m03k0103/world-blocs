@@ -42,6 +42,7 @@ export const translations = {
     frameworksAvailable: '枠組みのデータを閲覧可能',
     smallStatesNotice: '※ 地図解像度（110m）にポリゴンが存在しない極小国・島嶼国を含むすべての締約国・加盟国は「リスト一覧」タブで網羅的に閲覧できます。',
     legend: '凡例:',
+    primarySourcesLabel: '一次資料・公式記録:',
     milestoneEstablished: '創設',
     milestoneJoinedSuffix: 'カ国加盟',
 
@@ -157,6 +158,7 @@ export const translations = {
     frameworksAvailable: 'frameworks available in database',
     smallStatesNotice: '* Small states and territories without map polygons at 110m resolution can be viewed in the "Member List" tab.',
     legend: 'Legend:',
+    primarySourcesLabel: 'Primary Sources:',
     milestoneEstablished: 'Founded',
     milestoneJoinedSuffix: ' joined',
 

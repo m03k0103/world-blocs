@@ -6,7 +6,7 @@ import type { CountryMapData } from './WorldMap';
 import { TimelineSlider } from './TimelineSlider';
 import { TableView } from './TableView';
 import { FrameworkCombobox } from './FrameworkCombobox';
-import { Map, Table, Building2, Globe } from 'lucide-react';
+import { Map, Table, Building2, Globe, FileText, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { extractYear, getEffectiveMembershipYear } from '../utils/date';
 
@@ -263,6 +263,31 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
               <p className="text-slate-300 text-sm leading-relaxed">
                 {selectedFramework.description}
               </p>
+
+              {/* 一次資料・公式記録リンク */}
+              {selectedFramework.sources && selectedFramework.sources.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 pt-2">
+                  <span className="text-xs text-blue-200/90 font-medium flex items-center gap-1.5 shrink-0">
+                    <FileText className="w-3.5 h-3.5 text-blue-300" />
+                    {t('primarySourcesLabel')}
+                  </span>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {selectedFramework.sources.map((src, idx) => (
+                      <a
+                        key={idx}
+                        href={src.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white/10 hover:bg-white/20 text-blue-100 hover:text-white border border-white/15 transition-all shadow-xs group"
+                        title={src.url}
+                      >
+                        <span>{language === 'en' ? src.titleEn : src.titleJa}</span>
+                        <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* 右側サマリーバッジ */}

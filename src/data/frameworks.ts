@@ -13,6 +13,26 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1949,
     secretariat: 'ブリュッセル（ベルギー）',
     description: '欧米32カ国による集団防衛・軍事同盟。1949年4月4日調印（北大西洋条約/ワシントン条約）、同年8月24日発効。加盟国への武力攻撃は全加盟国への攻撃とみなされる（第5条）。冷戦終結後の東方拡大、2023年4月4日のフィンランド、2024年3月7日のスウェーデン加盟を経て加盟国数は32カ国。フランスは1966年に統合軍事機構から離脱したのみで条約脱退ではなく2009年に復帰（正式脱退国はゼロ）。',
+    sources: [
+      {
+        titleJa: '米国国務省（条約寄託者公式記録）',
+        titleEn: 'U.S. Dept. of State (Depositary)',
+        url: 'https://www.state.gov/north-atlantic-treaty/',
+        type: 'depositary'
+      },
+      {
+        titleJa: 'NATO公式（加盟国一覧・拡大史）',
+        titleEn: 'NATO Official (Member Countries)',
+        url: 'https://www.nato.int/cps/en/natohq/topics_52044.htm',
+        type: 'official'
+      },
+      {
+        titleJa: 'NATO公式（ワシントン条約本文）',
+        titleEn: 'The North Atlantic Treaty (Official Text)',
+        url: 'https://www.nato.int/cps/en/natohq/official_texts_17120.htm',
+        type: 'treaty'
+      }
+    ],
     members: [
       // 原加盟12カ国 (1949年4月4日署名、同年8月24日条約発効・正式加盟)
       { countryCode: 'USA', status: 'member', joined: '19490824', signed: '19490404', ratified: '19490725', inForce: '19490824', notes: '原加盟国（寄託国・ワシントン条約）' },
@@ -28,10 +48,10 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ISL', status: 'member', joined: '19490824', signed: '19490404', ratified: '19490801', inForce: '19490824', notes: '原加盟国（常備軍なし）' },
       { countryCode: 'PRT', status: 'member', joined: '19490824', signed: '19490404', ratified: '19490824', inForce: '19490824', notes: '原加盟国' },
       // 第1次・第2次・第3次拡大
-      { countryCode: 'GRC', status: 'member', joined: '19520218', accession: '19520218', notes: '第1次拡大（1951年10月加盟議定書調印、1952年2月18日加入書寄託・加盟）' },
+      { countryCode: 'GRC', status: 'member', joined: '19520218', accession: '19520218', notes: '第1次拡大（1951年10月加盟議定書調印、1952年2月18日加入書寄託・加盟。1974年にキプロス危機抗議で統合軍事機構離脱、1980年10月に復帰）' },
       { countryCode: 'TUR', status: 'member', joined: '19520218', accession: '19520218', notes: '第1次拡大（1951年10月加盟議定書調印、1952年2月18日加入書寄託・加盟）' },
       { countryCode: 'DEU', status: 'member', joined: '19550506', accession: '19550506', inForce: '19550508', notes: '西ドイツ加盟（1954年10月議定書調印、1955年5月6日加入書寄託、1990年統一ドイツ）' },
-      { countryCode: 'ESP', status: 'member', joined: '19820530', accession: '19820530', notes: '第3次拡大（1981年12月議定書調印、1982年5月30日加入書寄託）' },
+      { countryCode: 'ESP', status: 'member', joined: '19820530', accession: '19820530', notes: '第3次拡大（1981年12月議定書調印、1982年5月30日加入書寄託。1986年国民投票を経て1999年に統合軍事機構完全参加）' },
       // 東方拡大 (1999)
       { countryCode: 'POL', status: 'member', joined: '19990312', accession: '19990312', notes: '第4次拡大（1997年12月議定書調印、1999年3月12日加入書寄託）' },
       { countryCode: 'CZE', status: 'member', joined: '19990312', accession: '19990312', notes: '第4次拡大（1997年12月議定書調印、1999年3月12日加入書寄託）' },
@@ -54,8 +74,8 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'SWE', status: 'member', joined: '20240307', accession: '20240307', notes: '2022年7月議定書調印、2024年3月7日加入書寄託・正式加盟' },
       // 加盟申請・加盟希望
       { countryCode: 'UKR', status: 'candidate', applied: '20220930', notes: '2022年9月30日に正式なNATO加盟申請を提出（公式候補国資格枠組みではなく加盟希望国として協議中）' },
-      { countryCode: 'GEO', status: 'candidate', notes: '2008年ブカレスト首脳会議で将来の加盟方針を確認（正式な加盟申請・公式候補国認定は未実施）' },
-      { countryCode: 'BIH', status: 'candidate', notes: '2018年に加盟行動計画（MAP）登録（準備段階であり正式な加盟候補国認定ではない）' }
+      { countryCode: 'GEO', status: 'candidate', candidate: '2008', notes: '2008年ブカレスト首脳会議で将来の加盟方針を確認（正式な加盟申請・公式候補国認定は未実施）' },
+      { countryCode: 'BIH', status: 'candidate', candidate: '2018', notes: '2018年に加盟行動計画（MAP）登録（準備段階であり正式な加盟候補国認定ではない）' }
     ]
   },
     {
