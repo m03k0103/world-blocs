@@ -165,6 +165,22 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
     return counts;
   }, [computedMembership]);
 
+  // 正式加盟・メンバー（full member / state party / participating state / ratified）判定
+  const isFullMemberStatus = (status: MembershipStatus): boolean => {
+    return status === 'member' || status === 'party' || status === 'participating_state' || status === 'ratified';
+  };
+
+  // 最新（現行）の正式加盟・メンバー数
+  const latestMemberCount = useMemo(() => {
+    if (!selectedFramework) return 0;
+    return selectedFramework.members.filter((m) => isFullMemberStatus(m.status)).length;
+  }, [selectedFramework]);
+
+  // 選択年における正式加盟・メンバー数
+  const activeMemberCount = useMemo(() => {
+    return computedMembership.filter((m) => isFullMemberStatus(m.currentStatus)).length;
+  }, [computedMembership]);
+
   // マイルストーンの生成
   const milestones = useMemo(() => {
     if (!selectedFramework) return [];
@@ -295,9 +311,16 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
               <div className="text-center">
                 <div className="text-xs text-blue-200 font-medium">{t('membersCount')}</div>
                 <div className="text-3xl font-black font-mono mt-0.5 text-white">
-                  {computedMembership.length}
+                  {latestMemberCount}
                   <span className="text-sm font-normal text-blue-200 ml-1">{t('countriesSuffix')}</span>
                 </div>
+                {selectedYear !== currentMaxYear && (
+                  <div className="text-[11px] text-blue-300/80 font-mono mt-0.5">
+                    {language === 'ja'
+                      ? `${selectedYear}年当時: ${activeMemberCount}カ国`
+                      : `${selectedYear}: ${activeMemberCount}`}
+                  </div>
+                )}
               </div>
               {selectedFramework.secretariat && (
                 <div className="text-center lg:border-t lg:border-white/10 lg:pt-3">
