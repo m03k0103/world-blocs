@@ -182,7 +182,15 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20030918',
     inForceYear: 2003,
     secretariat: 'モスクワ（ロシア）',
-    description: 'ロシア主導の旧ソ連諸国による地域軍事同盟。1992年5月15日の集団安全保障条約（タシュケント条約）を起源とし、2002年10月に常設国際機関として憲章調印、2003年9月発効。加盟国への武力攻撃を集団的自衛の対象とする。アゼルバイジャン、ジョージア、ウズベキスタンは1999年に条約延長を拒否し離脱（ウズベキスタンは2006年再加盟、2012年再離脱）。アルメニアは2024年に参加「凍結」を表明したが、法的な正式脱退手続きは完了していない。',
+    description: 'ロシア主導の旧ソ連諸国による地域軍事同盟。1992年5月15日の集団安全保障条約（タシュケント条約）を起源とし、2002年10月に常設国際機関として憲章調印、2003年9月発効。加盟国への武力攻撃を集団的自衛の対象とする。アゼルバイジャン、ジョージア、ウズベキスタンは1999年に条約延長を拒否し離脱（ウズベキスタンは2006年再加盟、2012年再離脱）。アルメニアは2024年2月に参加「凍結」を表明したが、法的な正式脱退手続きは完了していない（正式加盟扱い）。',
+    sources: [
+      {
+        titleJa: '外務省（中央アジア関連の主な地域枠組み・集団安全保障条約機構等）',
+        titleEn: 'MOFA Japan (Regional Frameworks in Central Asia / CSTO)',
+        url: 'https://www.mofa.go.jp/mofaj/area/europe/ca_kiko/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 正式加盟国
       { countryCode: 'RUS', status: 'member', signed: '19920515', inForce: '19940420', joined: '20021007', notes: '原加盟国・主導国（1992年タシュケント条約調印、2002年CSTO憲章調印）' },
@@ -190,13 +198,14 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'KAZ', status: 'member', signed: '19920515', inForce: '19940420', joined: '20021007', notes: '原加盟国（1992年タシュケント条約調印、2002年CSTO憲章調印）' },
       { countryCode: 'KGZ', status: 'member', signed: '19920515', inForce: '19940420', joined: '20021007', notes: '原加盟国（1992年タシュケント条約調印、2002年CSTO憲章調印）' },
       { countryCode: 'TJK', status: 'member', signed: '19920515', inForce: '19940420', joined: '20021007', notes: '原加盟国（1992年タシュケント条約調印、2002年CSTO憲章調印）' },
-      { countryCode: 'ARM', status: 'member', signed: '19920515', inForce: '19940420', joined: '20021007', notes: '原加盟国（2024年に活動・分担金拠出の「凍結」を表明したが、法的な正式脱退手続きは未完了）' },
+      { countryCode: 'ARM', status: 'member', signed: '19920515', inForce: '19940420', joined: '20021007', notes: '原加盟国（2024年2月に参加凍結［活動・分担金拠出停止］を表明。法的な正式脱退手続きは未完了のため正式加盟扱い）' },
       // 離脱国
       { countryCode: 'AZE', status: 'withdrawn', signed: '19930924', inForce: '19940420', withdrawn: '19990402', notes: '1993年条約調印、1999年に条約延長議定書への署名を拒否し離脱' },
       { countryCode: 'GEO', status: 'withdrawn', signed: '19931209', inForce: '19940420', withdrawn: '19990402', notes: '1993年条約調印、1999年に条約延長議定書への署名を拒否し離脱' },
       { countryCode: 'UZB', status: 'withdrawn', signed: '19920515', withdrawn: '20121219', notes: '1992年原署名、1999年離脱、2006年再加盟、2012年12月に再び参加停止・脱退' },
-      // オブザーバー
-      { countryCode: 'SRB', status: 'observer', notes: '議会総会オブザーバー（2013年より参加。正式な加盟申請ではない）' }
+      // オブザーバー（CSTO議会会議オブザーバー）
+      { countryCode: 'SRB', status: 'observer', joined: '2013', notes: 'CSTO議会会議オブザーバー（2013年より参加）' },
+      { countryCode: 'AFG', status: 'observer', joined: '2013', notes: 'CSTO議会会議オブザーバー（2013年より参加）' }
     ]
   },
     {
