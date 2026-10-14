@@ -17,13 +17,60 @@
 
 | Track ID | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
-| — | 次期構想策定中 | 国際枠組みの新規追加・更なる可視化表現 | 継続的UX・データ品質改善 | 検討中 |
+| **Track [Eurasia-CentralAsia]** | **ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連解体後の多国間安全保障・経済統合・中央アジア地域協力の完全網羅（全34→40枠組み到達） | **【計画策定済】(次期着手予定)** |
 
 ---
 
 ## 2. 今後の Track 詳細計画
 
-現在、策定済みの全 Track（Drop 1 〜 Drop 25）の実装が完了しています。ユーザーからの新規機能要請やデータ拡充要望に応じて次期 Track を策定します。
+### 【計画策定済】Track [Eurasia-CentralAsia]: ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加（Drop 26予定）
+
+旧ソ連構成国、中央アジア、コーカサス、およびアジア全域にまたがる安全保障・経済統合・信頼醸成の6大重要国際枠組みを新規追加し、既存の CSTO や SCO と合わせたユーラシア国際関係の完全可視化を実現する。
+
+#### 対象枠組み一覧と設計仕様
+
+1. **独立国家共同体（CIS: Commonwealth of Independent States）**
+   - **ID**: `cis` / **カテゴリ**: `regional` (地域統合・地域機構)
+   - **創設**: 1991年12月8日（ベロヴェーシ合意）、1991年12月21日（アルマ・アタ宣言）、1993年1月22日（CIS憲章調印）
+   - **本部/事務局**: ミンスク（ベラルーシ）
+   - **構成国**: 正式加盟国9カ国（RUS, BLR, KAZ, KGZ, TJK, UZB, ARM, AZE, MDA）、準加盟国1カ国（TKM）、脱退国2カ国（GEO［2009年脱退］, UKR［2018年脱退通告］）
+   - **一次資料**: CIS執行委員会公式ポータル（cis.minsk.by）、日本外務省資料
+
+2. **ユーラシア経済同盟（EAEU: Eurasian Economic Union）**
+   - **ID**: `eaeu` / **カテゴリ**: `economic` (経済・貿易連携)
+   - **創設**: 2014年5月29日調印、2015年1月1日発効
+   - **本部/事務局**: モスクワ（ロシア）
+   - **構成国**: 正式加盟国5カ国（RUS, BLR, KAZ, ARM, KGZ）、オブザーバー国3カ国（MDA, UZB, CUB）
+   - **一次資料**: ユーラシア経済委員会（EEC）公式サイト（eaeunion.org）、日本外務省資料
+
+3. **アジア信頼醸成措置会議（CICA: Conference on Interaction and Confidence-Building Measures in Asia）**
+   - **ID**: `cica` / **カテゴリ**: `security` (安全保障・多国間協議)
+   - **提唱/創設**: 1992年（ナザルバエフ大統領提唱）、1999年第1回外相会合（アルマティ宣言）、2002年第1回首脳会議
+   - **本部/事務局**: アスタナ（カザフスタン）
+   - **構成国**: 正式加盟28カ国（CHN, RUS, IND, PAK, KAZ, TUR, IRN, ISR, PSE, THA, VNM, KOR, ARE等）、オブザーバー国（JPN, USA, IDN, PHL, MYS, UKR等）
+   - **一次資料**: CICA事務局公式サイト（s-cica.org）、日本外務省資料
+
+4. **民主主義と経済発展のための機構-GUAM（Organization for Democracy and Economic Development - GUAM）**
+   - **ID**: `guam` / **カテゴリ**: `regional` (地域統合・安全保障協力)
+   - **創設**: 1997年10月10日設立、2001年ヤルタ憲章、2006年キエフサミットにて国際機関化
+   - **本部/事務局**: キエフ（ウクライナ）
+   - **構成国**: 正式加盟国4カ国（GEO［ジョージア］, UKR［ウクライナ］, AZE［アゼルバイジャン］, MDA［モルドバ］）、脱退国1カ国（UZB［1999年加入・2005年脱退］）
+   - **一次資料**: GUAM事務局公式サイト（guam-organization.org）、日本外務省資料
+
+5. **経済協力機構（ECO: Economic Cooperation Organization）**
+   - **ID**: `eco` / **カテゴリ**: `economic` (経済・貿易連携)
+   - **創設**: 1985年設立（原加盟3カ国: IRN, PAK, TUR）、1992年拡大（中央アジア・コーカサス7カ国加盟）
+   - **本部/事務局**: テヘラン（イラン）
+   - **構成国**: 正式加盟国10カ国（IRN, PAK, TUR, AFG, AZE, KAZ, KGZ, TJK, TKM, UZB）
+   - **一次資料**: ECO事務局公式サイト（eco.int）、日本外務省資料
+
+6. **中央アジア地域経済協力（CAREC: Central Asia Regional Economic Cooperation）**
+   - **ID**: `carec` / **カテゴリ**: `economic` (経済・開発協力)
+   - **創設**: 1997年（アジア開発銀行 ADB 主導立ち上げ）、2001年包括的協力開始
+   - **事務局**: マニラ（アジア開発銀行 ADB 本部内）
+   - **構成国**: 参加国11カ国（AFG, AZE, GEO, KAZ, KGZ, MNG, PAK, CHN, TJK, TKM, UZB）、開発パートナー機関（ADB, WB, IMF, EBRD, AIIB等）
+   - **一次資料**: CARECプログラム公式サイト（carecprogram.org）、アジア開発銀行（ADB）資料
+
 
 ---
 
