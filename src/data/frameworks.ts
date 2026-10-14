@@ -303,6 +303,20 @@ export const FRAMEWORKS: Framework[] = [
     establishedYear: 1975,
     secretariat: '持ち回り議長国',
     description: '民主主義と市場経済の普遍的価値を共有する主要7カ国および欧州連合（EU）の首脳による年次首脳会議。1975年のランブイエ・サミット（仏米英独日伊の6カ国）に始まり、1976年にカナダが加入。1977年よりEU（欧州委員会・欧州理事会）が非列挙参加主体として恒常参加。1997〜2014年はロシアが加わりG8として開催されたが、2014年クリミア併合を受け参加を無期限停止しG7体制に復帰。',
+    sources: [
+      {
+        titleJa: '外務省（G7サミット・主要国首脳会議ポータル）',
+        titleEn: 'MOFA Japan (G7 Summit Portal)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/summit/',
+        type: 'official'
+      },
+      {
+        titleJa: '米国国務省（G7ポータル）',
+        titleEn: 'U.S. Department of State (Group of Seven)',
+        url: 'https://www.state.gov/g7/',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'member', joined: '1975', notes: 'アジア唯一のメンバー（1975年ランブイエ・サミットより参加）' },
       { countryCode: 'USA', status: 'member', joined: '1975' },
@@ -327,6 +341,20 @@ export const FRAMEWORKS: Framework[] = [
     establishedYear: 1999,
     secretariat: '持ち回り議長国',
     description: '先進国と新興国の首脳が国際経済・金融の安定を議論するフォーラム。世界の主要19カ国および欧州連合（EU）、アフリカ連合（AU）の計21メンバーで構成される。1999年にアジア通貨危機を契機として財務相・中央銀行総裁会議として発足し、2008年の世界金融危機（リーマンショック）を受けて首脳級フォーラムへ格上げ。2023年ニューデリー・サミットでアフリカ連合（AU）が常任メンバーとして正式加盟。',
+    sources: [
+      {
+        titleJa: 'G20 公式サイト',
+        titleEn: 'Official G20 Website',
+        url: 'https://www.g20.org/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（G20サミット・首脳会合ポータル）',
+        titleEn: 'MOFA Japan (G20 Summit Portal)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/g20/',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'member', firstParticipated: '1999' },
       { countryCode: 'USA', status: 'member', firstParticipated: '1999' },
@@ -452,6 +480,26 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20210915',
     inForceYear: 2021,
     description: '豪州、英国、米国によるインド太平洋地域の先端安全保障パートナーシップ。原子力潜水艦の豪州配備支援（第1の柱）およびAI・量子・極超音速技術等の共同開発（第2の柱）からなる。2021年9月15日に首脳共同声明で創設発表。',
+    sources: [
+      {
+        titleJa: 'オーストラリア国防省（AUKUS公式ポータル）',
+        titleEn: 'Department of Defence Australia (AUKUS)',
+        url: 'https://www.defence.gov.au/about/initiatives/aukus',
+        type: 'official'
+      },
+      {
+        titleJa: '米国国防総省（AUKUS Spotlight）',
+        titleEn: 'U.S. Department of Defense (AUKUS Spotlight)',
+        url: 'https://www.defense.gov/Spotlights/AUKUS/',
+        type: 'official'
+      },
+      {
+        titleJa: '英国政府（AUKUS首脳共同声明）',
+        titleEn: 'UK Government (Joint Leaders Statement on AUKUS)',
+        url: 'https://www.gov.uk/government/publications/aukus-joint-leaders-statement',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'AUS', status: 'member', joined: '20210915' },
       { countryCode: 'GBR', status: 'member', joined: '20210915' },
@@ -468,6 +516,20 @@ export const FRAMEWORKS: Framework[] = [
     established: '200705',
     establishedYear: 2007,
     description: '日本、米国、オーストラリア、インドの4カ国による海洋安全保障・外交協議枠組み。「自由で開かれたインド太平洋（FOIP）」の維持・強化、インフラ支援、重要技術、サプライチェーン強靭化を推進。2007年5月に初協議、2017年実務者協議再開、2021年に首脳級フォーラムへ格上げ。',
+    sources: [
+      {
+        titleJa: '外務省（日米豪印・Quad公式ページ）',
+        titleEn: 'MOFA Japan (Japan-Australia-India-U.S. / Quad)',
+        url: 'https://www.mofa.go.jp/mofaj/fp/nsp/page1_000843.html',
+        type: 'official'
+      },
+      {
+        titleJa: '米国国務省（Quad公式ポータル）',
+        titleEn: 'U.S. Department of State (The Quad)',
+        url: 'https://www.state.gov/quad/',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'member', firstParticipated: '200705', notes: '安倍晋三首相の提唱により2007年5月初協議、2017年再開、2021年首脳会合' },
       { countryCode: 'USA', status: 'member', firstParticipated: '200705' },
@@ -486,6 +548,20 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '19460305',
     inForceYear: 1946,
     description: '英語圏5カ国（米国、英国、カナダ、オーストラリア、ニュージーランド）によるシギント（信号情報）諜報・機密情報共有同盟。第二次世界大戦期の1943年BRUSA協定を前身とし、1946年3月5日の英米間UKUSA協定調印・発効を起源とする。その後カナダ（1948年）、オーストラリア・ニュージーランド（1956年）が参加。',
+    sources: [
+      {
+        titleJa: '米国国家情報長官室（ODNI / UKUSA協定歴史記録）',
+        titleEn: 'U.S. ODNI (The UKUSA Agreement)',
+        url: 'https://www.dni.gov/index.php/who-we-are/organizations/enterprise-capacity/ic-cio/ic-cio-related-menus/ic-cio-related-links/ukusa-agreement',
+        type: 'official'
+      },
+      {
+        titleJa: '英国国家サイバーセキュリティセンター（NCSC / Five Eyes公式発表）',
+        titleEn: 'UK NCSC (Five Eyes Joint Guidance)',
+        url: 'https://www.ncsc.gov.uk/',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'USA', status: 'member', signed: '19460305', joined: '19460305', notes: '原調印国（1946年3月5日UKUSA協定調印、1943年BRUSA協定継続）' },
       { countryCode: 'GBR', status: 'member', signed: '19460305', joined: '19460305', notes: '原調印国（1946年3月5日UKUSA協定調印、1943年BRUSA協定継続）' },
@@ -529,6 +605,20 @@ export const FRAMEWORKS: Framework[] = [
     established: '2006',
     establishedYear: 2006,
     description: '新興大国による多国間協力枠組み。「グローバルサウス」の代表的プラットフォーム。2024年にエジプト、エチオピア、イラン、UAEが拡大加盟し、2025年1月にインドネシアが正式加盟。10カ国のパートナー国制度を導入し拡大中（サウジアラビアは加盟招待を受け参加協議中）。',
+    sources: [
+      {
+        titleJa: 'ロシア大統領府（第16回BRICSカザンサミット宣言）',
+        titleEn: 'President of Russia (XVI BRICS Summit Kazan Declaration)',
+        url: 'http://en.kremlin.ru/supplement/6227',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（BRICS情勢解説）',
+        titleEn: 'MOFA Japan (BRICS Overview)',
+        url: 'https://www.mofa.go.jp/mofaj/area/page24_001607.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'BRA', status: 'member', joined: '2006', notes: '創設メンバー' },
       { countryCode: 'RUS', status: 'member', joined: '2006', notes: '創設メンバー' },
