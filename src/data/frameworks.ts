@@ -693,6 +693,20 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20161104',
     inForceYear: 2016,
     description: '国連気候変動枠組条約（UNFCCC）のもとで採択された歴史的協定。世界の平均気温上昇を産業革命前と比べ2℃より十分低く保ち、1.5℃に抑える努力を追求する。国連条約集（UNTC）公式記録（XXVII-7-d）における当事者（Parties）数は194（193カ国および欧州連合）、署名国（Signatories）数は194。未批准の署名国はイラン、リビア、イエメンの3カ国。米国は2025年1月27日に再離脱通告を行い、協定第28条に基づき2026年1月27日に脱退発効。',
+    sources: [
+      {
+        titleJa: '国連条約局（UNTC - パリ協定 第XXVII章7.d）',
+        titleEn: 'United Nations Treaty Collection (UNTC - Paris Agreement, Ch. XXVII.7.d)',
+        url: 'https://treaties.un.org/pages/ViewDetails.aspx?src=TREATY&mtdsg_no=XXVII-7-d&chapter=27&clang=_en',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（気候変動枠組条約「パリ協定」）',
+        titleEn: 'MOFA Japan (UNFCCC Paris Agreement)',
+        url: 'https://www.mofa.go.jp/mofaj/ic/ch/page1a_000034.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'party', signed: '20160422', ratified: '20161108' },
       { countryCode: 'USA', status: 'withdrawn', signed: '20160422', ratified: '20160903', withdrawalNotified: '20250127', withdrawn: '20260127', notes: '国連条約集（UNTC）公式記録（Note 7）。2016年9月3日受諾（2016年11月4日発効）、2020年離脱、2021年1月20日再受諾（2月19日復帰発効）。2025年1月27日に国連事務総長へ再離脱通告（C.N.71.2025.TREATIES-XXVII.7.d）、協定第28条に基づき2026年1月27日に脱退発効' },
@@ -904,7 +918,21 @@ export const FRAMEWORKS: Framework[] = [
     establishedYear: 1968,
     inForce: '19700305',
     inForceYear: 1970,
-    description: "核軍縮、核不拡散、原子力の平和的利用を3本柱とする条約。米・露・英・仏・中を公認核兵器保有国（NWS）と定め、他国の核保有を禁じる。国連加盟国を含む世界191の当事国（188独立国およびバチカン、パレスチナ、クック諸島、ニウエ）が締約。非締約国はインド、パキスタン、イスラエル、南スーダンの4カ国、および2003年に条約第10条に基づく脱退を宣言した北朝鮮（通告の法的効力や地位には議論あり）。台湾は1971年の中国代表権移行に伴い公式締約国リストから除外。",
+    description: "核軍縮、核不拡散、原子力の平和的利用を3本柱とする条約。米・露・英・仏・中を公認核兵器保有国（NWS）と定め、他国の核保有を禁じる。国連加盟国を含む世界192の当事国（188国連加盟国およびバチカン、パレスチナ、クック諸島、ニウエ）が締約。非締約国はインド、パキスタン、イスラエル、南スーダンの4カ国、および2003年に条約第10条に基づく脱退を宣言した北朝鮮（通告の法的効力や地位には議論あり）。台湾は1971年の中国代表権移行に伴い公式締約国リストから除外。",
+    sources: [
+      {
+        titleJa: '国連軍縮部（UNODA - 核兵器不拡散条約 NPT 締約状況）',
+        titleEn: 'UNODA (Treaty on the Non-Proliferation of Nuclear Weapons - Status of Adherence)',
+        url: 'https://treaties.unoda.org/t/npt',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（核兵器不拡散条約（NPT）の概要）',
+        titleEn: 'MOFA Japan (Treaty on the Non-Proliferation of Nuclear Weapons / NPT)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/kaku/npt/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'USA', status: 'party', signed: '19680701', ratified: '19700305', inForce: '19700305', notes: "公認核兵器保有国・寄託国（プエルトリコ等の自治領を含む領域に適用）" },
       { countryCode: 'RUS', status: 'party', signed: '19680701', ratified: '19700305', inForce: '19700305', notes: "公認核兵器保有国・寄託国（ソ連承継）" },
@@ -1117,6 +1145,20 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20210122',
     inForceYear: 2021,
     description: "核兵器の開発、保有、使用、威嚇等を全面的に禁止する初の国際条約。ICAN（核兵器廃絶国際キャンペーン）などの市民社会が推進。核保有国および米国の「核の傘」の下にある日本やNATO加盟国は不参加（主要締約国・関連国を抜粋収録）。",
+    sources: [
+      {
+        titleJa: '国連軍縮部（UNODA - 核兵器禁止条約 TPNW 締約状況）',
+        titleEn: 'UNODA (Treaty on the Prohibition of Nuclear Weapons - Status of Adherence)',
+        url: 'https://treaties.unoda.org/t/tpnw',
+        type: 'official'
+      },
+      {
+        titleJa: '国連条約局（UNTC - 核兵器禁止条約 第XXVI章9）',
+        titleEn: 'United Nations Treaty Collection (UNTC - TPNW, Ch. XXVI.9)',
+        url: 'https://treaties.un.org/pages/ViewDetails.aspx?src=TREATY&mtdsg_no=XXVI-9&chapter=26&clang=_en',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'AUT', status: 'party', signed: '20170920', ratified: '20180508', inForce: '20210122', notes: "中立国として批准" },
       { countryCode: 'NZL', status: 'party', signed: '20170920', ratified: '20180731', inForce: '20210122', notes: "非核政策を堅持" },
@@ -1154,6 +1196,26 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 2002,
     secretariat: 'ハーグ（オランダ）',
     description: "ジェノサイド（集団殺害）、人道に対する罪、戦争犯罪、侵略犯罪を犯した個人を訴追・処罰する初の常設国際刑事法廷。1998年のローマ規程採択を経て2002年に発効。日本は2007年に加盟し筆頭分担金拠出国。米中露などの大国は不参加・離脱。",
+    sources: [
+      {
+        titleJa: '国際刑事裁判所（ICC - ローマ規程締約国会議 ASP）',
+        titleEn: 'International Criminal Court (ICC - Assembly of States Parties / States Parties)',
+        url: 'https://asp.icc-cpi.int/states-parties',
+        type: 'official'
+      },
+      {
+        titleJa: '国連条約局（UNTC - 国際刑事裁判所ローマ規程 第XVIII章10）',
+        titleEn: 'United Nations Treaty Collection (UNTC - Rome Statute of the ICC, Ch. XVIII.10)',
+        url: 'https://treaties.un.org/pages/ViewDetails.aspx?src=TREATY&mtdsg_no=XVIII-10&chapter=18&clang=_en',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（国際刑事裁判所（ICC）概要）',
+        titleEn: 'MOFA Japan (International Criminal Court / ICC Overview)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/icc/',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'party', accession: '20070717', inForce: '20071001', notes: "2007年加盟。裁判所の筆頭分担金拠出国" },
       { countryCode: 'GBR', status: 'party', signed: '1998', ratified: '2001' },
@@ -1305,6 +1367,26 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1994,
     secretariat: 'キングストン（国際海底機構）/ ハンブルク（国際海洋法裁判所）',
     description: "「海の憲法」とも呼ばれる包括的海洋秩序条約。領海（12海里）、排他的経済水域（EEZ・200海里）、大陸棚、公海、深海底の法的地位、航行の自由、海洋資源利用や海洋環境保護を包括的に規定。国連条約データベース（UNTC）公式記録によると2026年10月時点で172の締約当事者（171カ国および欧州連合/EU）が締約。大国の中でアメリカ合衆国やトルコ等の非締約国（未批准・非署名）の動向が国際海洋秩序の焦点。",
+    sources: [
+      {
+        titleJa: '国連条約局（UNTC - 国連海洋法条約 第XXI章6）',
+        titleEn: 'United Nations Treaty Collection (UNTC - UNCLOS, Ch. XXI.6)',
+        url: 'https://treaties.un.org/pages/ViewDetails.aspx?src=TREATY&mtdsg_no=XXI-6&chapter=21&clang=_en',
+        type: 'official'
+      },
+      {
+        titleJa: '国連海洋法課（DOALOS - UNCLOS 批准・加入国リスト）',
+        titleEn: 'UN DOALOS (Chronological Lists of Ratifications of UNCLOS)',
+        url: 'https://www.un.org/depts/los/reference_files/chronological_lists_of_ratifications.htm',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（国連海洋法条約（UNCLOS）概要）',
+        titleEn: 'MOFA Japan (UN Convention on the Law of the Sea / UNCLOS)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/kaiyo/kaiyo_h.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'party', signed: '19830207', ratified: '19960620', inForce: '19960720', notes: "1983年署名、1996年批准。国内法でEEZ・接続水域を設定" },
       { countryCode: 'CHN', status: 'party', signed: '19821210', ratified: '19960607', inForce: '19960707', notes: "1996年批准。南シナ海での権利主張に対し2016年常設仲裁裁判所が判決" },
@@ -1368,6 +1450,26 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1945,
     secretariat: 'ニューヨーク（国連本部）',
     description: "国際連合安全保障理事会において恒久的な議席と絶対的拒否権（Veto）を有する5大国。第二次世界大戦の主要戦勝国であり、国連憲章上、世界の平和と安全の維持に主要な責任を負う。核兵器不拡散条約（NPT）上の公認核兵器保有国と一致。",
+    sources: [
+      {
+        titleJa: '国際連合（安保理常任理事国・現行メンバー）',
+        titleEn: 'United Nations (Security Council Permanent Members / Current Members)',
+        url: 'https://www.un.org/securitycouncil/content/current-members',
+        type: 'official'
+      },
+      {
+        titleJa: '国際連合憲章（第5章 安全保障理事会 第23条）',
+        titleEn: 'United Nations (Charter of the UN, Chapter V: The Security Council, Art. 23)',
+        url: 'https://www.un.org/en/about-us/un-charter/chapter-5',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（国連安全保障理事会改革・構成国）',
+        titleEn: 'MOFA Japan (UN Security Council Reform / Members)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/un_kaikaku/',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'USA', status: 'member', joined: '19451024', notes: "国連憲章起草・原常任理事国" },
       { countryCode: 'GBR', status: 'member', joined: '19451024', notes: "原常任理事国" },
