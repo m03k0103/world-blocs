@@ -221,6 +221,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1955,
     secretariat: 'モスクワ（ソ連）',
     description: '冷戦期にソビエト連邦を中心とする東欧社会主義諸国が結成した軍事同盟（友好協力相互援助条約）。西側のNATOに対抗して1955年5月14日調印、同年6月5日発効。冷戦終結に伴い1991年3月31日に軍事機構廃止、同年7月1日に正式解散。アルバニアは1968年に正式脱退、東ドイツは1990年の東西ドイツ統一に伴い脱退。',
+    sources: [
+      {
+        titleJa: '国際連合条約集（UNTC - ワルシャワ友好協力相互援助条約 Vol. 219 No. 2962）',
+        titleEn: 'United Nations Treaty Series (Warsaw Treaty, Vol. 219, No. 2962)',
+        url: 'https://treaties.un.org/',
+        type: 'treaty'
+      },
+      {
+        titleJa: '米国アバロン・プロジェクト（ワルシャワ条約公式文書・米連邦公式外交記録）',
+        titleEn: 'The Avalon Project (Warsaw Security Pact, May 14, 1955)',
+        url: 'https://avalon.law.yale.edu/20th_century/warsaw.asp',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'RUS', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '主導国（ソビエト連邦、1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
       { countryCode: 'POL', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
@@ -703,6 +717,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 2003,
     secretariat: '北京（中国）',
     description: '中露および中央アジア諸国によって創設されたユーラシア地域の包括的政治・安全保障・経済協力機構（多国間協力プラットフォーム）。ユーラシア大陸の面積の約6割強（約65%）、世界人口の4割以上を占める。テロ・分離主義・過激主義の打倒（三つの悪）を掲げる。',
+    sources: [
+      {
+        titleJa: '上海協力機構（SCO事務局公式ポータル）',
+        titleEn: 'Shanghai Cooperation Organisation (Official Secretariat Portal)',
+        url: 'https://sectsco.org/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（上海協力機構 SCO概要）',
+        titleEn: 'MOFA Japan (Shanghai Cooperation Organisation / SCO)',
+        url: 'https://www.mofa.go.jp/mofaj/area/europe/ca_kiko/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'CHN', status: 'member', joined: '20010615', notes: '原加盟国' },
       { countryCode: 'RUS', status: 'member', joined: '20010615', notes: '原加盟国' },
@@ -1379,6 +1407,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1945,
     secretariat: 'カイロ（エジプト）',
     description: '中東および北アフリカのアラブ諸国22カ国・地域で構成される地域協力機構。共通の言語・文化・歴史的結びつきを基盤に、政治、経済、安全保障、社会文化の協調と主権擁護を推進。',
+    sources: [
+      {
+        titleJa: 'アラブ諸国連盟（アラブ連盟事務局公式ポータル）',
+        titleEn: 'League of Arab States (Official Secretariat Portal)',
+        url: 'http://www.leagueofarabstates.net/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（アラブ連盟（アラブ諸国連盟）概要）',
+        titleEn: 'MOFA Japan (League of Arab States Overview)',
+        url: 'https://www.mofa.go.jp/mofaj/area/middleeast/arab_rengo.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 1945年 創設7カ国
       { countryCode: 'EGY', status: 'member', joined: '19450322', notes: '創設メンバー。1979-1989年にイスラエル平和条約締結により資格停止、後に復帰' },
@@ -1814,6 +1856,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 2023,
     secretariat: 'ジャカルタ（インドネシア / ERIA内 アジア・ゼロエミッション・センター）',
     description: 'アジア地域のカーボンニュートラル実現に向け、脱炭素化・経済成長・エネルギー安全保障の同時達成（GX）を推進する日本主導の国際協力枠組み。2022年に日本が提唱し、2023年に第1回閣僚会合および首脳会合を開催。日本、豪州およびASEAN主要9カ国の計11カ国がパートナーとして参加。',
+    sources: [
+      {
+        titleJa: '経済産業省（AZEC アジア・ゼロエミッション共同体公式ポータル）',
+        titleEn: 'METI Japan (Asia Zero Emission Community / AZEC)',
+        url: 'https://www.meti.go.jp/policy/energy_environment/global_warming/azec.html',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（アジア・ゼロエミッション共同体 AZEC）',
+        titleEn: 'MOFA Japan (Asia Zero Emission Community / AZEC Overview)',
+        url: 'https://www.mofa.go.jp/mofaj/ecm/ec/page24_000788.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'member', joined: '20230304', notes: '提唱国・原参加国' },
       { countryCode: 'AUS', status: 'member', joined: '20230304', notes: '原参加国' },
