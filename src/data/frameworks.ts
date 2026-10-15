@@ -91,6 +91,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1995,
     secretariat: 'ウィーン（オーストリア）',
     description: '北米、欧州、中央アジアの57カ国が参加する世界最大の地域安全保障フォーラム。法的拘束力を持つ条約機構ではなく政治的合意に基づく枠組みであり、加盟国は「参加国（Participating States）」と呼ばれる。1975年8月1日のヘルシンキ最終文書調印（全欧安全保障協力会議/CSCE）を起源とし、1995年1月1日に常設機構化・OSCEへ改称。軍事・軍縮、経済・環境、人権・民主主義・選挙監視という3つの包括的安全保障アプローチ（ヘルシンキ・バスケット）を特徴とする。',
+    sources: [
+      {
+        titleJa: 'OSCE公式ポータル（参加国一覧・57カ国）',
+        titleEn: 'OSCE Official (Participating States)',
+        url: 'https://www.osce.org/participating-states',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（欧州安全保障協力機構 OSCE の概要）',
+        titleEn: 'MOFA Japan (Organization for Security and Co-operation in Europe)',
+        url: 'https://www.mofa.go.jp/mofaj/area/europe/osce/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 1975年 ヘルシンキ最終文書調印国（原参加国）
       { countryCode: 'AUT', status: 'participating_state', firstParticipated: '19750801', declarationSigned: '19750801', notes: '原参加国（1975年ヘルシンキ最終文書調印・本部所在地）' },
@@ -258,6 +272,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1993,
     secretariat: 'ブリュッセル（ベルギー）',
     description: '欧州27カ国による独自の超国家政治・経済共同体。1957年ローマ条約調印（1958年欧州経済共同体〈EEC〉発足）を前身とし、1992年署名・1993年11月1日発効のマーストリヒト条約により欧州連合（EU）として正式設立。共通市場、単一通貨ユーロ、シェンゲン協定等を含む。2020年に英国が離脱（ブレグジット）。',
+    sources: [
+      {
+        titleJa: '欧州連合公式ポータル（EU加盟国一覧）',
+        titleEn: 'European Union Official (EU Member Countries)',
+        url: 'https://european-union.europa.eu/principles-countries-history/country-profiles_en',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（欧州連合 EU の概要）',
+        titleEn: 'MOFA Japan (European Union Overview)',
+        url: 'https://www.mofa.go.jp/mofaj/area/eu/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 原加盟6カ国 (1957年ローマ条約署名、1958年EEC発足、1993年EU設立)
       { countryCode: 'DEU', status: 'member', joined: '19580101', signed: '19570325', inForce: '19580101', notes: '原加盟国（1957年ローマ条約・1958年EEC発足、1993年EUへ継続）' },
@@ -1589,6 +1617,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1961,
     secretariat: 'パリ（フランス）',
     description: '市場経済と民主主義の基本的価値を共有する38カ国が加盟する国際経済機関。かつて「先進国クラブ」とも称されたが、現在は北米・欧州に加え、中南米（メキシコ、チリ、コロンビア、コスタリカ）やアジア太平洋にも加盟国が広がる。1961年に欧米20カ国で発足し、1964年に日本がアジア太平洋地域から初の加盟国として加わった。',
+    sources: [
+      {
+        titleJa: 'OECD公式（加盟国一覧・拡大）',
+        titleEn: 'OECD Official (List of OECD Member countries)',
+        url: 'https://www.oecd.org/about/members-and-partners/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（経済協力開発機構 OECD）',
+        titleEn: 'MOFA Japan (Organisation for Economic Co-operation and Development)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/oecd/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 1961年 創設原加盟20カ国
       { countryCode: 'USA', status: 'member', joined: '19610930', notes: '原加盟国' },
@@ -1658,6 +1700,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 2020,
     secretariat: '共同管理（各国政府関係省庁）',
     description: 'NAFTA（北米自由貿易協定）を現代の経済実態に合わせて全面改定し、2020年7月に発効した自由貿易協定。自動車原産地規則の厳格化、労働環境・為替操作への規律強化、デジタル貿易規定の新設などが盛り込まれている。第34.7条の「サンセット条項」に基づき2026年7月1日に第1回共同レビューが実施されたが、米国が更新に即時同意せず、協定自体の2036年終了期限（16年有効期間）を視野に入れつつ年次共同レビュープロセスへ移行。',
+    sources: [
+      {
+        titleJa: '米国通商代表部（USTR公式 USMCA協定本文）',
+        titleEn: 'Office of the U.S. Trade Representative (USMCA Agreement)',
+        url: 'https://ustr.gov/trade-agreements/free-trade-agreements/united-states-mexico-canada-agreement',
+        type: 'treaty'
+      },
+      {
+        titleJa: '外務省（米国・メキシコ・カナダ協定 USMCA）',
+        titleEn: 'MOFA Japan (United States-Mexico-Canada Agreement)',
+        url: 'https://www.mofa.go.jp/mofaj/area/usa/usmca.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'USA', status: 'party', signed: '20181130', ratified: '20200129', inForce: '20200701', notes: '2020年7月1日発効。2026年7月1日の第1回共同レビューで更新に即時不同意表明、年次共同レビュー移行' },
       { countryCode: 'CAN', status: 'party', signed: '20181130', ratified: '20200313', inForce: '20200701', notes: '2020年7月1日発効（カナダ呼称: CUSMA）' },
@@ -1677,6 +1733,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1991,
     secretariat: 'モンテビデオ（ウルグアイ）',
     description: '南米諸国の経済統合・関税同盟。1991年のアスンシオン条約により創設。域内関税撤廃や共通対外関税の導入を進める一方、対外FTA交渉や加盟国内の政治的動向による課題も抱える。2024年にボリビアが正式加盟。',
+    sources: [
+      {
+        titleJa: 'メルコスール公式ポータル（加盟国一覧）',
+        titleEn: 'MERCOSUR Official Portal (Países del MERCOSUR)',
+        url: 'https://www.mercosur.int/quienes-somos/paises-del-mercosur/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（南米南部共同市場 メルコスール）',
+        titleEn: 'MOFA Japan (Southern Common Market / MERCOSUR)',
+        url: 'https://www.mofa.go.jp/mofaj/area/latinamerica/kikan/mercosur.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 正加盟国 (原加盟4カ国 + ボリビア)
       { countryCode: 'ARG', status: 'member', joined: '19910326', signed: '19910326', ratified: '1991', notes: '原加盟国（アスンシオン条約調印）' },
@@ -1711,6 +1781,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 2015,
     secretariat: '輪番制（常設事務局なし）',
     description: '中南米の太平洋岸4カ国（チリ、コロンビア、メキシコ、ペルー）が市場統合、自由貿易の推進、アジア太平洋地域との経済関係緊密化を目的に2011年に結成した経済同盟。財・サービス・資本・人の移動の自由化を進めている。',
+    sources: [
+      {
+        titleJa: '太平洋同盟公式ポータル（Alianza del Pacífico）',
+        titleEn: 'Pacific Alliance Official Portal (Alianza del Pacífico)',
+        url: 'https://alianzapacifico.net/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（太平洋同盟の概要）',
+        titleEn: 'MOFA Japan (Pacific Alliance Overview)',
+        url: 'https://www.mofa.go.jp/mofaj/area/latinamerica/kikan/taiheiyo_d.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'CHL', status: 'member', joined: '20150720', signed: '20120606', inForce: '20150720', notes: '原加盟国（2012年枠組み協定調印、2015年発効）' },
       { countryCode: 'COL', status: 'member', joined: '20150720', signed: '20120606', inForce: '20150720', notes: '原加盟国（2012年枠組み協定調印、2015年発効）' },
@@ -1737,6 +1821,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1993,
     secretariat: 'ジャカルタ（インドネシア / ASEAN事務局）',
     description: '東南アジア諸国連合（ASEAN）加盟国間の関税引き下げと非関税障壁撤廃を目的とした自由貿易地域。共通効果特恵関税（CEPT）方式を中核とし、現在はATIGA（ASEAN物品貿易協定）のもとで99%以上の品目で関税撤廃が達成されている。',
+    sources: [
+      {
+        titleJa: 'ASEAN事務局公式（ASEAN物品貿易協定 ATIGA / AFTA）',
+        titleEn: 'ASEAN Secretariat Official (Trade in Goods / AFTA & ATIGA)',
+        url: 'https://asean.org/our-communities/economic-community/trade-in-goods/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（東南アジア諸国連合 ASEAN / 経済共同体）',
+        titleEn: 'MOFA Japan (Association of Southeast Asian Nations)',
+        url: 'https://www.mofa.go.jp/mofaj/area/asean/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 原加盟6カ国 (1992年署名)
       { countryCode: 'BRN', status: 'member', signed: '19920128', inForce: '19930101', notes: '原加盟国' },
@@ -1767,6 +1865,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1994,
     secretariat: 'ブリュッセル（ベルギー / EFTA事務局）',
     description: 'EU（欧州連合）加盟国とEFTA（欧州自由貿易連合）3カ国（ノルウェー、アイスランド、リヒテンシュタイン）の間で結ばれた協定。EU単一市場（人・物・サービス・資本の自由移動）を域外3カ国へ拡張している（スイスは国民投票で不参加）。',
+    sources: [
+      {
+        titleJa: 'EFTA公式（欧州経済領域 EEA協定）',
+        titleEn: 'EFTA Official (The EEA Agreement)',
+        url: 'https://www.efta.int/eea',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（欧州自由貿易連合 EFTA / EEA概要）',
+        titleEn: 'MOFA Japan (EFTA and EEA)',
+        url: 'https://www.mofa.go.jp/mofaj/area/europe/efta/',
+        type: 'official'
+      }
+    ],
     members: [
       // EU加盟27カ国
       { countryCode: 'AUT', status: 'member', joined: '19940101', inForce: '19940101', notes: 'EU加盟国 (1994年EFTAとして発効時加盟、1995年EU移行)' },
@@ -1817,6 +1929,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1998,
     secretariat: 'カイロ（エジプト / アラブ連盟事務局）',
     description: 'アラブ連盟（AL）加盟国間で締結された包括的自由貿易地域協定。1998年より毎年関税を10%ずつ段階的に削減し、2005年に関税全廃を達成。中東・北アフリカの地域経済統合と共同市場創設の礎石となっている。',
+    sources: [
+      {
+        titleJa: 'アラブ連盟事務局公式ポータル（経済社会評議会 / GAFTA）',
+        titleEn: 'League of Arab States Official Portal (Economic Council / GAFTA)',
+        url: 'http://www.leagueofarabstates.net/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（中東・北アフリカ地域情勢）',
+        titleEn: 'MOFA Japan (Middle East and North Africa)',
+        url: 'https://www.mofa.go.jp/mofaj/area/middleeast/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'DZA', status: 'member', joined: '2009', notes: '2009年加盟' },
       { countryCode: 'BHR', status: 'member', joined: '19980101', notes: '原加盟国' },
