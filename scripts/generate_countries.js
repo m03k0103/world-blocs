@@ -172,7 +172,7 @@ const rawCountries = [
 ];
 
 // TopoJSONデータを確認し、未登録の国があればフォールバック生成
-const topo = JSON.parse(fs.readFileSync('./public/data/countries-110m.json', 'utf8'));
+const topo = JSON.parse(fs.readFileSync('./src/data/countries-110m.json', 'utf8'));
 const topoCountries = topo.objects.countries.geometries;
 
 const countryMap = new Map();

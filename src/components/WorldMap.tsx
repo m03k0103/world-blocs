@@ -1,11 +1,19 @@
-import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import * as d3Geo from 'd3-geo';
 import * as topojson from 'topojson-client';
+import countriesTopology from '../data/countries-110m.json';
 import { COUNTRY_BY_NUMERIC, COUNTRY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
 import type { Country, MembershipStatus } from '../types';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+
+// TopoJSONをGeoJSON feature配列へ変換（モジュールロード時に1度だけ実行）
+const geojson: any = topojson.feature(
+  countriesTopology as any,
+  (countriesTopology as any).objects.countries
+);
+const defaultGeographies: any[] = geojson.features;
 
 export interface CountryMapData {
   status?: MembershipStatus;
@@ -49,8 +57,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   hasFrameworkSelected = true,
 }) => {
   const { t, language } = useLanguage();
-  const [geographies, setGeographies] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const geographies = defaultGeographies;
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
 
   // ズーム & パン状態
@@ -63,22 +70,6 @@ export const WorldMap: React.FC<WorldMapProps> = ({
 
   const width = 960;
   const height = 500;
-
-  // TopoJSONデータ読み込み
-  useEffect(() => {
-    const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
-    fetch(`${basePath}/data/countries-110m.json`)
-      .then(res => res.json())
-      .then(topology => {
-        const geojson: any = topojson.feature(topology, topology.objects.countries);
-        setGeographies(geojson.features);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to load map data:', err);
-        setLoading(false);
-      });
-  }, []);
 
   // D3 投影法の計算
   const projection = useMemo(() => {
@@ -349,12 +340,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         );
       })()}
 
-      {loading ? (
-        <div className="flex items-center justify-center w-full h-full text-slate-500 font-medium">
-          {language === 'ja' ? '世界地図データを読み込み中...' : 'Loading world map data...'}
-        </div>
-      ) : (
-        <svg
+      <svg
           ref={svgRef}
           viewBox={`0 0 ${width} ${height}`}
           className={`w-full h-full ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
@@ -426,7 +412,6 @@ export const WorldMap: React.FC<WorldMapProps> = ({
             })}
           </g>
         </svg>
-      )}
 
       {/* ホバー時ツールチップ */}
       {hoverInfo && (
