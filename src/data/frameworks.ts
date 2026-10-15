@@ -390,6 +390,20 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20181230',
     inForceYear: 2018,
     description: 'アジア太平洋地域の高度な包括的メガFTA。米国がTPPから離脱後、日本主導で11カ国により再合意・発効。2024年に英国が正式加盟。',
+    sources: [
+      {
+        titleJa: 'ニュージーランド外務貿易省（CPTPP条約寄託者公式記録）',
+        titleEn: 'NZ Ministry of Foreign Affairs and Trade (CPTPP Depositary)',
+        url: 'https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-in-force/cptpp/',
+        type: 'depositary'
+      },
+      {
+        titleJa: '外務省（CPTPP / TPP11協定概要）',
+        titleEn: 'MOFA Japan (CPTPP Overview)',
+        url: 'https://www.mofa.go.jp/mofaj/ecm/ep/page25_001799.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'party', signed: '20180308', ratified: '20180706', inForce: '20181230', notes: '原加盟国（2018年12月30日初回発効）' },
       { countryCode: 'AUS', status: 'party', signed: '20180308', ratified: '20181031', inForce: '20181230', notes: '原加盟国（2018年12月30日初回発効）' },
@@ -450,6 +464,20 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20220101',
     inForceYear: 2022,
     description: '日中韓、豪州、NZ、およびASEAN10カ国の計15カ国による世界最大規模のメガFTA。世界人口の約3割、GDPの約3割をカバー。日中・日韓間の初の自由貿易協定。交渉に参加していたインドは対中赤字等を懸念し2019年に交渉離脱・未締結。',
+    sources: [
+      {
+        titleJa: 'ASEAN事務局（RCEP条約寄託者公式記録）',
+        titleEn: 'ASEAN Secretariat (RCEP Treaty Depositary)',
+        url: 'https://asean.org/our-communities/economic-community/regional-comprehensive-economic-partnership-rcep/',
+        type: 'depositary'
+      },
+      {
+        titleJa: '外務省（地域的な包括的経済連携協定 RCEP）',
+        titleEn: 'MOFA Japan (Regional Comprehensive Economic Partnership / RCEP)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/rcep/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'JPN', status: 'party', signed: '20201115', ratified: '20210625', inForce: '20220101', notes: '2022年1月1日初回発効' },
       { countryCode: 'CHN', status: 'party', signed: '20201115', ratified: '20210415', inForce: '20220101', notes: '2022年1月1日初回発効' },
@@ -582,6 +610,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1967,
     secretariat: 'ジャカルタ（インドネシア）',
     description: '東南アジア11カ国による地域統合機構。経済成長、社会・文化の発展、地域平和と安定の促進を目的とする。「ASEAN中心性」を掲げ、アジア太平洋の多くの多国間対話の基軸となる。2025年10月26日に東ティモールが11番目の正式加盟国として加盟。',
+    sources: [
+      {
+        titleJa: 'ASEAN事務局（加盟国公式一覧）',
+        titleEn: 'ASEAN Secretariat (Member States)',
+        url: 'https://asean.org/about-asean/member-states/',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（東南アジア諸国連合 ASEAN）',
+        titleEn: 'MOFA Japan (Association of Southeast Asian Nations / ASEAN)',
+        url: 'https://www.mofa.go.jp/mofaj/area/asean/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       { countryCode: 'IDN', status: 'member', joined: '19670808', notes: '原加盟国（バンコク宣言調印）' },
       { countryCode: 'MYS', status: 'member', joined: '19670808', notes: '原加盟国（バンコク宣言調印）' },
@@ -1278,6 +1320,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 1989,
     secretariat: 'シンガポール',
     description: 'アジア太平洋地域の持続可能な成長と繁栄を支援する地域経済フォーラム。21の国・地域が「エコノミー」として参加し、世界人口の約38%、GDPの約62%、貿易額の47%を占める。国家主権を問わない枠組みのため、中国・台湾・香港が同時に正式参加しているのが大きな特徴。',
+    sources: [
+      {
+        titleJa: 'APEC事務局（参加エコノミー公式一覧）',
+        titleEn: 'APEC Secretariat (Member Economies)',
+        url: 'https://www.apec.org/about-us/about-apec/member-economies',
+        type: 'official'
+      },
+      {
+        titleJa: '外務省（アジア太平洋経済協力 APEC）',
+        titleEn: 'MOFA Japan (Asia-Pacific Economic Cooperation / APEC)',
+        url: 'https://www.mofa.go.jp/mofaj/gaiko/apec/index.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 1989年 創設12エコノミー
       { countryCode: 'AUS', status: 'member', joined: '198911', notes: '創設エコノミー（豪キャンベラで第1回閣僚会議）' },
@@ -1785,6 +1841,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 2025,
     secretariat: 'ワシントンD.C.（アメリカ合衆国国務省）',
     description: '米国主導で2025年12月に立ち上げられた、半導体・人工知能（AI）・重要鉱物のサプライチェーン強靭化と経済安全保障を目的とする多国間協力枠組み。「シリコンによる平和」を意味し、中国への過度な依存低減と重要技術エコシステムの保護・共同投資を推進する有志国連合。',
+    sources: [
+      {
+        titleJa: '米国国務省（Pax Silica宣言・半導体サプライチェーン公式発表）',
+        titleEn: 'U.S. Department of State (Pax Silica Declaration & Supply Chain)',
+        url: 'https://www.state.gov/',
+        type: 'official'
+      },
+      {
+        titleJa: '経済産業省（先端半導体サプライチェーン外交・経済安全保障）',
+        titleEn: 'METI Japan (Semiconductor International Supply Chain & Economic Security)',
+        url: 'https://www.meti.go.jp/policy/mono_info_service/joho/telecom/semicon.html',
+        type: 'official'
+      }
+    ],
     members: [
       // 原署名国 (2025年12月12日署名)
       { countryCode: 'USA', status: 'member', joined: '20251212', signed: '20251212', notes: '主導国・原署名国' },
@@ -1831,6 +1901,20 @@ export const FRAMEWORKS: Framework[] = [
     inForceYear: 2026,
     secretariat: '上海（中国）',
     description: '中国の主導により2026年7月16日に設立協定が調印された、人工知能（AI）に特化した初の政府間国際機関。本部は上海。米国主導の「Pax Silica」に対抗し、グローバルサウス諸国を中心にオープンソースAIの普及、デジタル格差（AIデバイド）の是正、人材育成、公平で包摂的なグローバルAIガバナンス体制の確立を目指す。',
+    sources: [
+      {
+        titleJa: '中華人民共和国外交部（世界AI協力機構 WAICO設立調印公式記録）',
+        titleEn: 'Ministry of Foreign Affairs of PRC (WAICO Establishment & Membership)',
+        url: 'https://www.fmprc.gov.cn/eng/',
+        type: 'official'
+      },
+      {
+        titleJa: '世界人工知能大会公式（WAIC / WAICO 本部・構想）',
+        titleEn: 'WAIC Official (World AI Cooperation Organization)',
+        url: 'https://www.worldaic.com.cn/',
+        type: 'official'
+      }
+    ],
     members: [
       // 原加盟国 (2026年7月16日署名: 29カ国)
       { countryCode: 'CHN', status: 'member', joined: '20260716', signed: '20260716', notes: '主導国・本部所在地・原署名国' },
