@@ -18,7 +18,7 @@
 | Track ID / Drop | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
 | **Drop 32**<br>(Track [IR-RigorousDataModel] Phase 1) | **スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設 (Schema 2.0 基盤)** | **types/index.ts, data/historicalEntities.ts, data/countries.ts**<br>- ① 日付・条約法的性質の厳格型定義（signed, ratified, inForce, joined, accession, negotiationsApproved）<br>- ② 参加主体種別 `EntityType` 新設（主権国家、超国家機関、地域機関、特別実体、歴史的国家）<br>- ③ 歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）および国家継承モデル新設<br>- ④ 統合主体探索ヘルパー（`getEntity`）の配備 | 国際法学・国際関係史基準に完全準拠したスキーマ2.0基盤確立 | **【完了】(Drop 32)** |
-| **Drop 33**<br>(Track [IR-RigorousDataModel] Phase 2) | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7/G20, パリ協定, BBNJ**<br>- ワルシャワ条約機構の構成国を歴史的主体（SUN, DDR, CSK）へ正式移行<br>- EU候補国の交渉決定・実質交渉開始の多段階分離（BIH, UKR, MDA等）<br>- EUR, AFU の参加主体種別（supranational, regional_org）明示 | 代表的枠組みにおけるSchema 2.0の実効性実証 | **【着手中】(Drop 33)** |
+| **Drop 33**<br>(Track [IR-RigorousDataModel] Phase 2) | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7/G20, パリ協定, Pax Silica, NATO**<br>- ワルシャワ条約機構の構成国を歴史的主体（SUN, DDR, CSK）へ正式移行<br>- EU候補国の交渉決定・実質交渉開始の多段階分離（BIH, UKR, MDA等）<br>- EUR, AFU の参加主体種別（supranational, regional_org）明示 | 代表的枠組みにおけるSchema 2.0の実効性実証 | **【完了】(Drop 33)** |
 | **Drop 34**<br>(Track [IR-RigorousDataModel] Phase 3) | **地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | **WorldMap.tsx, TableView.tsx, TimelineSlider.tsx, utils/date.ts**<br>- 地図描画における歴史的主体と後継国ポリゴンの動的マッピング＆ツールチップ表示<br>- 地域統合体・超国家機関の自動判定・バナー描画<br>- テーブル一覧・詳細モーダルでの主体種別バッジおよび交渉マイルストーン表示 | 歴史的主体・多段階加盟プロセスの直感的可視化 | **【計画策定済】(Drop 34予定)** |
 | **Drop 35**<br>(Track [IR-RigorousDataModel] Phase 4) | **全34枠組みへの展開・データ整合性検証・完全移行** | **frameworks.ts 全34枠組み**<br>- 全枠組みへの `frameworkType` 設定<br>- 条約型と非条約型の日付フィールド整合性総点検<br>- 公式一次資料に基づく推測日付の完全排除検証 | データベース全34枠組みのSchema 2.0完全移行達成 | **【計画策定済】(Drop 35予定)** |
 | **Drop 36**<br>(Track [Eurasia-CentralAsia]) | **ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連解体後の多国間安全保障・経済統合・中央アジア地域協力の完全網羅（全34→40枠組み到達） | **【計画策定済】(Drop 36予定)** |
@@ -114,7 +114,7 @@
 
 ---
 
-## 3. アーカイブ：実装済み一覧（Drop 1 〜 Drop 32）
+## 3. アーカイブ：実装済み一覧（Drop 1 〜 Drop 33）
 
 World Blocs プロジェクトの全実装済み Drop および完了した開発構想（Tracks）の詳細記録です。
 
@@ -122,6 +122,7 @@ World Blocs プロジェクトの全実装済み Drop および完了した開�
 
 | Track ID | 構想テーマ | 主な対象枠組み・機能 | 到達成果 / 改善価値 | 対応 Drop |
 |:---:|:---|:---|:---|:---:|
+| **Track [IR-RigorousDataModel] (Phase 2)** | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7, G20, パリ協定, Pax Silica, NATO**<br>- ワルシャワ条約機構の構成国を歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`）へ正式移行<br>- EU候補国の交渉決定（`negotiationsApproved`）と実質交渉開始（`negotiationsStarted`）を厳格多段階分離（BIH, UKR, MDA等）<br>- G7, G20, パリ協定, Pax Silica における `EUR`（EU: `supranational`）および `AFU`（AU: `regional_org`）の参加主体種別を明示<br>- NATO, ワルシャワ条約機構, パリ協定, EU, G7/G20, Pax Silica への `frameworkType` 設定 | 代表的枠組みにおけるSchema 2.0の実効性実証・データ整合性確立 | **Drop 33** |
 | **Track [IR-RigorousDataModel] (Phase 1)** | **スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設 (Schema 2.0 基盤)** | **types/index.ts, data/historicalEntities.ts, data/countries.ts**<br>- `EntityType` 新設（主権国家、超国家機関、地域機関、特別実体、歴史的国家）<br>- `StateSuccession` および `HistoricalEntity` 新設（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG` のISO 3166-3規格準拠）<br>- `FrameworkType` 新設（条約、常設機関、地域統合、サミット、政治対話）<br>- `MembershipRecord` への `negotiationsApproved`（交渉合意）と `negotiationsStarted`（実質交渉開始）の分離配備<br>- 統合探索ヘルパー `getEntity(code)` 配備および下位互換性確保 | 国際法学・国際関係史の厳密基準に完全準拠したデータベースアーキテクチャ（Schema 2.0）の基盤確立 | **Drop 32** |
 | **Track [Perf-TopoJSON]** | **世界地図 TopoJSON データの JS バンドル直接内包 & アセット一元化** | **WorldMap, countries-110m.json**<br>- `public/data` および `docs/data` の重複 JSON を全廃し、`src/data/countries-110m.json` の1箇所にマスターを集約<br>- `WorldMap.tsx` における非同期 HTTP fetch を撤廃し、モジュールロード時の同期 TopoJSON 変換（直接 `import`）へ刷新<br>- 地図レンダリング待ち時間・通信オーバーヘッドを完全ゼロ化 | データの完全一元管理 & 地図初期表示の高速化・通信エラーゼロ化 | **Drop 31** |
 | **Track [FactCheck-EuropeAmericas]** | **全枠組み厳密ファクトチェック第5弾：欧州・米州・通商経済 8枠組み（＋全34枠組み公式ソース配備完了）** | **EU, EEA, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, GAFTA（＋OSCE）**<br>- 欧州連合公式（europa.eu）、EFTA事務局、OECD、米通商代表部（USTR）、メルコスール事務局、太平洋同盟、ASEAN事務局、アラブ連盟事務局、OSCE事務局、および日本外務省公式記録のみを情報源として突合<br>- 各枠組み詳細画面ヘッダーに公式一次資料ダイレクトリンク（`sources`）新設<br>- 正式加盟・構成員数（EU: 27, EEA: 30, OECD: 38, USMCA: 3, メルコスール: 5, 太平洋同盟: 4, AFTA: 11, GAFTA: 18, OSCE: 57）および各種除外ルール（候補国、準加盟、オブザーバー、脱退等）の100%厳格確認<br>- **全34枠組みへの公式一次資料リンク（sources）配備 100% 達成** | 欧州・米州・メガ経済圏・通商ブロックの公式記録完全同期 & 全34枠組みファクトチェック完全制覇 | **Drop 30** |
