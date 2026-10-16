@@ -5,6 +5,16 @@ export type FrameworkCategory =
   | 'summit'        // 首脳会議・枠組み (G7, G20, BRICS等)
   | 'global_treaty';// 国際条約 (環境、軍縮、人権等)
 
+/**
+ * 枠組みの法的・制度的性質 (Schema 2.0)
+ */
+export type FrameworkType =
+  | 'treaty'                // 法的拘束力を持つ国際条約 (NATO, パリ協定, NPT, UNCLOS等)
+  | 'international_org'     // 常設国際機関 (OECD, WTO等)
+  | 'regional_integration'  // 超国家的・包括的地域統合体 (EU, ASEAN, メルコスール等)
+  | 'summit_forum'          // 首脳会議・協議枠組み (G7, G20, BRICS, クアッド等)
+  | 'political_dialogue';   // 政治的・安全保障対話フォーラム (OSCE, ARF等)
+
 export type MembershipStatus =
   | 'member'              // 国際機関の正式加盟国、または協議枠組みの正式メンバー（G7, G20, NATO, ASEAN等）
   | 'party'               // 法的拘束力を持つ国際条約の締約国（パリ協定, NPT, ICC, UNCLOS等）
@@ -23,6 +33,57 @@ export type MembershipStatus =
   | 'signed'
   | 'non-party';
 
+/**
+ * 参加主体の種別（Entity Type / Schema 2.0）
+ * 主権国家、超国家機関、地域国際機関、特別実体、歴史的国家を厳格に区別
+ */
+export type EntityType =
+  | 'sovereign_state'   // 主権国家（例: 日本 JPN, 米国 USA, ドイツ DEU 等）
+  | 'supranational'     // 超国家機関・統合体（例: 欧州連合 EUR 等）
+  | 'regional_org'      // 地域国際機関（例: アフリカ連合 AFU 等）
+  | 'special_entity'    // 特別実体・未承認国家・自治領等（例: コソボ XKX, パレスチナ PSE 等）
+  | 'historical_state'; // 歴史的国家・旧体制（例: ソ連 SUN, 東独 DDR, チェコ CSK, ユーゴ YUG 等）
+
+/**
+ * 国家継承の類型 (State Succession Type / Schema 2.0)
+ */
+export type StateSuccessionType =
+  | 'continuation'      // 継続国家（例: ソ連 SUN ➔ ロシア連邦 RUS が同一性を継続）
+  | 'unification'       // 国家統合・編入（例: 東ドイツ DDR ➔ ドイツ連邦共和国 DEU への編入統合）
+  | 'dissolution'       // 分離解体（例: チェコスロバキア CSK ➔ チェコ CZE / スロバキア SVK、ユーゴ連邦解体）
+  | 'secession';        // 分離独立（例: スーダンから南スーダン SSD の分離独立）
+
+/**
+ * 国家継承メタデータ
+ */
+export interface StateSuccession {
+  type: StateSuccessionType;
+  successorCodes: string[];       // 継承・後継国家の alpha3 コード一覧 (例: ['RUS'], ['DEU'], ['CZE', 'SVK'])
+  predecessorCodes?: string[];    // 前身国家の alpha3 コード一覧
+  effectiveDate: DateString;      // 継承・解体・統合の発効日 (例: "19911226", "19901003")
+  descriptionJa: string;          // 日本語解説 (例: "ロシア連邦が国際法上の同一性を継承")
+  descriptionEn: string;          // 英語解説
+}
+
+/**
+ * 歴史的参加主体（Historical Entity / Schema 2.0）
+ */
+export interface HistoricalEntity {
+  alpha3: string;                 // ISO 3166-1 alpha-3 (過去規格) または ISO 3166-3
+  iso3166_3?: string;             // ISO 3166-3 旧国名コード (例: "SUHH", "DDDL", "CSHH", "YUCS")
+  nameJa: string;                 // 日本語名 (例: "ソビエト社会主義共和国連邦")
+  nameEn: string;                 // 英語名 (例: "Union of Soviet Socialist Republics")
+  region: string;                 // 地域 (例: "ユーラシア", "ヨーロッパ")
+  subregion?: string;
+  entityType: 'historical_state';
+  period: {
+    start?: DateString;           // 建国・成立日
+    end: DateString;              // 解体・統合消滅日
+  };
+  succession: StateSuccession;    // 国家継承関係
+  flagEmoji?: string;
+}
+
 export interface Country {
   numeric: string;   // ISO 3166-1 numeric 3桁 ("392")
   alpha3: string;    // ISO 3166-1 alpha-3 ("JPN")
@@ -32,6 +93,7 @@ export interface Country {
   region: string;    // "アジア", "ヨーロッパ" 等
   subregion?: string;// "東アジア" 等
   flagEmoji?: string;// 🇯🇵
+  entityType?: EntityType; // 参加主体の種別 (省略時は 'sovereign_state')
 }
 
 /**
@@ -41,7 +103,9 @@ export interface Country {
 export type DateString = string;
 
 export interface MembershipRecord {
-  countryCode: string;             // alpha3 (例: "JPN")
+  countryCode: string;             // alpha3 (例: "JPN", "EUR", "SUN")
+  entityType?: EntityType;         // 参加主体の種別
+  historicalEntity?: string;       // 歴史的主体の場合の参照コード
   status: MembershipStatus;        // 現在のステータス
 
   // 条約関連フィールド (yyyy / yyyymm / yyyymmdd)
@@ -60,7 +124,8 @@ export interface MembershipRecord {
   // プロセス・資格変動フィールド (yyyy / yyyymm / yyyymmdd)
   applied?: DateString;            // 加盟申請日/年
   candidate?: DateString;          // 加盟候補国として正式認定された日/年
-  negotiationsStarted?: DateString;// 加盟交渉が開始された日/年
+  negotiationsApproved?: DateString;// 加盟交渉開始の決定・合意日/年 (首脳合意等)
+  negotiationsStarted?: DateString;// 実質的加盟交渉・政府間会合(IGC)の公式開始日/年
   suspended?: DateString;          // 参加・加盟資格の停止日/年
   withdrawalNotified?: DateString; // 脱退の正式通告日/年
   withdrawn?: DateString;          // 脱退が正式発効した日/年
@@ -74,6 +139,7 @@ export interface MembershipRecord {
   inForceYear?: number;
   joinedYear?: number;
   candidateYear?: number;
+  negotiationsApprovedYear?: number;
   negotiationsStartedYear?: number;
   suspendedYear?: number;
   withdrawnYear?: number;
@@ -93,6 +159,7 @@ export interface Framework {
   nameEn: string;            // "North Atlantic Treaty Organization"
   acronym: string;           // "NATO"
   category: FrameworkCategory;
+  frameworkType?: FrameworkType; // 枠組みの法的・制度的性質
   established: DateString;   // 創設/署名年 (例: "1949" または "19490404")
   establishedYear: number;   // タイムラインスライダー互換用数値 (1949)
   inForce?: DateString;      // 全体発効年 (例: "1949" または "19490824")

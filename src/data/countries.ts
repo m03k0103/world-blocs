@@ -1872,7 +1872,8 @@ export const COUNTRIES: Country[] = [
     "nameJa": "欧州連合",
     "nameEn": "European Union",
     "region": "ヨーロッパ",
-    "flagEmoji": "🇪🇺"
+    "flagEmoji": "🇪🇺",
+    "entityType": "supranational"
   },
   {
     "numeric": "998",
@@ -1881,7 +1882,8 @@ export const COUNTRIES: Country[] = [
     "nameJa": "アフリカ連合",
     "nameEn": "African Union",
     "region": "アフリカ",
-    "flagEmoji": "🌍"
+    "flagEmoji": "🌍",
+    "entityType": "regional_org"
   },
   {
     "numeric": "383",
@@ -1890,12 +1892,40 @@ export const COUNTRIES: Country[] = [
     "nameJa": "コソボ",
     "nameEn": "Kosovo",
     "region": "ヨーロッパ",
-    "flagEmoji": "🇽🇰"
+    "flagEmoji": "🇽🇰",
+    "entityType": "special_entity"
   }
 ];
 
+import {
+  HISTORICAL_ENTITIES,
+  HISTORICAL_ENTITY_BY_ALPHA3,
+  isHistoricalEntity
+} from './historicalEntities';
+
+export { HISTORICAL_ENTITIES, HISTORICAL_ENTITY_BY_ALPHA3, isHistoricalEntity };
+
+// 歴史的主体を Country 互換形式でマッピング（下位互換性確保用）
+const HISTORICAL_COUNTRY_COMPAT: Record<string, Country> = Object.fromEntries(
+  HISTORICAL_ENTITIES.map((h) => [
+    h.alpha3,
+    {
+      numeric: h.iso3166_3 || '000',
+      alpha3: h.alpha3,
+      alpha2: h.alpha3.slice(0, 2),
+      nameJa: h.nameJa,
+      nameEn: h.nameEn,
+      region: h.region,
+      subregion: h.subregion,
+      flagEmoji: h.flagEmoji,
+      entityType: 'historical_state' as const
+    }
+  ])
+);
+
 export const COUNTRY_BY_ALPHA3: Record<string, Country> = {
   ...Object.fromEntries(COUNTRIES.map(c => [c.alpha3, c])),
+  ...HISTORICAL_COUNTRY_COMPAT,
   // 特別参加主体・地域組織エイリアス
   EU: COUNTRIES.find(c => c.alpha3 === 'EUR')!,
   AU: COUNTRIES.find(c => c.alpha3 === 'AFU')!,
@@ -1915,3 +1945,22 @@ export const COUNTRY_BY_ALPHA3: Record<string, Country> = {
 export const COUNTRY_BY_NUMERIC: Record<string, Country> = Object.fromEntries(
   COUNTRIES.map(c => [c.numeric, c])
 );
+
+export type BaseEntity = Country | typeof HISTORICAL_ENTITIES[number];
+
+/**
+ * 全参加主体（主権国家＋超国家組織＋地域機関＋特別実体＋歴史的国家）の統合ルックアップマップ
+ */
+export const ENTITY_BY_ALPHA3: Record<string, BaseEntity> = {
+  ...COUNTRY_BY_ALPHA3,
+  ...HISTORICAL_ENTITY_BY_ALPHA3,
+};
+
+/**
+ * alpha-3 コードから参加主体（国家または歴史的主体）を取得する統一ヘルパー
+ */
+export function getEntity(code: string): BaseEntity | undefined {
+  if (!code) return undefined;
+  return ENTITY_BY_ALPHA3[code] || COUNTRY_BY_ALPHA3[code] || HISTORICAL_ENTITY_BY_ALPHA3[code];
+}
+

@@ -15,63 +15,54 @@
 
 `Agent.md` の共通修正ルールに基づき、未完了・将来のデータ改修・機能開発を Track として管理・推進します。
 
-| Track ID | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
+| Track ID / Drop | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
-| **Track [IR-RigorousDataModel]** | **国際法規・国家継承・参加主体・加盟プロセスの厳格データモデル刷新（Schema 2.0）** | **FrameworkMember, Country, HistoricalEntity, types, frameworks.ts 全枠組み**<br>- ① 日付の意味の明確化（signed, ratified, inForce, joined, accession を厳格分離）<br>- ② 国家と国際機関・地域統合体の区別（`entityType` フィールド新設）<br>- ③ 候補国認定と実際の加盟交渉の区別（多段階加盟プロセス構造化）<br>- ④ 歴史上の国家と現行国家の区別（ソ連・東独・チェコ等の歴史主体コード＆継承関係明示）<br>- ⑤ 公式資料至上主義と未確認日付の厳格管理（推測値の完全排除） | 国際法学・国際関係史の厳密基準に完全準拠したデータベースアーキテクチャの確立 | **【着手中】(Drop 32)** |
-| **Track [Eurasia-CentralAsia]** | **ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連解体後の多国間安全保障・経済統合・中央アジア地域協力の完全網羅（全34→40枠組み到達） | **【計画策定済】(Drop 33予定)** |
+| **Drop 32**<br>(Track [IR-RigorousDataModel] Phase 1) | **【着手中】スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設 (Schema 2.0 基盤)** | **types/index.ts, data/historicalEntities.ts, data/countries.ts**<br>- ① 日付・条約法的性質の厳格型定義（signed, ratified, inForce, joined, accession, negotiationsApproved）<br>- ② 参加主体種別 `EntityType` 新設（主権国家、超国家機関、地域機関、特別実体、歴史的国家）<br>- ③ 歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）および国家継承モデル新設<br>- ④ 統合主体探索ヘルパー（`getEntity`）の配備 | 国際法学・国際関係史基準に完全準拠したスキーマ2.0基盤確立 | **【着手中】(Drop 32)** |
+| **Drop 33**<br>(Track [IR-RigorousDataModel] Phase 2) | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7/G20, パリ協定, BBNJ**<br>- ワルシャワ条約機構の構成国を歴史的主体（SUN, DDR, CSK）へ正式移行<br>- EU候補国の交渉決定・実質交渉開始の多段階分離（BIH, UKR, MDA等）<br>- EUR, AFU の参加主体種別（supranational, regional_org）明示 | 代表的枠組みにおけるSchema 2.0の実効性実証 | **【計画策定済】(Drop 33予定)** |
+| **Drop 34**<br>(Track [IR-RigorousDataModel] Phase 3) | **地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | **WorldMap.tsx, TableView.tsx, TimelineSlider.tsx, utils/date.ts**<br>- 地図描画における歴史的主体と後継国ポリゴンの動的マッピング＆ツールチップ表示<br>- 地域統合体・超国家機関の自動判定・バナー描画<br>- テーブル一覧・詳細モーダルでの主体種別バッジおよび交渉マイルストーン表示 | 歴史的主体・多段階加盟プロセスの直感的可視化 | **【計画策定済】(Drop 34予定)** |
+| **Drop 35**<br>(Track [IR-RigorousDataModel] Phase 4) | **全34枠組みへの展開・データ整合性検証・完全移行** | **frameworks.ts 全34枠組み**<br>- 全枠組みへの `frameworkType` 設定<br>- 条約型と非条約型の日付フィールド整合性総点検<br>- 公式一次資料に基づく推測日付の完全排除検証 | データベース全34枠組みのSchema 2.0完全移行達成 | **【計画策定済】(Drop 35予定)** |
+| **Drop 36**<br>(Track [Eurasia-CentralAsia]) | **ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連解体後の多国間安全保障・経済統合・中央アジア地域協力の完全網羅（全34→40枠組み到達） | **【計画策定済】(Drop 36予定)** |
 
 ---
 
 ## 2. 今後の Track 詳細計画
 
-### 【新規計画】Track [IR-RigorousDataModel]: 国際法規・国家継承・参加主体・加盟プロセスの厳格データモデル刷新（Drop 32予定）
+### 【着手中】Drop 32: Track [IR-RigorousDataModel] Phase 1 - スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設
 
-本構想は、これまで Drop 26〜30 で完遂した「公式一次情報源の全枠組み配備」を基盤とし、国際法規・国際条約実務・国家継承史における事実関係を寸分の曖昧さもなくデータモデルへ昇華させるための**データベーススキーマ全面刷新構想（Schema 2.0）**です。
+国際法学・条約実務・国家継承史における事実関係を寸分の曖昧さもなく表現するための**データベーススキーマ全面刷新（Schema 2.0）**の第1段階として、型定義と歴史的主体マスタの基盤を確立する。
 
 #### 5大コア要件と設計仕様
-
-1. **日付の意味の明確化（法的イベントとフィールドの厳格分離）**:
-   - `signed`: 条約への全権代表による署名日（未批准段階）。
-   - `ratified`: 国内批准・受諾・承認手続き完了、および寄託先への批准書寄託日。
-   - `inForce`: 条約自体の国際的発効日、または当該国に対して条約の効力が発生した日付。
-   - `accession`: 署名期間終了後に直接条約に加入（加入書寄託）した日付。
-   - `joined`: 国際機関・地域統合体・常設フォーラムへの正式加盟・参加日。
-   - ※条約署名、批准、条約発効、加入書寄託、国際機関への加盟を一切混同せず、条約型枠組みと非条約型機関で適切なプロパティを厳格に使い分ける。
-
-2. **国家と国際機関・非国家主体の区別（Entity Type の構造化）**:
-   - `countryCode` に主権国家のコード（ISO 3166-1 alpha-3）と、欧州連合（`EUR`）やアフリカ連合（`AFU`）などの地域統合体・国際組織を同列に混在させない。
-   - 参加主体の種類を明示する属性 `entityType`（`'sovereign_state' | 'supranational' | 'regional_org' | 'special_entity'`）を新設。
-   - 国家マスタと地域統合体・国際機関マスタの責務を分離し、データ構造としての厳密性を担保する。
-
-3. **候補国資格と実際の加盟交渉プロセスの区別（多段階ステータス管理）**:
-   - 公式な「加盟候補国認定（`candidate`）」と「実際の加盟交渉開始（`negotiationsStarted`）」を明確に区別する。
-   - 加盟プロセスの各マイルストーンを構造化：
-     - 正式な加盟申請（`applied`）
-     - 公式な加盟候補国認定（`candidate`）
-     - 交渉枠組み・交渉開始の合意決定（`negotiationsApproved`）
-     - 政府間会合（IGC）の公式開始・実質交渉開始（`negotiationsStarted`）
-     - 加盟条約の調印（`signed`）
-     - 議会批准・寄託（`ratified`）
-     - 正式発効・加盟（`joined` / `inForce`）
-   - これにより、EUやOECD等における「候補国だが交渉未開始」「交渉枠組み採択前」「交渉凍結」などの実態を正確に可視化する。
-
-4. **歴史上の国家と現在の国家の区別（歴史的主体コードと国家継承関係の明示）**:
-   - ソビエト連邦、東ドイツ（ドイツ民主共和国）、チェコスロバキア、ユーゴスラビア連邦などの歴史的参加主体を、現在の後継国（`RUS`, `DEU`, `CZE`, `SRB` 等）の国コードに直接上書き・置き換えない。
-   - 歴史的参加主体コード（例: `historicalEntity: 'SUN' | 'DDR' | 'CSK' | 'YUG'` 等）を定義。
-   - 国家継承（State Succession）の関係性を明示的にモデリング：
-     - 継続国家（`continuation`: ソ連 ➔ ロシア連邦）
-     - 国家統合（`unification`: 東ドイツ ➔ ドイツ連邦共和国への編入統合）
-     - 国家分離・解体（`dissolution`: チェコスロバキア ➔ チェコ / スロバキア、ユーゴ連邦解体）
-   - タイムラインスライダーで過去年を表示した際に、当時の歴史的国名・国旗・実態を正確に再現する。
-
+1. **日付の意味の明確化**:
+   - `signed`, `ratified`, `inForce`, `accession`, `joined` を厳格分離。
+   - 枠組みの法的性質 `FrameworkType`（`'treaty' | 'international_org' | 'regional_integration' | 'summit_forum' | 'political_dialogue'`）を新設。
+2. **国家と国際機関・地域統合体の区別**:
+   - `EntityType`（`'sovereign_state' | 'supranational' | 'regional_org' | 'special_entity' | 'historical_state'`）を新設。
+   - `Country` および `MembershipRecord` に `entityType` を持たせ、主権国家と地域組織（EUR, AFU）を明示分離。
+3. **候補国資格と実際の加盟交渉プロセスの区別**:
+   - `negotiationsApproved`（交渉開始決定）と `negotiationsStarted`（実質交渉・IGC開始）を個別に記録。
+4. **歴史上の国家と現在の国家の区別**:
+   - 歴史的主体（`HistoricalEntity`）および国家継承（`StateSuccession`）の型定義とマスタ新設（`SUN`, `DDR`, `CSK`, `YUG`）。
 5. **公式一次資料至上主義と未確認日付の厳格管理**:
-   - 加盟国一覧、条約寄託者記録（国連条約集 UNTC、米国国務省、各条約寄託国等）、各国政府の公式官報・批准録を絶対的な拠り所とする。
-   - 公式資料で特定できない日付（月日や年月日）は一切推測（`0101`等）で埋めず、未確認として扱う（年のみ、または `undefined`）。
-   - 各データレコードの検証ステータス・根拠を明確化する。
+   - 公式資料で特定できない月日は推測で埋めず、年のみまたは省略を徹底。
 
 ---
 
-### 【計画策定済】Track [Eurasia-CentralAsia]: ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加（Drop 33予定）
+### 【計画策定済】Drop 33: Track [IR-RigorousDataModel] Phase 2 - 代表的枠組みでの先行データモデル検証・移行
+ワルシャワ条約機構（`warsaw_pact`）の歴史的主体（SUN, DDR, CSK）への切り替え、EUの候補国プロセスの多段階分離、G7/G20の地域統合体主体の明示を実施。
+
+---
+
+### 【計画策定済】Drop 34: Track [IR-RigorousDataModel] Phase 3 - 地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応
+`WorldMap.tsx` における歴史的主体の後継国ポリゴンマッピング描画、`TableView.tsx` における主体種別バッジおよび交渉プロセスの詳細可視化を実装。
+
+---
+
+### 【計画策定済】Drop 35: Track [IR-RigorousDataModel] Phase 4 - 全34枠組みへの展開・データ整合性検証・完全移行
+全34枠組みへの `frameworkType` 設定、およびデータ整合性の総点検・完全移行。
+
+---
+
+### 【計画策定済】Drop 36: Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加（CIS, EAEU, CICA, GUAM, ECO, CAREC）
 
 旧ソ連構成国、中央アジア、コーカサス、およびアジア全域にまたがる安全保障・経済統合・信頼醸成の6大重要国際枠組み（CIS, EAEU, CICA, GUAM, ECO, CAREC）を新規追加し、既存の CSTO や SCO と合わせたユーラシア国際関係の完全可視化を実現する。
 
