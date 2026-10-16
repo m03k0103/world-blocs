@@ -17,7 +17,7 @@
 
 | Track ID | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
-| **Track [IR-RigorousDataModel]** | **国際法規・国家継承・参加主体・加盟プロセスの厳格データモデル刷新（Schema 2.0）** | **FrameworkMember, Country, HistoricalEntity, types, frameworks.ts 全枠組み**<br>- ① 日付の意味の明確化（signed, ratified, inForce, joined, accession を厳格分離）<br>- ② 国家と国際機関・地域統合体の区別（`entityType` フィールド新設）<br>- ③ 候補国認定と実際の加盟交渉の区別（多段階加盟プロセス構造化）<br>- ④ 歴史上の国家と現行国家の区別（ソ連・東独・チェコ等の歴史主体コード＆継承関係明示）<br>- ⑤ 公式資料至上主義と未確認日付の厳格管理（推測値の完全排除） | 国際法学・国際関係史の厳密基準に完全準拠したデータベースアーキテクチャの確立 | **【新規計画】(Drop 32予定)** |
+| **Track [IR-RigorousDataModel]** | **国際法規・国家継承・参加主体・加盟プロセスの厳格データモデル刷新（Schema 2.0）** | **FrameworkMember, Country, HistoricalEntity, types, frameworks.ts 全枠組み**<br>- ① 日付の意味の明確化（signed, ratified, inForce, joined, accession を厳格分離）<br>- ② 国家と国際機関・地域統合体の区別（`entityType` フィールド新設）<br>- ③ 候補国認定と実際の加盟交渉の区別（多段階加盟プロセス構造化）<br>- ④ 歴史上の国家と現行国家の区別（ソ連・東独・チェコ等の歴史主体コード＆継承関係明示）<br>- ⑤ 公式資料至上主義と未確認日付の厳格管理（推測値の完全排除） | 国際法学・国際関係史の厳密基準に完全準拠したデータベースアーキテクチャの確立 | **【着手中】(Drop 32)** |
 | **Track [Eurasia-CentralAsia]** | **ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連解体後の多国間安全保障・経済統合・中央アジア地域協力の完全網羅（全34→40枠組み到達） | **【計画策定済】(Drop 33予定)** |
 
 ---
