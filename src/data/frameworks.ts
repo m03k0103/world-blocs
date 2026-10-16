@@ -7,6 +7,7 @@ export const FRAMEWORKS: Framework[] = [
     nameEn: 'North Atlantic Treaty Organization',
     acronym: 'NATO',
     category: 'security',
+    frameworkType: 'treaty',
     established: '19490404',
     establishedYear: 1949,
     inForce: '19490824',
@@ -229,6 +230,7 @@ export const FRAMEWORKS: Framework[] = [
     acronym: 'Warsaw Pact',
     aliases: ['wto'],
     category: 'security',
+    frameworkType: 'treaty',
     established: '19550514',
     establishedYear: 1955,
     inForce: '19550605',
@@ -250,14 +252,14 @@ export const FRAMEWORKS: Framework[] = [
       }
     ],
     members: [
-      { countryCode: 'RUS', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '主導国（ソビエト連邦、1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
-      { countryCode: 'POL', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
-      { countryCode: 'CZE', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（チェコスロバキア、1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
-      { countryCode: 'HUN', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
-      { countryCode: 'ROU', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
-      { countryCode: 'BGR', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
-      { countryCode: 'ALB', status: 'withdrawn', signed: '19550514', inForce: '19550605', joined: '19550605', withdrawn: '19680913', notes: '1955年原加盟。中ソ対立により1962年以降不参加、1968年チェコ事件に抗議して1968年9月13日に正式脱退' },
-      { countryCode: 'DEU', status: 'withdrawn', signed: '19550514', ratified: '19550524', inForce: '19550605', joined: '19550605', withdrawn: '19901002', notes: '1955年原加盟・条約調印（東ドイツ。1956年は国家人民軍創設・軍事統合）。1990年10月東西ドイツ統一に伴い脱退' }
+      { countryCode: 'SUN', entityType: 'historical_state', historicalEntity: 'SUN', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '主導国（ソビエト社会主義共和国連邦、1955年条約署名・発効。1991年7月1日の機構解散まで加盟。ロシア連邦が国際法上の同一性を継続）' },
+      { countryCode: 'POL', entityType: 'sovereign_state', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
+      { countryCode: 'CSK', entityType: 'historical_state', historicalEntity: 'CSK', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（チェコスロバキア、1955年条約署名・発効。1991年7月1日の機構解散まで加盟。1993年チェコとスロバキアへ分離解体）' },
+      { countryCode: 'HUN', entityType: 'sovereign_state', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
+      { countryCode: 'ROU', entityType: 'sovereign_state', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
+      { countryCode: 'BGR', entityType: 'sovereign_state', status: 'member', signed: '19550514', inForce: '19550605', joined: '19550605', notes: '原加盟国（1955年条約署名・発効。1991年7月1日の機構解散まで加盟）' },
+      { countryCode: 'ALB', entityType: 'sovereign_state', status: 'withdrawn', signed: '19550514', inForce: '19550605', joined: '19550605', withdrawn: '19680913', notes: '1955年原加盟。中ソ対立により1962年以降不参加、1968年チェコ事件に抗議して1968年9月13日に正式脱退' },
+      { countryCode: 'DDR', entityType: 'historical_state', historicalEntity: 'DDR', status: 'withdrawn', signed: '19550514', ratified: '19550524', inForce: '19550605', joined: '19550605', withdrawn: '19901002', notes: '1955年原加盟・条約調印（ドイツ民主共和国 / 東ドイツ。1956年は国家人民軍創設・軍事統合）。1990年10月東西ドイツ統一に伴い脱退、ドイツ連邦共和国へ編入統合' }
     ]
   },
     {
@@ -266,6 +268,7 @@ export const FRAMEWORKS: Framework[] = [
     nameEn: 'European Union',
     acronym: 'EU',
     category: 'regional',
+    frameworkType: 'regional_integration',
     established: '19931101',
     establishedYear: 1993,
     inForce: '19931101',
@@ -321,18 +324,19 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ROU', status: 'member', joined: '20070101', signed: '20050425', inForce: '20070101', notes: '第6次拡大（2005年加盟条約調印、2007年1月1日発効）' },
       { countryCode: 'BGR', status: 'member', joined: '20070101', signed: '20050425', inForce: '20070101', notes: '第6次拡大（2005年加盟条約調印、2007年1月1日発効）' },
       { countryCode: 'HRV', status: 'member', joined: '20130701', signed: '20111209', inForce: '20130701', notes: '第7次拡大（2011年加盟条約調印、2013年7月1日発効）' },
-      // 候補国（加盟交渉中）
-      { countryCode: 'MNE', status: 'candidate', applied: '20081215', candidate: '20101217', negotiationsStarted: '20120629', notes: '2008年申請、2010年候補国認定、2012年加盟交渉開始（交渉中）' },
-      { countryCode: 'SRB', status: 'candidate', applied: '20091222', candidate: '20120301', negotiationsStarted: '20140121', notes: '2009年申請、2012年候補国認定、2014年加盟交渉開始（交渉中）' },
-      { countryCode: 'ALB', status: 'candidate', applied: '20090428', candidate: '20140627', negotiationsStarted: '20220719', notes: '2009年申請、2014年候補国認定、2022年加盟交渉開始（交渉中）' },
-      { countryCode: 'MKD', status: 'candidate', applied: '20040322', candidate: '20051217', negotiationsStarted: '20220719', notes: '2004年申請、2005年候補国認定、2022年加盟交渉開始（交渉中）' },
-      { countryCode: 'UKR', status: 'candidate', applied: '20220228', candidate: '20220623', negotiationsStarted: '20240625', notes: '2022年申請・候補国認定、2024年6月25日第1回政府間会合で加盟交渉開始（交渉中）' },
-      { countryCode: 'MDA', status: 'candidate', applied: '20220303', candidate: '20220623', negotiationsStarted: '20240625', notes: '2022年申請・候補国認定、2024年6月25日第1回政府間会合で加盟交渉開始（交渉中）' },
-      // 候補国（加盟交渉未開始）
-      { countryCode: 'GEO', status: 'candidate', applied: '20220303', candidate: '20231214', notes: '2022年申請、2023年候補国認定（加盟交渉未開始。2024年6月にEU首脳会議が加盟プロセスの事実上の停止を確認）' },
-      { countryCode: 'BIH', status: 'candidate', applied: '20160215', candidate: '20221215', notes: '2016年申請、2022年候補国認定。2024年3月にEU首脳が加盟交渉開始を決定したが、交渉枠組み未採択のため実際の加盟交渉は未開始' },
+      // 候補国（加盟交渉中・第1回政府間会合 IGC 開会済）
+      { countryCode: 'MNE', status: 'candidate', applied: '20081215', candidate: '20101217', negotiationsApproved: '20111209', negotiationsStarted: '20120629', notes: '2008年申請、2010年候補国認定、2011年12月交渉枠組み承認、2012年6月29日第1回IGC開会（交渉中）' },
+      { countryCode: 'SRB', status: 'candidate', applied: '20091222', candidate: '20120301', negotiationsApproved: '20130628', negotiationsStarted: '20140121', notes: '2009年申請、2012年候補国認定、2013年6月交渉枠組み承認、2014年1月21日第1回IGC開会（交渉中）' },
+      { countryCode: 'ALB', status: 'candidate', applied: '20090428', candidate: '20140627', negotiationsApproved: '20200325', negotiationsStarted: '20220719', notes: '2009年申請、2014年候補国認定、2020年3月交渉開始合意、2022年7月19日第1回IGC開会（交渉中）' },
+      { countryCode: 'MKD', status: 'candidate', applied: '20040322', candidate: '20051217', negotiationsApproved: '20200325', negotiationsStarted: '20220719', notes: '2004年申請、2005年候補国認定、2020年3月交渉開始合意、2022年7月19日第1回IGC開会（交渉中）' },
+      { countryCode: 'UKR', status: 'candidate', applied: '20220228', candidate: '20220623', negotiationsApproved: '20231214', negotiationsStarted: '20240625', notes: '2022年申請・候補国認定、2023年12月欧州理事会が交渉開始決定、2024年6月25日第1回IGCで実質交渉開始（交渉中）' },
+      { countryCode: 'MDA', status: 'candidate', applied: '20220303', candidate: '20220623', negotiationsApproved: '20231214', negotiationsStarted: '20240625', notes: '2022年申請・候補国認定、2023年12月欧州理事会が交渉開始決定、2024年6月25日第1回IGCで実質交渉開始（交渉中）' },
+      // 候補国（加盟交渉合意済・実質交渉未開始）
+      { countryCode: 'BIH', status: 'candidate', applied: '20160215', candidate: '20221215', negotiationsApproved: '20240321', notes: '2016年申請、2022年候補国認定。2024年3月21日に欧州理事会が加盟交渉開始を合意決定したが、交渉枠組み未採択のため第1回政府間会合（実質交渉）は未開始' },
+      // 候補国（交渉未合意・プロセス停止）
+      { countryCode: 'GEO', status: 'candidate', applied: '20220303', candidate: '20231214', notes: '2022年申請、2023年候補国認定（加盟交渉未合意。2024年6月にEU首脳会議が加盟プロセスの事実上の停止を確認）' },
       // 候補国（加盟交渉事実上凍結）
-      { countryCode: 'TUR', status: 'candidate', applied: '19870414', candidate: '19991210', negotiationsStarted: '20051003', notes: '1987年申請、1999年候補国認定、2005年加盟交渉開始（2018年以降事実上凍結）' }
+      { countryCode: 'TUR', status: 'candidate', applied: '19870414', candidate: '19991210', negotiationsApproved: '20041217', negotiationsStarted: '20051003', notes: '1987年申請、1999年候補国認定、2004年交渉合意、2005年加盟交渉開始（2018年以降事実上凍結）' }
     ]
   },
     {
@@ -341,6 +345,7 @@ export const FRAMEWORKS: Framework[] = [
     nameEn: 'Group of Seven',
     acronym: 'G7',
     category: 'summit',
+    frameworkType: 'summit_forum',
     established: '1975',
     establishedYear: 1975,
     secretariat: '持ち回り議長国',
@@ -368,7 +373,7 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ITA', status: 'member', joined: '1975' },
       { countryCode: 'CAN', status: 'member', joined: '1976', notes: '1976年プエルトリコ・サミットから参加' },
       // 非列挙特別参加主体 (EU)
-      { countryCode: 'EUR', status: 'member', firstParticipated: '1977', notes: '非列挙特別参加主体（1977年ロンドン・サミットより欧州委員会委員長・欧州理事会議長が全セッションに恒常参加。7カ国枠外の特別参加主体）' },
+      { countryCode: 'EUR', entityType: 'supranational', status: 'member', firstParticipated: '1977', notes: '非列挙特別参加主体（1977年ロンドン・サミットより欧州委員会委員長・欧州理事会議長が全セッションに恒常参加。7カ国枠外の特別参加主体）' },
       // 参加停止国 (G8からG7への復帰)
       { countryCode: 'RUS', status: 'suspended', joined: '1997', suspended: '2014', notes: '1997年デンバー・サミットからG8として正式参加。2014年クリミア併合を受け他の7カ国がロシアの参加を無期限停止し、G8からG7へ復帰' }
     ]
@@ -379,6 +384,7 @@ export const FRAMEWORKS: Framework[] = [
     nameEn: 'Group of Twenty',
     acronym: 'G20',
     category: 'summit',
+    frameworkType: 'summit_forum',
     established: '1999',
     establishedYear: 1999,
     secretariat: '持ち回り議長国',
@@ -417,8 +423,8 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'SAU', status: 'member', firstParticipated: '1999' },
       { countryCode: 'TUR', status: 'member', firstParticipated: '1999' },
       { countryCode: 'ZAF', status: 'member', firstParticipated: '1999' },
-      { countryCode: 'EUR', status: 'member', firstParticipated: '1999', notes: '地域統合体（欧州連合、1999年発足時より正式参加）' },
-      { countryCode: 'AFU', status: 'member', joined: '20230909', notes: '地域国際機構（アフリカ連合、2023年9月ニューデリー・サミットで常任メンバー化）' }
+      { countryCode: 'EUR', entityType: 'supranational', status: 'member', firstParticipated: '1999', notes: '地域統合体（欧州連合、1999年発足時より正式参加）' },
+      { countryCode: 'AFU', entityType: 'regional_org', status: 'member', joined: '20230909', notes: '地域国際機構（アフリカ連合、2023年9月ニューデリー・サミットで常任メンバー化）' }
     ]
   },
   {
@@ -786,6 +792,7 @@ export const FRAMEWORKS: Framework[] = [
     nameEn: 'Paris Agreement',
     acronym: 'Paris',
     category: 'global_treaty',
+    frameworkType: 'treaty',
     established: '2015',
     establishedYear: 2015,
     inForce: '20161104',
@@ -808,7 +815,7 @@ export const FRAMEWORKS: Framework[] = [
     members: [
       { countryCode: 'JPN', status: 'party', signed: '20160422', ratified: '20161108' },
       { countryCode: 'USA', status: 'withdrawn', signed: '20160422', ratified: '20160903', withdrawalNotified: '20250127', withdrawn: '20260127', notes: '国連条約集（UNTC）公式記録（Note 7）。2016年9月3日受諾（2016年11月4日発効）、2020年離脱、2021年1月20日再受諾（2月19日復帰発効）。2025年1月27日に国連事務総長へ再離脱通告（C.N.71.2025.TREATIES-XXVII.7.d）、協定第28条に基づき2026年1月27日に脱退発効' },
-      { countryCode: 'EUR', status: 'party', signed: '20160422', ratified: '20161005' },
+      { countryCode: 'EUR', entityType: 'supranational', status: 'party', signed: '20160422', ratified: '20161005' },
       { countryCode: 'GBR', status: 'party', signed: '20160422', ratified: '20161118' },
       { countryCode: 'FRA', status: 'party', signed: '20160422', ratified: '20161005' },
       { countryCode: 'DEU', status: 'party', signed: '20160422', ratified: '20161005' },
@@ -2017,6 +2024,7 @@ export const FRAMEWORKS: Framework[] = [
     acronym: 'Pax Silica',
     aliases: ['pax-silica', 'silicon-peace'],
     category: 'security',
+    frameworkType: 'political_dialogue',
     established: '20251212',
     establishedYear: 2025,
     inForce: '20251212',
@@ -2047,7 +2055,7 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'SGP', status: 'member', joined: '20251212', signed: '20251212', notes: '原署名国' },
       { countryCode: 'ISR', status: 'member', joined: '20251212', signed: '20251212', notes: '原署名国' },
       // 欧州連合（2026年6月23日署名）
-      { countryCode: 'EUR', status: 'member', joined: '20260623', signed: '20260623', notes: '2026年6月23日署名（欧州連合）' },
+      { countryCode: 'EUR', entityType: 'supranational', status: 'member', joined: '20260623', signed: '20260623', notes: '2026年6月23日署名（欧州連合）' },
       // 署名・参加国 (2025年末〜2026年拡大)
       { countryCode: 'NLD', status: 'member', firstParticipated: '20251217', signed: '202606', joined: '202606', notes: '2025年12月非署名パートナー参加、2026年6月宣言署名（先端露光装置ASML本拠）' },
       { countryCode: 'QAT', status: 'member', joined: '202601', signed: '202601', notes: '2026年1月参加（エネルギー・データセンター投資）' },

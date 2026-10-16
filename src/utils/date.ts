@@ -52,7 +52,7 @@ export function formatDateString(dateStr?: string, lang: Language = 'ja'): strin
  */
 export function getEffectiveMembershipYear(m: MembershipRecord): number | undefined {
   // 優先度: joined -> accession -> inForce -> ratified -> firstParticipated -> declarationSigned
-  //        -> candidate -> applied -> signed -> (移行互換プロパティ)
+  //        -> negotiationsStarted -> negotiationsApproved -> candidate -> applied -> signed -> (移行互換プロパティ)
   const candidateVal =
     m.joined ||
     m.accession ||
@@ -60,6 +60,8 @@ export function getEffectiveMembershipYear(m: MembershipRecord): number | undefi
     m.ratified ||
     m.firstParticipated ||
     m.declarationSigned ||
+    m.negotiationsStarted ||
+    m.negotiationsApproved ||
     m.candidate ||
     m.applied ||
     m.signed ||
@@ -67,6 +69,8 @@ export function getEffectiveMembershipYear(m: MembershipRecord): number | undefi
     m.accessionYear ||
     m.inForceYear ||
     m.ratifiedYear ||
+    m.negotiationsStartedYear ||
+    m.negotiationsApprovedYear ||
     m.candidateYear ||
     m.appliedYear ||
     m.signedYear;
@@ -151,21 +155,35 @@ export function getMembershipDateDetail(
     return { type: 'declarationSigned', label, dateText: d, displayText: `${d} (${label})` };
   }
 
-  // 9. 候補認定 (Candidate)
+  // 9. 加盟交渉中・実質交渉開始 (Negotiations Started)
+  if (m.negotiationsStarted || m.negotiationsStartedYear) {
+    const d = m.negotiationsStarted ? formatDateString(m.negotiationsStarted, lang) : `${m.negotiationsStartedYear}${lang === 'ja' ? '年' : ''}`;
+    const label = lang === 'ja' ? '交渉開始' : 'Negotiations Started';
+    return { type: 'negotiationsStarted', label, dateText: d, displayText: `${d} (${label})` };
+  }
+
+  // 10. 交渉開始決定・合意 (Negotiations Approved)
+  if (m.negotiationsApproved || m.negotiationsApprovedYear) {
+    const d = m.negotiationsApproved ? formatDateString(m.negotiationsApproved, lang) : `${m.negotiationsApprovedYear}${lang === 'ja' ? '年' : ''}`;
+    const label = lang === 'ja' ? '交渉決定' : 'Negotiations Approved';
+    return { type: 'negotiationsApproved', label, dateText: d, displayText: `${d} (${label})` };
+  }
+
+  // 11. 候補認定 (Candidate)
   if (m.candidate || m.candidateYear) {
     const d = m.candidate ? formatDateString(m.candidate, lang) : `${m.candidateYear}${lang === 'ja' ? '年' : ''}`;
     const label = lang === 'ja' ? '候補認定' : 'Candidate';
     return { type: 'candidate', label, dateText: d, displayText: `${d} (${label})` };
   }
 
-  // 10. 署名 (Signed)
+  // 12. 署名 (Signed)
   if (m.signed || m.signedYear) {
     const d = m.signed ? formatDateString(m.signed, lang) : `${m.signedYear}${lang === 'ja' ? '年' : ''}`;
     const label = lang === 'ja' ? '署名' : 'Signed';
     return { type: 'signed', label, dateText: d, displayText: `${d} (${label})` };
   }
 
-  // 11. 加盟申請 (Applied)
+  // 13. 加盟申請 (Applied)
   if (m.applied || m.appliedYear) {
     const d = m.applied ? formatDateString(m.applied, lang) : `${m.appliedYear}${lang === 'ja' ? '年' : ''}`;
     const label = lang === 'ja' ? '申請' : 'Applied';
