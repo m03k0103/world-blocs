@@ -1,6 +1,6 @@
 # World Blocs 改善・機能拡充マスタードキュメント (Drops.md)
 
-> 最終更新: 2026-10-16  
+> 最終更新: 2026-10-17  
 > 開発・改善単位の呼称を **「Drop（ドロップ）」** に統一しています。未着手の将来構想テーマについては、順序が前後・並行する可能性があるため **「Track（トラック）」** として管理し、着手・完了時にその時点の最新連番（Drop）を付与してアーカイブ化します。  
 > 本ドキュメントは、World Blocs（国際枠組み・勢力圏インタラクティブ可視化データベース）の継続的改善ロードマップ、国際法規・公式外交記録に基づくファクトチェック課題、および全実装実績を一元管理するマスタードキュメントです。  
 > 
@@ -19,7 +19,7 @@
 |:---:|:---|:---|:---|:---:|
 | **Drop 32**<br>(Track [IR-RigorousDataModel] Phase 1) | **スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設 (Schema 2.0 基盤)** | **types/index.ts, data/historicalEntities.ts, data/countries.ts**<br>- ① 日付・条約法的性質の厳格型定義（signed, ratified, inForce, joined, accession, negotiationsApproved）<br>- ② 参加主体種別 `EntityType` 新設（主権国家、超国家機関、地域機関、特別実体、歴史的国家）<br>- ③ 歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）および国家継承モデル新設<br>- ④ 統合主体探索ヘルパー（`getEntity`）の配備 | 国際法学・国際関係史基準に完全準拠したスキーマ2.0基盤確立 | **【完了】(Drop 32)** |
 | **Drop 33**<br>(Track [IR-RigorousDataModel] Phase 2) | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7/G20, パリ協定, Pax Silica, NATO**<br>- ワルシャワ条約機構の構成国を歴史的主体（SUN, DDR, CSK）へ正式移行<br>- EU候補国の交渉決定・実質交渉開始の多段階分離（BIH, UKR, MDA等）<br>- EUR, AFU の参加主体種別（supranational, regional_org）明示 | 代表的枠組みにおけるSchema 2.0の実効性実証 | **【完了】(Drop 33)** |
-| **Drop 34**<br>(Track [IR-RigorousDataModel] Phase 3) | **地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | **WorldMap.tsx, TableView.tsx, TimelineSlider.tsx, utils/date.ts**<br>- 地図描画における歴史的主体と後継国ポリゴンの動的マッピング＆ツールチップ表示<br>- 地域統合体・超国家機関の自動判定・バナー描画<br>- テーブル一覧・詳細モーダルでの主体種別バッジおよび交渉マイルストーン表示 | 歴史的主体・多段階加盟プロセスの直感的可視化 | **【着手中】(Drop 34)** |
+| **Drop 34**<br>(Track [IR-RigorousDataModel] Phase 3) | **地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | **WorldMap.tsx, TableView.tsx, CountryProfileModal.tsx, TimelineSlider.tsx, utils/date.ts**<br>- 地図描画における歴史的主体（SUN, DDR, CSK, YUG）と現代後継国ポリゴンの動的フォールバック・ハイライト描画<br>- 地図ツールチップでの歴史的主体情報・国家継承注記のリッチ表示<br>- テーブル一覧・詳細モーダルでの参加主体種別バッジ（超国家機関、地域国際機関、特別実体、歴史的国家）新設<br>- 候補国における交渉合意決定日（negotiationsApproved）の表示対応 | 歴史的主体・多段階加盟プロセスの直感的可視化 & Schema 2.0 UI統合完了 | **【完了】(Drop 34)** |
 | **Drop 35**<br>(Track [IR-RigorousDataModel] Phase 4) | **全34枠組みへの展開・データ整合性検証・完全移行** | **frameworks.ts 全34枠組み**<br>- 全枠組みへの `frameworkType` 設定<br>- 条約型と非条約型の日付フィールド整合性総点検<br>- 公式一次資料に基づく推測日付の完全排除検証 | データベース全34枠組みのSchema 2.0完全移行達成 | **【計画策定済】(Drop 35予定)** |
 | **Drop 36**<br>(Track [Eurasia-CentralAsia]) | **ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連解体後の多国間安全保障・経済統合・中央アジア地域協力の完全網羅（全34→40枠組み到達） | **【計画策定済】(Drop 36予定)** |
 
@@ -27,7 +27,7 @@
 
 ## 2. 今後の Track 詳細計画
 
-### 【着手中】Drop 32: Track [IR-RigorousDataModel] Phase 1 - スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設
+### 【完了】Drop 32: Track [IR-RigorousDataModel] Phase 1 - スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設
 
 国際法学・条約実務・国家継承史における事実関係を寸分の曖昧さもなく表現するための**データベーススキーマ全面刷新（Schema 2.0）**の第1段階として、型定義と歴史的主体マスタの基盤を確立する。
 
@@ -47,13 +47,13 @@
 
 ---
 
-### 【計画策定済】Drop 33: Track [IR-RigorousDataModel] Phase 2 - 代表的枠組みでの先行データモデル検証・移行
+### 【完了】Drop 33: Track [IR-RigorousDataModel] Phase 2 - 代表的枠組みでの先行データモデル検証・移行
 ワルシャワ条約機構（`warsaw_pact`）の歴史的主体（SUN, DDR, CSK）への切り替え、EUの候補国プロセスの多段階分離、G7/G20の地域統合体主体の明示を実施。
 
 ---
 
-### 【計画策定済】Drop 34: Track [IR-RigorousDataModel] Phase 3 - 地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応
-`WorldMap.tsx` における歴史的主体の後継国ポリゴンマッピング描画、`TableView.tsx` における主体種別バッジおよび交渉プロセスの詳細可視化を実装。
+### 【完了】Drop 34: Track [IR-RigorousDataModel] Phase 3 - 地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応
+`WorldMap.tsx` における歴史的主体の後継国ポリゴンマッピング描画・ツールチップ表示、`TableView.tsx` における主体種別バッジおよび交渉プロセスの詳細可視化、`CountryProfileModal.tsx` における国家継承解説ボックスを実装。
 
 ---
 
@@ -122,6 +122,7 @@ World Blocs プロジェクトの全実装済み Drop および完了した開�
 
 | Track ID | 構想テーマ | 主な対象枠組み・機能 | 到達成果 / 改善価値 | 対応 Drop |
 |:---:|:---|:---|:---|:---:|
+| **Track [IR-RigorousDataModel] (Phase 3)** | **地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | **WorldMap.tsx, TableView.tsx, CountryProfileModal.tsx, TimelineSlider.tsx, utils/date.ts**<br>- 地図描画における歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）の後継国現代ポリゴン（RUS, DEU, CZE, SVK等）への動的フォールバック・ハイライト連動<br>- 地図ツールチップでの歴史的主体名・国旗絵文字・国家継承注記のリッチ表示<br>- テーブル一覧・詳細モーダルでの参加主体種別バッジ（超国家機関、地域国際機関、特別実体、歴史的国家）新設<br>- 候補国における交渉合意決定日（`negotiationsApproved`）の表示対応<br>- 国詳細モーダルにおける歴史的主体と国家継承解説ボックスの表示 | 歴史的主体・多段階加盟プロセスの直感的可視化 & Schema 2.0 UI統合完了 | **Drop 34** |
 | **Track [IR-RigorousDataModel] (Phase 2)** | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7, G20, パリ協定, Pax Silica, NATO**<br>- ワルシャワ条約機構の構成国を歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`）へ正式移行<br>- EU候補国の交渉決定（`negotiationsApproved`）と実質交渉開始（`negotiationsStarted`）を厳格多段階分離（BIH, UKR, MDA等）<br>- G7, G20, パリ協定, Pax Silica における `EUR`（EU: `supranational`）および `AFU`（AU: `regional_org`）の参加主体種別を明示<br>- NATO, ワルシャワ条約機構, パリ協定, EU, G7/G20, Pax Silica への `frameworkType` 設定 | 代表的枠組みにおけるSchema 2.0の実効性実証・データ整合性確立 | **Drop 33** |
 | **Track [IR-RigorousDataModel] (Phase 1)** | **スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設 (Schema 2.0 基盤)** | **types/index.ts, data/historicalEntities.ts, data/countries.ts**<br>- `EntityType` 新設（主権国家、超国家機関、地域機関、特別実体、歴史的国家）<br>- `StateSuccession` および `HistoricalEntity` 新設（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG` のISO 3166-3規格準拠）<br>- `FrameworkType` 新設（条約、常設機関、地域統合、サミット、政治対話）<br>- `MembershipRecord` への `negotiationsApproved`（交渉合意）と `negotiationsStarted`（実質交渉開始）の分離配備<br>- 統合探索ヘルパー `getEntity(code)` 配備および下位互換性確保 | 国際法学・国際関係史の厳密基準に完全準拠したデータベースアーキテクチャ（Schema 2.0）の基盤確立 | **Drop 32** |
 | **Track [Perf-TopoJSON]** | **世界地図 TopoJSON データの JS バンドル直接内包 & アセット一元化** | **WorldMap, countries-110m.json**<br>- `public/data` および `docs/data` の重複 JSON を全廃し、`src/data/countries-110m.json` の1箇所にマスターを集約<br>- `WorldMap.tsx` における非同期 HTTP fetch を撤廃し、モジュールロード時の同期 TopoJSON 変換（直接 `import`）へ刷新<br>- 地図レンダリング待ち時間・通信オーバーヘッドを完全ゼロ化 | データの完全一元管理 & 地図初期表示の高速化・通信エラーゼロ化 | **Drop 31** |
@@ -142,7 +143,7 @@ World Blocs プロジェクトの全実装済み Drop および完了した開�
 
 ---
 
-### 3-2. Drop 1 〜 Drop 31 到達成果サマリー
+### 3-2. Drop 1 〜 Drop 34 到達成果サマリー
 
 | Drop ID | 完了日 | 施策名 | 主な成果・変更ファイル | 到達成果 / 改善価値 |
 |:---:|:---:|:---|:---|:---|
@@ -177,6 +178,9 @@ World Blocs プロジェクトの全実装済み Drop および完了した開�
 | **Drop 29** | 2026-10-15 | **Track [FactCheck-RegionalEurasia]: 全枠組み厳密ファクトチェック第4弾（中東・ユーラシア・歴史的安全保障 5枠組み）** | ワルシャワ条約機構, SCO, アラブ連盟, AZEC, 平和協議会 の全5枠組みについて、国連条約局（UNTC）、SCO事務局、アラブ連盟事務局、経済産業省、外務省、米国アバロン・プロジェクト公式記録のみに基づく厳密ファクトチェックを完遂。<br>- 各枠組みに公式一次資料ダイレクトリンク（`sources`）新設。<br>- 最新正式構成員数（ワルシャワ条約機構: 6, SCO: 10, アラブ連盟: 22, AZEC: 11, 平和協議会: 28）および各種除外ルール（脱退国、オブザーバー、対話パートナー、未発効等）の100%整合を確認。 | 歴史的安保・中東・ユーラシア・アジア脱炭素枠組みの国際法・公式記録100%完全同期 & データ信頼性確立 |
 | **Drop 30** | 2026-10-15 | **Track [FactCheck-EuropeAmericas]: 全枠組み厳密ファクトチェック第5弾（欧州・米州・通商経済 8枠組み＋全34枠組み制覇）** | EU, EEA, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, GAFTA（＋OSCE）について、欧州連合公式（europa.eu）、EFTA事務局、OECD、米通商代表部（USTR）、メルコスール事務局、太平洋同盟、ASEAN事務局、アラブ連盟事務局、OSCE事務局、外務省公式記録のみに基づく厳密ファクトチェックを完遂。<br>- 各枠組みに公式一次資料ダイレクトリンク（`sources`）新設。<br>- 最新正式構成員数（EU: 27, EEA: 30, OECD: 38, USMCA: 3, メルコスール: 5, 太平洋同盟: 4, AFTA: 11, GAFTA: 18, OSCE: 57）および各種除外ルール（候補国、準加盟、オブザーバー、脱退等）の100%整合を確認。<br>- **既存全34枠組みへの公式一次資料リンク（sources）配備 100% 完全達成**。 | 欧州・米州・メガ経済圏・通商ブロックの公式記録完全同期 & 全34枠組みファクトチェック完全制覇 |
 | **Drop 31** | 2026-10-16 | **Track [Perf-TopoJSON]: 世界地図 TopoJSON データの JS バンドル直接内包 & アセット一元化** | `public/data/countries-110m.json` および `docs/data/countries-110m.json` の多重管理を解消し、`src/data/countries-110m.json` の1箇所に集約。<br>- `WorldMap.tsx` における非同期 HTTP fetch を廃止し、TopoJSON 直接 `import` ＆モジュールスコープ同期変換へ刷新。<br>- 地図描画待機時間を完全排除し、初期ロード時の通信失敗リスクを解消。<br>- `scripts/generate_countries.js` の参照パス適正化。 | 地図データ原本の完全一元化 & 地図初期表示の高速化・通信エラー耐性の向上 |
+| **Drop 32** | 2026-10-16 | **Track [IR-RigorousDataModel] (Phase 1): スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設** | 国際関係法学・条約実務に準拠した新データモデル（Schema 2.0）基盤確立。<br>- `EntityType`（主権国家、超国家機関、地域機関、特別実体、歴史的国家）新設。<br>- `StateSuccession` および `HistoricalEntity` 新設（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG` のISO 3166-3規格準拠）。<br>- `FrameworkType` 新設（条約、常設機関、地域統合、サミット、政治対話）。<br>- `MembershipRecord` への `negotiationsApproved`（交渉合意）と `negotiationsStarted`（実質交渉開始）の分離配備。<br>- 統合探索ヘルパー `getEntity(code)` 配備および下位互換性確保。 | 国際法学・国際関係史基準に完全準拠したスキーマ2.0基盤確立 |
+| **Drop 33** | 2026-10-16 | **Track [IR-RigorousDataModel] (Phase 2): 代表的枠組みでの先行データモデル検証・移行** | 代表的6枠組み（ワルシャワ条約機構、EU、G7、G20、パリ協定、Pax Silica）への先行適用・実証。<br>- ワルシャワ条約機構の構成国を歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`）へ正式移行。<br>- EU候補国の交渉決定（`negotiationsApproved`）と実質交渉開始（`negotiationsStarted`）を厳格多段階分離（BIH, UKR, MDA等）。<br>- G7, G20, パリ協定, Pax Silica における `EUR`（EU: `supranational`）および `AFU`（AU: `regional_org`）の参加主体種別を明示。<br>- 代表枠組みへの `frameworkType` 設定および `src/utils/date.ts` の交渉合意対応。 | 代表的枠組みにおけるSchema 2.0の実効性実証・データ整合性確立 |
+| **Drop 34** | 2026-10-17 | **Track [IR-RigorousDataModel] (Phase 3): 地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | Schema 2.0 に対応したUI可視化レイヤーの全面刷新。<br>- `WorldMap.tsx`: 歴史的主体（SUN, DDR, CSK, YUG）の後継国現代ポリゴン（RUS, DEU, CZE, SVK等）への動的フォールバック・ハイライト描画、ツールチップでの歴史的国名・国旗・国家継承注記のリッチ表示、地域組織バナーの動的生成、小島嶼国リストの適正化。<br>- `TableView.tsx`: 参加主体種別バッジ（超国家機関、地域国際機関、特別実体、歴史的国家）新設、候補国における交渉合意決定日（`negotiationsApproved`）の表示、歴史的主体の継承先解説表示。<br>- `CountryProfileModal.tsx`: 歴史的主体モーダルにおける「歴史的国家」バッジおよび国家継承解説ボックスの表示。 | 歴史的主体・多段階加盟プロセスの直感的可視化 & Schema 2.0 UI統合完了 |
 
 
 

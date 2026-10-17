@@ -2,9 +2,9 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import * as d3Geo from 'd3-geo';
 import * as topojson from 'topojson-client';
 import countriesTopology from '../data/countries-110m.json';
-import { COUNTRY_BY_NUMERIC, COUNTRY_BY_ALPHA3 } from '../data/countries';
+import { COUNTRY_BY_NUMERIC, COUNTRY_BY_ALPHA3, getEntity, HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
-import type { Country, MembershipStatus } from '../types';
+import type { Country, MembershipStatus, HistoricalEntity } from '../types';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -42,6 +42,10 @@ interface HoverInfo {
   y: number;
   country: Country;
   data?: CountryMapData;
+  historicalContext?: {
+    entity: HistoricalEntity;
+    isSuccessor: boolean;
+  };
 }
 
 export const WorldMap: React.FC<WorldMapProps> = ({
@@ -96,14 +100,31 @@ export const WorldMap: React.FC<WorldMapProps> = ({
     return set;
   }, [geographies]);
 
-  // 地域統合体・非国家メンバー（EUR: 欧州連合, AFU: アフリカ連合 等）
+  // 歴史的主体の後継国家ポリゴンマッピング (SUN -> RUS, DDR -> DEU, CSK -> CZE/SVK 等)
+  const historicalSuccessorMap = useMemo(() => {
+    const map: Record<string, { historicalEntity: HistoricalEntity; data: CountryMapData }> = {};
+    Object.entries(countryDataMap).forEach(([code, data]) => {
+      const historical = HISTORICAL_ENTITY_BY_ALPHA3[code];
+      if (historical && (data.status || data.inFrameworkA || data.inFrameworkB)) {
+        historical.succession.successorCodes.forEach((succCode) => {
+          // すでに直接の国家データが存在しない場合のみ代理マッピング
+          if (!countryDataMap[succCode]?.status) {
+            map[succCode] = { historicalEntity: historical, data };
+          }
+        });
+      }
+    });
+    return map;
+  }, [countryDataMap]);
+
+  // 地域統合体・非国家メンバー（EUR: 欧州連合, AFU: アフリカ連合 等の動的抽出）
   const regionalBlocMembers = useMemo(() => {
     const list: { country: Country; data: CountryMapData }[] = [];
-    ['EUR', 'AFU'].forEach(code => {
-      const data = countryDataMap[code];
-      const country = COUNTRY_BY_ALPHA3[code];
-      if (country && data && (data.status || data.inFrameworkA || data.inFrameworkB)) {
-        list.push({ country, data });
+    Object.entries(countryDataMap).forEach(([code, data]) => {
+      if (!data.status && !data.inFrameworkA && !data.inFrameworkB) return;
+      const entity = getEntity(code);
+      if (entity && (entity.entityType === 'supranational' || entity.entityType === 'regional_org')) {
+        list.push({ country: entity as Country, data });
       }
     });
     return list;
@@ -113,13 +134,19 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   const microstateMembers = useMemo(() => {
     const list: { country: Country; data: CountryMapData }[] = [];
     Object.entries(countryDataMap).forEach(([alpha3, data]) => {
-      if (alpha3 === 'EUR' || alpha3 === 'AFU') return;
       if (!data.status && !data.inFrameworkA && !data.inFrameworkB) return;
+      const entity = getEntity(alpha3);
+      if (!entity) return;
+      // 超国家機関、地域組織、歴史的国家は小国リストから除外
+      if (
+        entity.entityType === 'supranational' ||
+        entity.entityType === 'regional_org' ||
+        entity.entityType === 'historical_state'
+      ) {
+        return;
+      }
       if (!mappedAlpha3Set.has(alpha3)) {
-        const country = COUNTRY_BY_ALPHA3[alpha3];
-        if (country) {
-          list.push({ country, data });
-        }
+        list.push({ country: entity as Country, data });
       }
     });
     return list.sort((a, b) => a.country.nameJa.localeCompare(b.country.nameJa, 'ja'));
@@ -128,7 +155,9 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   // 色判定関数
   const getCountryFill = useCallback(
     (alpha3: string, isHovered: boolean, isSelected: boolean) => {
-      const data = countryDataMap[alpha3];
+      const directData = countryDataMap[alpha3];
+      const fallback = historicalSuccessorMap[alpha3];
+      const data = directData || fallback?.data;
 
       if (isSelected) {
         return '#f97316'; // 選択中は鮮やかなオレンジ
@@ -184,7 +213,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
           return 'var(--map-neutral, #e2e8f0)';
       }
     },
-    [countryDataMap, mode, colorA, colorB, colorBoth]
+    [countryDataMap, historicalSuccessorMap, mode, colorA, colorB, colorBoth]
   );
 
   // マウスドラッグハンドラ
@@ -363,18 +392,19 @@ export const WorldMap: React.FC<WorldMapProps> = ({
           >
             {/* 国境の描画 */}
             {geographies.map((geo, idx) => {
+              const path = pathGenerator(geo);
               const numericId = String(geo.id).padStart(3, '0');
               const country = COUNTRY_BY_NUMERIC[numericId];
               const alpha3 = country ? country.alpha3 : `C${numericId}`;
               const isSelected = selectedCountryAlpha3 === alpha3;
               const isHovered = hoverInfo?.country.alpha3 === alpha3;
-              const path = pathGenerator(geo);
-              if (!path) return null;
+              const fallback = historicalSuccessorMap[alpha3];
+              const effectiveData = countryDataMap[alpha3] || fallback?.data;
 
               return (
                 <path
                   key={geo.id || idx}
-                  d={path}
+                  d={path || ''}
                   fill={getCountryFill(alpha3, isHovered, isSelected)}
                   stroke={isSelected ? '#c2410c' : '#ffffff'}
                   strokeWidth={isSelected ? 1.5 / zoom : 0.4 / zoom}
@@ -385,7 +415,10 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                         x: e.clientX,
                         y: e.clientY,
                         country,
-                        data: countryDataMap[alpha3],
+                        data: effectiveData,
+                        historicalContext: fallback
+                          ? { entity: fallback.historicalEntity, isSuccessor: true }
+                          : undefined,
                       });
                     }
                   }}
@@ -395,7 +428,10 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                         x: e.clientX,
                         y: e.clientY,
                         country,
-                        data: countryDataMap[alpha3],
+                        data: effectiveData,
+                        historicalContext: fallback
+                          ? { entity: fallback.historicalEntity, isSuccessor: true }
+                          : undefined,
                       });
                     }
                   }}
@@ -403,6 +439,13 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                     setHoverInfo(null);
                   }}
                   onClick={() => {
+                    if (fallback) {
+                      const histCountry = COUNTRY_BY_ALPHA3[fallback.historicalEntity.alpha3];
+                      if (histCountry && onSelectCountry) {
+                        onSelectCountry(histCountry);
+                        return;
+                      }
+                    }
                     if (country && onSelectCountry) {
                       onSelectCountry(country);
                     }
@@ -422,13 +465,34 @@ export const WorldMap: React.FC<WorldMapProps> = ({
             top: `${hoverInfo.y - 10}px`,
           }}
         >
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-base">{hoverInfo.country.flagEmoji || '🌐'}</span>
-            <span className="font-bold text-sm">
-              {language === 'en' ? hoverInfo.country.nameEn : hoverInfo.country.nameJa}
-            </span>
-            <span className="text-slate-400 text-[11px] font-mono">({hoverInfo.country.alpha3})</span>
-          </div>
+          {hoverInfo.historicalContext ? (
+            <div className="space-y-1 mb-2">
+              <div className="flex items-center gap-2">
+                <span className="text-base">{hoverInfo.historicalContext.entity.flagEmoji || '🚩'}</span>
+                <span className="font-bold text-sm text-amber-300">
+                  {language === 'en'
+                    ? hoverInfo.historicalContext.entity.nameEn
+                    : hoverInfo.historicalContext.entity.nameJa}
+                </span>
+                <span className="text-amber-400/80 text-[11px] font-mono">
+                  ({hoverInfo.historicalContext.entity.alpha3})
+                </span>
+              </div>
+              <div className="text-[10px] text-amber-200/90 font-medium bg-amber-950/60 px-2 py-1 rounded border border-amber-800/50 leading-relaxed">
+                {language === 'ja'
+                  ? `※現代の「${hoverInfo.country.nameJa}」領域（${hoverInfo.historicalContext.entity.succession.descriptionJa}）`
+                  : `*Territory of ${hoverInfo.country.nameEn} (${hoverInfo.historicalContext.entity.succession.descriptionEn})`}
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-base">{hoverInfo.country.flagEmoji || '🌐'}</span>
+              <span className="font-bold text-sm">
+                {language === 'en' ? hoverInfo.country.nameEn : hoverInfo.country.nameJa}
+              </span>
+              <span className="text-slate-400 text-[11px] font-mono">({hoverInfo.country.alpha3})</span>
+            </div>
+          )}
 
           {mode === 'compare' ? (
             <div className="space-y-1 pt-1 border-t border-slate-700/60">

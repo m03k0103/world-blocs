@@ -1,10 +1,43 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import type { MembershipRecord, Country, MembershipStatus } from '../types';
-import { COUNTRY_BY_ALPHA3 } from '../data/countries';
+import type { MembershipRecord, Country, MembershipStatus, EntityType } from '../types';
+import { COUNTRY_BY_ALPHA3, getEntity, HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
 import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
+
+function getEntityTypeBadge(entityType?: EntityType, lang: 'ja' | 'en' = 'ja') {
+  if (!entityType || entityType === 'sovereign_state') return null;
+
+  switch (entityType) {
+    case 'supranational':
+      return (
+        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+          {lang === 'ja' ? '超国家機関' : 'Supranational'}
+        </span>
+      );
+    case 'regional_org':
+      return (
+        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300">
+          {lang === 'ja' ? '地域国際機関' : 'Regional Org'}
+        </span>
+      );
+    case 'special_entity':
+      return (
+        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 dark:bg-slate-700/60 dark:text-slate-300">
+          {lang === 'ja' ? '特別実体' : 'Special Entity'}
+        </span>
+      );
+    case 'historical_state':
+      return (
+        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60">
+          {lang === 'ja' ? '歴史的国家' : 'Historical State'}
+        </span>
+      );
+    default:
+      return null;
+  }
+}
 
 interface TableViewProps {
   members: (MembershipRecord & { currentStatus: MembershipStatus })[];
@@ -135,7 +168,7 @@ export const TableView: React.FC<TableViewProps> = ({
     const headerRow = headers.map(h => sanitizeCsvCell(h)).join(',');
 
     const rows = filteredMembers.map((m) => {
-      const c = COUNTRY_BY_ALPHA3[m.countryCode];
+      const c = getEntity(m.countryCode) || COUNTRY_BY_ALPHA3[m.countryCode];
       const statusLabel = STATUS_LABELS[m.currentStatus]
         ? (language === 'en' ? STATUS_LABELS[m.currentStatus].labelEn : STATUS_LABELS[m.currentStatus].labelJa)
         : m.currentStatus;
@@ -296,26 +329,38 @@ export const TableView: React.FC<TableViewProps> = ({
               </tr>
             ) : (
               filteredMembers.map((m) => {
-                const c = COUNTRY_BY_ALPHA3[m.countryCode];
+                const c = getEntity(m.countryCode) || COUNTRY_BY_ALPHA3[m.countryCode];
                 if (!c) return null;
                 const statusMeta = STATUS_LABELS[m.currentStatus];
+                const historical = HISTORICAL_ENTITY_BY_ALPHA3[m.countryCode];
+                const entityType = m.entityType || c.entityType;
 
                 return (
                   <tr
                     key={m.countryCode}
-                    onClick={() => onSelectCountry && onSelectCountry(c)}
+                    onClick={() => onSelectCountry && onSelectCountry(c as Country)}
                     className="hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
                   >
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
                         <span className="text-base">{c.flagEmoji || '🌐'}</span>
                         <div>
-                          <span className="font-semibold text-slate-800 dark:text-slate-200 block">
-                            {language === 'en' ? c.nameEn : c.nameJa}
-                          </span>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-semibold text-slate-800 dark:text-slate-200 block">
+                              {language === 'en' ? c.nameEn : c.nameJa}
+                            </span>
+                            {getEntityTypeBadge(entityType, language)}
+                          </div>
                           <span className="text-[11px] text-slate-400 font-mono">
                             {language === 'en' ? c.nameJa : c.nameEn} ({c.alpha3})
                           </span>
+                          {historical && (
+                            <div className="text-[10px] text-amber-700 dark:text-amber-400 font-medium">
+                              {language === 'ja'
+                                ? `※後継: ${historical.succession.successorCodes.map(code => COUNTRY_BY_ALPHA3[code]?.nameJa || code).join(', ')}`
+                                : `*Successor: ${historical.succession.successorCodes.join(', ')}`}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </td>
@@ -344,9 +389,21 @@ export const TableView: React.FC<TableViewProps> = ({
                             : `In force: ${formatDateString(m.inForce || m.inForceDate, language)}`}
                         </div>
                       )}
+                      {m.negotiationsApproved && (
+                        <div className="text-[10px] text-blue-600 dark:text-blue-400 font-normal">
+                          {language === 'ja'
+                            ? `交渉合意: ${formatDateString(m.negotiationsApproved, language)}`
+                            : `Approved: ${formatDateString(m.negotiationsApproved, language)}`}
+                        </div>
+                      )}
                     </td>
                     <td className="py-3 px-4 text-xs text-slate-500 dark:text-slate-400 max-w-xs" title={m.notes}>
                       <div className="truncate">{m.notes || '—'}</div>
+                      {historical && (
+                        <div className="text-[10px] text-amber-600 dark:text-amber-400/90 truncate mt-0.5">
+                          {language === 'ja' ? historical.succession.descriptionJa : historical.succession.descriptionEn}
+                        </div>
+                      )}
                       {m.bilateralInForceDates && (
                         <div className="text-[10px] text-slate-400 mt-0.5 truncate">
                           {language === 'ja' ? '二国間発効: ' : 'Bilateral: '}

@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import type { Country, Framework } from '../types';
 import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
-import { X, Award } from 'lucide-react';
+import { HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
+import { X, Award, History } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
 
@@ -17,6 +18,8 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
   onSelectFramework,
 }) => {
   const { t, language } = useLanguage();
+
+  const historical = country ? HISTORICAL_ENTITY_BY_ALPHA3[country.alpha3] : undefined;
 
   // この国が参加している全枠組みを取得
   const joinedFrameworks = useMemo(() => {
@@ -67,13 +70,20 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
           <div className="flex items-center gap-4">
             <span className="text-5xl">{country.flagEmoji || '🌐'}</span>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs px-2 py-0.5 rounded-full bg-white/20 text-slate-200 font-medium">
                   {country.region}
                 </span>
                 <span className="text-xs font-mono text-slate-300">
                   ISO: {country.alpha3} / {country.numeric}
                 </span>
+                {historical && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/30 text-amber-200 border border-amber-400/40 font-semibold inline-flex items-center gap-1">
+                    <History className="w-3 h-3" />
+                    {language === 'ja' ? '歴史的国家' : 'Historical State'}
+                    {historical.period.end && ` (〜${formatDateString(historical.period.end, language)})`}
+                  </span>
+                )}
               </div>
               <h2 className="text-2xl sm:text-3xl font-black mt-1">
                 {language === 'en' ? country.nameEn : country.nameJa}
@@ -81,6 +91,13 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
               <div className="text-sm text-slate-300 font-medium">
                 {language === 'en' ? country.nameJa : country.nameEn}
               </div>
+              {historical && (
+                <div className="mt-2 text-xs bg-amber-950/70 border border-amber-500/30 text-amber-200 p-2.5 rounded-xl leading-relaxed">
+                  {language === 'ja'
+                    ? `【国家継承】${historical.succession.descriptionJa}`
+                    : `【State Succession】${historical.succession.descriptionEn}`}
+                </div>
+              )}
             </div>
           </div>
 
