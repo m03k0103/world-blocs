@@ -10,32 +10,13 @@
 
 | Track ID / Drop | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
-| **Track [CodeQuality-Refinement]** | **Schema 2.0 連携バグ修正・Lint警告解消・UI/バンドル最適化** | **TableView, CompareView, CountryListView, CountryProfileModal, FrameworkView, vite.config.ts**<br>- `TableView` における歴史的主体（SUN, DDR, CSK）のフィルタ・ソート欠落バグ修正<br>- `CompareView` の比較対象を正式構成員に厳格化 & 二重state排除<br>- `CountryListView` の参加数カウントから `non_party` / `withdrawn` を除外<br>- `CountryProfileModal` の背景クリック・Escキー閉鎖対応、ヘッダーへの `frameworkType` バッジ表示<br>- `oxlint` 警告ゼロ化および Vite ビルド時のチャンク分割 | コンポーネント間のデータ整合性確保、静的解析警告の解消、バンドル分割による初期ロード効率化 | **【計画策定済】** |
 | **Track [Eurasia-CentralAsia]** | **ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連圏・中央アジア地域の安全保障・経済統合・地域協力枠組みの収録（全34→40枠組み） | **【計画策定済】** |
 
 ---
 
 ## 2. 各Trackの詳細
 
-### 2-1. 【計画策定済】Track [CodeQuality-Refinement] - Schema 2.0 連携バグ修正・Lint警告解消・UI/バンドル最適化
-
-#### 背景・課題
-- コードベース評価により、`TableView` のフィルタ・ソート処理等で `getEntity()` ではなく `COUNTRY_BY_ALPHA3` のみを参照しており、歴史的主体（`SUN`, `DDR`, `CSK`）が一覧表示から除外される不具合が判明。
-- `CompareView` で候補国（`candidate`）や未批准署名国（`signatory`）が参加国として集計されているほか、`CountryListView` で `non_party` や `withdrawn` が参加枠組み数に含まれている。
-- `oxlint` 実行時に `docs/` 配下のビルド成果物が走査対象となっており、また一部コンポーネントに `react(set-state-in-effect)` や `react(only-export-components)` の警告が存在する。
-
-#### Change Request (CR) 表
-| CR ID | 対象ファイル | 変更内容 | 期待結果 |
-|:---:|:---|:---|:---|
-| CR-CQ-1 | `src/components/TableView.tsx` | 地域抽出・検索フィルタ・ソート処理のすべてで `getEntity(m.countryCode)` を使用するよう修正。ステータスフィルタのリセット処理を派生値化 | 歴史的主体（SUN, DDR, CSK）のテーブル一覧正常表示 & `set-state-in-effect` 警告解消 |
-| CR-CQ-2 | `src/components/CompareView.tsx` | 比較対象を正式構成員（`member`, `party`, `participating_state`）に限定（候補国・署名国を含む切替オプション追加）、主体取得に `getEntity` を適用、二重 state を廃止 | `Agent.md` 第9項との整合性確保 & `set-state-in-effect` 警告解消 |
-| CR-CQ-3 | `src/components/CountryListView.tsx` | 各国の参加枠組み数集計から `non_party`, `unsigned`, `withdrawn` を除外 | 国一覧カードの参加枠組み数バッジの正確化 |
-| CR-CQ-4 | `src/components/FrameworkView.tsx`<br>`src/components/CountryProfileModal.tsx` | タイムラインの `candidateStartYear` に `negotiationsApproved` を追加。枠組みヘッダーに `frameworkType` バッジを表示。モーダルに背景クリック・`Escape` キー閉鎖を追加 | Schema 2.0 メタデータのUI反映およびモーダル操作性の向上 |
-| CR-CQ-5 | `package.json`, `src/App.tsx`, `vite.config.ts` | `"lint": "oxlint src"` への変更、ルーティング関数の `src/utils/routing.ts` 分離、ビルド時のチャンク分割設定 | `oxlint` 警告の解消および 500kB チャンクサイズ警告の解消 |
-
----
-
-### 2-2. 【計画策定済】Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加
+### 2-1. 【計画策定済】Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加
 
 #### 背景・課題
 - 旧ソ連構成国、中央アジア、コーカサス、およびアジア地域における多国間安全保障・経済統合・信頼醸成の主要6枠組み（CIS, EAEU, CICA, GUAM, ECO, CAREC）を新規追加し、既存の CSTO・SCO とあわせてユーラシア地域の国際関係を網羅する。
@@ -52,10 +33,11 @@
 
 ---
 
-## 3. 実装済 Drop一覧（Drop 1 〜 Drop 36）
+## 3. 実装済 Drop一覧（Drop 1 〜 Drop 37）
 
 | Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
 |:---:|:---:|:---|:---|:---|
+| **Drop 37** | 2026-10-18 | **Track [CodeQuality-Refinement]: Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | `TableView.tsx`, `CompareView.tsx`, `CountryListView.tsx`, `FrameworkView.tsx`, `CountryProfileModal.tsx`, `FrameworkCombobox.tsx`, `LanguageContext.tsx`, `routing.ts`, `vite.config.ts`, `package.json` | 歴史的主体（SUN, DDR, CSK）のテーブル一覧・比較画面正常表示、参加枠組み数厳格カウント、Escape/背景閉鎖対応、`oxlint` 警告ゼロ化（1,132件➔0件）、Vite チャンク分割によるバンドル最適化（単一633kB➔vendor 218kB, d3 21kB, app 393kB） |
 | **Drop 36** | 2026-10-18 | **Track [UI-CategoryRedesign]: カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | `src/data/frameworks.ts`, `src/types/index.ts` | 5大カテゴリ表示名の簡潔化（安全保障、経済・通商、地域統合、首脳・戦略対話、国際法・条約）、Quad・Pax Silica・WAICO の「首脳・戦略対話」への再配置（各カテゴリ枠組み数：8, 10, 4, 7, 5） |
 
 | Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
@@ -102,6 +84,7 @@
 
 | Track ID | 構想テーマ | 技術仕様・変更詳細 | 到達成果 | 対応 Drop |
 |:---:|:---|:---|:---|:---:|
+| **Track [CodeQuality-Refinement]** | **Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | - **バグ修正**: `TableView.tsx` の地域抽出・フィルタ・ソート、および `CompareView.tsx` の主体取得に `getEntity(code)` を適用し、歴史的主体（SUN, DDR, CSK）の欠落を是正。<br>- **集計適正化**: `CompareView.tsx` の比較対象および `CountryListView.tsx` の参加枠組み数集計を `member`, `party`, `participating_state` のみに厳格化（`Agent.md` 第9項準拠）。<br>- **UI改善**: `FrameworkView.tsx` のタイムライン計算に `negotiationsApproved` を反映しヘッダーに `frameworkType` バッジを表示。`CountryProfileModal.tsx` に背景クリックおよび `Escape` キー閉鎖を追加。<br>- **静的解析・バンドル最適化**: `package.json` を `"lint": "oxlint src"` に変更しルーティング関数を `routing.ts` に分離（警告 1,132件 ➔ 0件）。`vite.config.ts` で `vendor` (218kB) / `d3` (21kB) / `app` (393kB) に分割（500kB警告解消）。 | コンポーネント間データ整合性確保、静的解析警告ゼロ化、初期ロード効率化 | **Drop 37** |
 | **Track [UI-CategoryRedesign]** | **カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | - `src/data/frameworks.ts` の `CATEGORY_LABELS` を簡潔な5分類（安全保障 / 経済・通商 / 地域統合 / 首脳・戦略対話 / 国際法・条約）へ更新。<br>- `quad`, `pax_silica`, `waico` のカテゴリを `security` から `summit`（首脳・戦略対話）へ再配置。<br>- `src/types/index.ts` の `FrameworkCategory` コメント注記を同期。 | カテゴリフィルターボタンの視認性向上、各カテゴリの枠組み数適正化（8, 10, 4, 7, 5） | **Drop 36** |
 | **Track [IR-RigorousDataModel]** | **国際法・条約実務・国家継承基準のデータモデル刷新 (Schema 2.0)** | - **Phase 1 (Drop 32)**: `EntityType`（主権国家、超国家機関、地域機関、特別実体、歴史的国家）、`HistoricalEntity`（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）、`StateSuccession`、`FrameworkType`、`negotiationsApproved`、`getEntity(code)` を新設。<br>- **Phase 2 (Drop 33)**: ワルシャワ条約機構の歴史的主体移行、EU候補国の多段階マイルストーン分離、G7/G20/パリ協定/Pax Silica の非国家主体種別明示。<br>- **Phase 3 (Drop 34)**: `WorldMap.tsx` での後継国ポリゴン動的フォールバック描画と歴史注記ツールチップ、`TableView.tsx` の主体種別バッジ・交渉合意日表示、`CountryProfileModal.tsx` の国家継承ボックス実装。<br>- **Phase 4 (Drop 35)**: 全34枠組みへの `frameworkType` 設定、冗長フィールド削除、全1,090レコードの自動検証（異常値 0 件）。 | 国際法・国家継承関係を構造化データとして保持・可視化する Schema 2.0 への移行完了 | **Drop 32, 33, 34, 35** |
 | **Track [Perf-TopoJSON]** | **世界地図 TopoJSON データのバンドル内包 & アセット一元化** | - `public/data` および `docs/data` の重複 JSON を廃止し、`src/data/countries-110m.json` に集約。<br>- `WorldMap.tsx` の非同期 fetch を廃止し、モジュールロード時の同期 TopoJSON 変換へ変更。 | アセット重複の解消および地図初期表示時の通信待機時間ゼロ化 | **Drop 31** |

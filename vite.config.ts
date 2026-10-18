@@ -12,5 +12,17 @@ export default defineConfig({
   build: {
     outDir: 'docs',
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/d3') || id.includes('node_modules/topojson') || id.includes('node_modules/world-atlas')) {
+            return 'd3';
+          }
+        },
+      },
+    },
   },
 })

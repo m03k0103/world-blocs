@@ -68,35 +68,33 @@ export const FrameworkCombobox: React.FC<FrameworkComboboxProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 候補リストの変化に応じてハイライト位置をリセット
-  useEffect(() => {
-    if (isOpen) {
-      if (filteredFrameworks.length > 0) {
-        // 現在選択中のアイテムがあればその位置をハイライト
-        const idx = selectedFramework
-          ? filteredFrameworks.findIndex((f) => f.id === selectedFramework.id)
-          : 0;
-        setHighlightedIndex(idx >= 0 ? idx : 0);
-      } else {
-        setHighlightedIndex(-1);
-      }
+  // 候補リスト内の有効なハイライト位置を計算（選択中アイテムまたは先頭）
+  const effectiveHighlightedIndex = useMemo(() => {
+    if (!isOpen || filteredFrameworks.length === 0) return -1;
+    if (highlightedIndex >= 0 && highlightedIndex < filteredFrameworks.length) {
+      return highlightedIndex;
     }
-  }, [isOpen, filteredFrameworks, selectedFramework]);
+    const selectedIdx = selectedFramework
+      ? filteredFrameworks.findIndex((f) => f.id === selectedFramework.id)
+      : -1;
+    return selectedIdx >= 0 ? selectedIdx : 0;
+  }, [isOpen, filteredFrameworks, highlightedIndex, selectedFramework]);
 
   // ハイライトされたアイテムを視界内にスクロール
   useEffect(() => {
-    if (isOpen && listboxRef.current && highlightedIndex >= 0) {
-      const el = listboxRef.current.children[highlightedIndex] as HTMLElement;
+    if (isOpen && listboxRef.current && effectiveHighlightedIndex >= 0) {
+      const el = listboxRef.current.children[effectiveHighlightedIndex] as HTMLElement;
       if (el) {
         el.scrollIntoView({ block: 'nearest' });
       }
     }
-  }, [highlightedIndex, isOpen]);
+  }, [effectiveHighlightedIndex, isOpen]);
 
   const handleOpen = () => {
     if (!isOpen) {
       setIsOpen(true);
       setSearchQuery('');
+      setHighlightedIndex(-1);
       // 入力欄にフォーカス
       setTimeout(() => inputRef.current?.select(), 0);
     }
@@ -133,15 +131,17 @@ export const FrameworkCombobox: React.FC<FrameworkComboboxProps> = ({
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (filteredFrameworks.length === 0) return;
-      setHighlightedIndex((prev) => (prev + 1) % filteredFrameworks.length);
+      const current = effectiveHighlightedIndex >= 0 ? effectiveHighlightedIndex : 0;
+      setHighlightedIndex((current + 1) % filteredFrameworks.length);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (filteredFrameworks.length === 0) return;
-      setHighlightedIndex((prev) => (prev - 1 + filteredFrameworks.length) % filteredFrameworks.length);
+      const current = effectiveHighlightedIndex >= 0 ? effectiveHighlightedIndex : 0;
+      setHighlightedIndex((current - 1 + filteredFrameworks.length) % filteredFrameworks.length);
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if (highlightedIndex >= 0 && highlightedIndex < filteredFrameworks.length) {
-        handleSelectFramework(filteredFrameworks[highlightedIndex]);
+      if (effectiveHighlightedIndex >= 0 && effectiveHighlightedIndex < filteredFrameworks.length) {
+        handleSelectFramework(filteredFrameworks[effectiveHighlightedIndex]);
       } else if (filteredFrameworks.length === 1) {
         handleSelectFramework(filteredFrameworks[0]);
       }
@@ -230,7 +230,7 @@ export const FrameworkCombobox: React.FC<FrameworkComboboxProps> = ({
             ) : (
               filteredFrameworks.map((f, idx) => {
                 const isSelected = selectedFramework?.id === f.id;
-                const isHighlighted = idx === highlightedIndex;
+                const isHighlighted = idx === effectiveHighlightedIndex;
                 const name = language === 'en' ? f.nameEn : f.nameJa;
 
                 return (

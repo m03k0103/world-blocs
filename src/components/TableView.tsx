@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { MembershipRecord, Country, MembershipStatus, EntityType } from '../types';
-import { COUNTRY_BY_ALPHA3, getEntity, HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
+import { getEntity, HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
 import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -61,7 +61,7 @@ export const TableView: React.FC<TableViewProps> = ({
   const regions = useMemo(() => {
     const set = new Set<string>();
     members.forEach((m) => {
-      const c = COUNTRY_BY_ALPHA3[m.countryCode];
+      const c = getEntity(m.countryCode);
       if (c?.region) set.add(c.region);
     });
     return Array.from(set).sort();
@@ -84,18 +84,14 @@ export const TableView: React.FC<TableViewProps> = ({
     });
   }, [members]);
 
-  // 枠組み切り替え等で選択中ステータスが存在しなくなった場合の安全フォールバック
-  useEffect(() => {
-    if (selectedStatus !== 'all' && !availableStatuses.includes(selectedStatus)) {
-      setSelectedStatus('all');
-    }
-  }, [availableStatuses, selectedStatus]);
+  // 枠組み切り替え等で選択中ステータスが存在しない場合の安全な派生ステータス
+  const effectiveStatus = availableStatuses.includes(selectedStatus) ? selectedStatus : 'all';
 
   // フィルタ & ソート
   const filteredMembers = useMemo(() => {
     return members
       .filter((m) => {
-        const c = COUNTRY_BY_ALPHA3[m.countryCode];
+        const c = getEntity(m.countryCode);
         if (!c) return false;
 
         if (search) {
@@ -111,15 +107,15 @@ export const TableView: React.FC<TableViewProps> = ({
           return false;
         }
 
-        if (selectedStatus !== 'all' && m.currentStatus !== selectedStatus) {
+        if (effectiveStatus !== 'all' && m.currentStatus !== effectiveStatus) {
           return false;
         }
 
         return true;
       })
       .sort((a, b) => {
-        const ca = COUNTRY_BY_ALPHA3[a.countryCode];
-        const cb = COUNTRY_BY_ALPHA3[b.countryCode];
+        const ca = getEntity(a.countryCode);
+        const cb = getEntity(b.countryCode);
         if (!ca || !cb) return 0;
 
         let diff = 0;
@@ -137,7 +133,7 @@ export const TableView: React.FC<TableViewProps> = ({
 
         return sortOrder === 'asc' ? diff : -diff;
       });
-  }, [members, search, selectedRegion, selectedStatus, sortField, sortOrder, language]);
+  }, [members, search, selectedRegion, effectiveStatus, sortField, sortOrder, language]);
 
   const handleSort = (field: 'name' | 'year' | 'status') => {
     if (sortField === field) {
@@ -168,7 +164,7 @@ export const TableView: React.FC<TableViewProps> = ({
     const headerRow = headers.map(h => sanitizeCsvCell(h)).join(',');
 
     const rows = filteredMembers.map((m) => {
-      const c = getEntity(m.countryCode) || COUNTRY_BY_ALPHA3[m.countryCode];
+      const c = getEntity(m.countryCode);
       const statusLabel = STATUS_LABELS[m.currentStatus]
         ? (language === 'en' ? STATUS_LABELS[m.currentStatus].labelEn : STATUS_LABELS[m.currentStatus].labelJa)
         : m.currentStatus;
@@ -234,7 +230,7 @@ export const TableView: React.FC<TableViewProps> = ({
 
           {/* ステータスフィルタ（実際に存在する選択肢のみ表示） */}
           <select
-            value={selectedStatus}
+            value={effectiveStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
             className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
           >
@@ -329,7 +325,7 @@ export const TableView: React.FC<TableViewProps> = ({
               </tr>
             ) : (
               filteredMembers.map((m) => {
-                const c = getEntity(m.countryCode) || COUNTRY_BY_ALPHA3[m.countryCode];
+                const c = getEntity(m.countryCode);
                 if (!c) return null;
                 const statusMeta = STATUS_LABELS[m.currentStatus];
                 const historical = HISTORICAL_ENTITY_BY_ALPHA3[m.countryCode];
@@ -357,7 +353,7 @@ export const TableView: React.FC<TableViewProps> = ({
                           {historical && (
                             <div className="text-[10px] text-amber-700 dark:text-amber-400 font-medium">
                               {language === 'ja'
-                                ? `※後継: ${historical.succession.successorCodes.map(code => COUNTRY_BY_ALPHA3[code]?.nameJa || code).join(', ')}`
+                                ? `※後継: ${historical.succession.successorCodes.map(code => getEntity(code)?.nameJa || code).join(', ')}`
                                 : `*Successor: ${historical.succession.successorCodes.join(', ')}`}
                             </div>
                           )}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import type { Country, Framework } from '../types';
 import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
 import { HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
@@ -18,6 +18,18 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
   onSelectFramework,
 }) => {
   const { t, language } = useLanguage();
+
+  // Escapeキー押下でモーダルを閉じる
+  useEffect(() => {
+    if (!country) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [country, onClose]);
 
   const historical = country ? HISTORICAL_ENTITY_BY_ALPHA3[country.alpha3] : undefined;
 
@@ -60,7 +72,10 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
   if (!country) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+    >
       <div
         className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}

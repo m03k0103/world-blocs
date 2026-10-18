@@ -1,4 +1,4 @@
-import type { Framework } from '../types';
+import type { Framework, FrameworkType } from '../types';
 
 export const FRAMEWORKS: Framework[] = [
     {
@@ -2245,6 +2245,14 @@ export const CATEGORY_LABELS: Record<string, { labelJa: string; labelEn: string;
   regional: { labelJa: '地域統合', labelEn: 'Regional Blocs', badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' },
   summit: { labelJa: '首脳・戦略対話', labelEn: 'Summits & Strategic Dialogue', badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
   global_treaty: { labelJa: '国際法・条約', labelEn: 'Global Treaties & Law', badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20' }
+};
+
+export const FRAMEWORK_TYPE_LABELS: Record<FrameworkType, { labelJa: string; labelEn: string; badgeColor: string }> = {
+  treaty: { labelJa: '国際条約', labelEn: 'Treaty', badgeColor: 'bg-indigo-500/30 text-indigo-200 border-indigo-400/30' },
+  international_org: { labelJa: '国際機関', labelEn: 'Intl Org', badgeColor: 'bg-emerald-500/30 text-emerald-200 border-emerald-400/30' },
+  regional_integration: { labelJa: '地域統合体', labelEn: 'Regional Integration', badgeColor: 'bg-cyan-500/30 text-cyan-200 border-cyan-400/30' },
+  summit_forum: { labelJa: '首脳協議', labelEn: 'Summit Forum', badgeColor: 'bg-amber-500/30 text-amber-200 border-amber-400/30' },
+  political_dialogue: { labelJa: '政治対話', labelEn: 'Political Dialogue', badgeColor: 'bg-rose-500/30 text-rose-200 border-rose-400/30' }
 };
 
 export const STATUS_LABELS: Record<string, { labelJa: string; labelEn: string; color: string; hex: string }> = {

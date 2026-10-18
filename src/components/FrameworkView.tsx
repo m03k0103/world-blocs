@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import type { Framework, Country, MembershipStatus } from '../types';
-import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
+import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS, FRAMEWORK_TYPE_LABELS } from '../data/frameworks';
 import { WorldMap } from './WorldMap';
 import type { CountryMapData } from './WorldMap';
 import { TimelineSlider } from './TimelineSlider';
@@ -44,6 +44,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
         const effectiveJoinYear = getEffectiveMembershipYear(m);
         const candidateStartYear =
           extractYear(m.candidate) ||
+          extractYear(m.negotiationsApproved) ||
           extractYear(m.negotiationsStarted) ||
           extractYear(m.applied) ||
           m.candidateYear ||
@@ -142,6 +143,8 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
         getEffectiveMembershipYear(m) ||
         extractYear(m.signed) ||
         extractYear(m.candidate) ||
+        extractYear(m.negotiationsApproved) ||
+        extractYear(m.negotiationsStarted) ||
         extractYear(m.applied) ||
         m.signedYear ||
         m.candidateYear ||
@@ -263,6 +266,11 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/30 text-blue-200 border border-blue-400/30">
                   {CATEGORY_LABELS[selectedFramework.category]?.[language === 'en' ? 'labelEn' : 'labelJa']}
                 </span>
+                {selectedFramework.frameworkType && FRAMEWORK_TYPE_LABELS[selectedFramework.frameworkType] && (
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider border ${FRAMEWORK_TYPE_LABELS[selectedFramework.frameworkType].badgeColor}`}>
+                    {FRAMEWORK_TYPE_LABELS[selectedFramework.frameworkType][language === 'en' ? 'labelEn' : 'labelJa']}
+                  </span>
+                )}
                 <span className="text-blue-300 font-mono text-xs">
                   {t('establishedLabel')}: {selectedFramework.establishedYear}{t('yearSliderSuffix')}
                   {selectedFramework.inForceYear && ` (${t('inForceLabel')}: ${selectedFramework.inForceYear}${t('yearSliderSuffix')})`}

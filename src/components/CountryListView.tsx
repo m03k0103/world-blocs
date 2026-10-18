@@ -23,12 +23,19 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
     return Array.from(set).sort();
   }, []);
 
-  // 各国の参加枠組み数を事前計算
+  // 各国の参加枠組み数を事前計算（正式加盟・条約締約・正式参加のみ集計）
   const frameworkCountByCountry = useMemo(() => {
     const map = new Map<string, number>();
     FRAMEWORKS.forEach((f) => {
       f.members.forEach((m) => {
-        map.set(m.countryCode, (map.get(m.countryCode) || 0) + 1);
+        if (
+          m.status === 'member' ||
+          m.status === 'party' ||
+          m.status === 'participating_state' ||
+          m.status === 'ratified'
+        ) {
+          map.set(m.countryCode, (map.get(m.countryCode) || 0) + 1);
+        }
       });
     });
     return map;

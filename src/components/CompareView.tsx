@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import type { Country } from '../types';
 import { FRAMEWORKS } from '../data/frameworks';
-import { COUNTRY_BY_ALPHA3 } from '../data/countries';
+import { getEntity } from '../data/countries';
+import type { BaseEntity } from '../data/countries';
 import { WorldMap } from './WorldMap';
 import type { CountryMapData } from './WorldMap';
 import { FrameworkCombobox } from './FrameworkCombobox';
@@ -24,45 +25,39 @@ export const CompareView: React.FC<CompareViewProps> = ({
   onCompareChange,
 }) => {
   const { t, language } = useLanguage();
-  const [frameworkAId, setFrameworkAId] = useState<string>(propFrameworkAId || '');
-  const [frameworkBId, setFrameworkBId] = useState<string>(propFrameworkBId || '');
+  const [internalAId, setInternalAId] = useState<string>('');
+  const [internalBId, setInternalBId] = useState<string>('');
   const [filterIntersection, setFilterIntersection] = useState<'all' | 'both' | 'a_only' | 'b_only'>('all');
 
-  // 親から渡された props の変更を反映
-  React.useEffect(() => {
-    setFrameworkAId(propFrameworkAId || '');
-  }, [propFrameworkAId]);
-
-  React.useEffect(() => {
-    setFrameworkBId(propFrameworkBId || '');
-  }, [propFrameworkBId]);
+  const activeAId = propFrameworkAId !== undefined ? propFrameworkAId : internalAId;
+  const activeBId = propFrameworkBId !== undefined ? propFrameworkBId : internalBId;
 
   const handleSelectFrameworkA = (newA: string) => {
-    setFrameworkAId(newA);
-    onCompareChange?.(newA, frameworkBId);
+    setInternalAId(newA);
+    onCompareChange?.(newA, activeBId);
   };
 
   const handleSelectFrameworkB = (newB: string) => {
-    setFrameworkBId(newB);
-    onCompareChange?.(frameworkAId, newB);
+    setInternalBId(newB);
+    onCompareChange?.(activeAId, newB);
   };
 
   const handleSelectPreset = (newA: string, newB: string) => {
-    setFrameworkAId(newA);
-    setFrameworkBId(newB);
+    setInternalAId(newA);
+    setInternalBId(newB);
     onCompareChange?.(newA, newB);
   };
 
   const frameworkA = useMemo(
-    () => (frameworkAId ? FRAMEWORKS.find((f) => f.id === frameworkAId) || null : null),
-    [frameworkAId]
+    () => (activeAId ? FRAMEWORKS.find((f) => f.id === activeAId) || null : null),
+    [activeAId]
   );
   const frameworkB = useMemo(
-    () => (frameworkBId ? FRAMEWORKS.find((f) => f.id === frameworkBId) || null : null),
-    [frameworkBId]
+    () => (activeBId ? FRAMEWORKS.find((f) => f.id === activeBId) || null : null),
+    [activeBId]
   );
 
-  // 有効な参加国コードを取得（批准または正式加盟）
+  // 正式構成員コードを取得（member / party / participating_state / ratified）
   const validMembersA = useMemo(() => {
     if (!frameworkA) return new Set<string>();
     return new Set(
@@ -71,10 +66,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           m.status === 'member' ||
           m.status === 'party' ||
           m.status === 'participating_state' ||
-          m.status === 'signatory' ||
-          m.status === 'candidate' ||
-          m.status === 'ratified' ||
-          m.status === 'signed'
+          m.status === 'ratified'
         )
         .map((m) => m.countryCode)
     );
@@ -88,10 +80,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           m.status === 'member' ||
           m.status === 'party' ||
           m.status === 'participating_state' ||
-          m.status === 'signatory' ||
-          m.status === 'candidate' ||
-          m.status === 'ratified' ||
-          m.status === 'signed'
+          m.status === 'ratified'
         )
         .map((m) => m.countryCode)
     );
@@ -99,16 +88,16 @@ export const CompareView: React.FC<CompareViewProps> = ({
 
   // 重複（積集合）、Aのみ、Bのみの分類
   const comparisonResults = useMemo(() => {
-    const both: Country[] = [];
-    const aOnly: Country[] = [];
-    const bOnly: Country[] = [];
+    const both: BaseEntity[] = [];
+    const aOnly: BaseEntity[] = [];
+    const bOnly: BaseEntity[] = [];
 
     const allCountryCodes = new Set([...validMembersA, ...validMembersB]);
 
     allCountryCodes.forEach((code) => {
       const inA = validMembersA.has(code);
       const inB = validMembersB.has(code);
-      const country = COUNTRY_BY_ALPHA3[code];
+      const country = getEntity(code);
       if (!country) return;
 
       if (inA && inB) {
@@ -177,7 +166,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               key={p.title}
               onClick={() => handleSelectPreset(p.a, p.b)}
               className={`py-2 px-2 rounded-xl border text-center transition-all cursor-pointer ${
-                frameworkAId === p.a && frameworkBId === p.b
+                activeAId === p.a && activeBId === p.b
                   ? 'bg-purple-50 dark:bg-purple-900/30 border-purple-500 text-purple-900 dark:text-purple-200 shadow-sm font-bold'
                   : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 hover:border-purple-300 text-slate-700 dark:text-slate-300 font-semibold'
               }`}
@@ -389,7 +378,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               {comparisonResults.both.map((c) => (
                 <button
                   key={c.alpha3}
-                  onClick={() => onSelectCountry(c)}
+                  onClick={() => onSelectCountry(c as Country)}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-purple-200 dark:border-purple-700 text-xs font-semibold hover:border-purple-500 shadow-xs transition-colors cursor-pointer"
                 >
                   <span>{c.flagEmoji || '🌐'}</span>
@@ -411,7 +400,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               {comparisonResults.aOnly.map((c) => (
                 <button
                   key={c.alpha3}
-                  onClick={() => onSelectCountry(c)}
+                  onClick={() => onSelectCountry(c as Country)}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-700 text-xs font-semibold hover:border-blue-500 shadow-xs transition-colors cursor-pointer"
                 >
                   <span>{c.flagEmoji || '🌐'}</span>
@@ -433,7 +422,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
               {comparisonResults.bOnly.map((c) => (
                 <button
                   key={c.alpha3}
-                  onClick={() => onSelectCountry(c)}
+                  onClick={() => onSelectCountry(c as Country)}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-red-200 dark:border-red-700 text-xs font-semibold hover:border-red-500 shadow-xs transition-colors cursor-pointer"
                 >
                   <span>{c.flagEmoji || '🌐'}</span>
