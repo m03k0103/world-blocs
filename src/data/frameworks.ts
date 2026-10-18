@@ -592,7 +592,7 @@ export const FRAMEWORKS: Framework[] = [
     nameJa: '日米豪印戦略対話（クアッド）',
     nameEn: 'Quadrilateral Security Dialogue',
     acronym: 'Quad',
-    category: 'security',
+    category: 'summit',
     frameworkType: 'summit_forum',
     established: '200705',
     establishedYear: 2007,
@@ -2047,7 +2047,7 @@ export const FRAMEWORKS: Framework[] = [
     nameEn: 'Pax Silica',
     acronym: 'Pax Silica',
     aliases: ['pax-silica', 'silicon-peace'],
-    category: 'security',
+    category: 'summit',
     frameworkType: 'political_dialogue',
     established: '20251212',
     establishedYear: 2025,
@@ -2108,7 +2108,7 @@ export const FRAMEWORKS: Framework[] = [
     nameEn: 'World Artificial Intelligence Cooperation Organization',
     acronym: 'WAICO',
     aliases: ['world-ai-cooperation-organization'],
-    category: 'security',
+    category: 'summit',
     frameworkType: 'international_org',
     established: '20260716',
     establishedYear: 2026,
@@ -2240,11 +2240,11 @@ export const FRAMEWORK_MAP: Record<string, Framework> = Object.fromEntries(
 );
 
 export const CATEGORY_LABELS: Record<string, { labelJa: string; labelEn: string; badgeColor: string }> = {
-  security: { labelJa: '安全保障・同盟', labelEn: 'Security & Defense', badgeColor: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20' },
-  economic: { labelJa: '経済・貿易連携 (FTA)', labelEn: 'Economic & Trade (FTA)', badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' },
-  regional: { labelJa: '地域統合・地域機構', labelEn: 'Regional Integration', badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' },
-  summit: { labelJa: '首脳サミット・多国間協議', labelEn: 'Summits & Multilateral', badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
-  global_treaty: { labelJa: '国際条約・環境・軍縮', labelEn: 'Global Treaties', badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20' }
+  security: { labelJa: '安全保障', labelEn: 'Security & Defense', badgeColor: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20' },
+  economic: { labelJa: '経済・通商', labelEn: 'Economy & Trade', badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' },
+  regional: { labelJa: '地域統合', labelEn: 'Regional Blocs', badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' },
+  summit: { labelJa: '首脳・戦略対話', labelEn: 'Summits & Strategic Dialogue', badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
+  global_treaty: { labelJa: '国際法・条約', labelEn: 'Global Treaties & Law', badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20' }
 };
 
 export const STATUS_LABELS: Record<string, { labelJa: string; labelEn: string; color: string; hex: string }> = {

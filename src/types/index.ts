@@ -1,9 +1,9 @@
 export type FrameworkCategory =
-  | 'security'      // 安全保障・防衛同盟
-  | 'economic'      // 経済・貿易連携 (FTA, 経済共同体)
-  | 'regional'      // 地域統合・地域機構
-  | 'summit'        // 首脳会議・枠組み (G7, G20, BRICS等)
-  | 'global_treaty';// 国際条約 (環境、軍縮、人権等)
+  | 'security'      // 安全保障
+  | 'economic'      // 経済・通商
+  | 'regional'      // 地域統合
+  | 'summit'        // 首脳・戦略対話
+  | 'global_treaty';// 国際法・条約
 
 /**
  * 枠組みの法的・制度的性質 (Schema 2.0)

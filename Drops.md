@@ -1,193 +1,113 @@
 # World Blocs 改善・機能拡充マスタードキュメント (Drops.md)
 
-> 最終更新: 2026-10-17  
-> 開発・改善単位の呼称を **「Drop（ドロップ）」** に統一しています。未着手の将来構想テーマについては、順序が前後・並行する可能性があるため **「Track（トラック）」** として管理し、着手・完了時にその時点の最新連番（Drop）を付与してアーカイブ化します。  
-> 本ドキュメントは、World Blocs（国際枠組み・勢力圏インタラクティブ可視化データベース）の継続的改善ロードマップ、国際法規・公式外交記録に基づくファクトチェック課題、および全実装実績を一元管理するマスタードキュメントです。  
-> 
-> **【運用指針】**
-> 1. **Implementation Plan 作成時**: 新機能開発や Drop 着手時は、`implementation_plan.md` の提示と連動して本ドキュメントに対象 Drop / Track の背景・狙い・技術仕様および進捗ステータス（着手中等）を反映する。
-> 2. **main マージ時**: `main` ブランチへのマージ完了時は、達成された定量数値（枠組み数・レコード数等）、完了ステータス（完了）、および次期構想の差分を反映して本ドキュメントを直ちに最新化する。
-> 3. **共通修正ルールの遵守**: すべてのデータ修正は [`Agent.md`](file:///d:/dev/World/Agent.md) に定義された共通修正ルール（1〜13）に厳格に準拠する。
+> 最終更新: 2026-10-18  
+> 運用規約は [`GLOBAL_RULES.md`](file:///C:/Users/m03k0/.gemini/antigravity/rules/GLOBAL_RULES.md) 第3章7項、および [`Agent.md`](file:///d:/dev/World/Agent.md) に準拠します。  
+> 未着手の将来構想テーマは **「Track（トラック）」** として管理し、着手・完了した個別施策単位にはその時点の最新連番を付与して **「Drop（ドロップ）」** としてアーカイブ化します。
 
 ---
 
-## 1. 開発構想（Tracks ロードマップ）
-
-`Agent.md` の共通修正ルールに基づき、未完了・将来のデータ改修・機能開発を Track として管理・推進します。
+## 1. 今後の改善・開発構想（Tracks ロードマップ）
 
 | Track ID / Drop | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
-| **Drop 32**<br>(Track [IR-RigorousDataModel] Phase 1) | **スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設 (Schema 2.0 基盤)** | **types/index.ts, data/historicalEntities.ts, data/countries.ts**<br>- ① 日付・条約法的性質の厳格型定義（signed, ratified, inForce, joined, accession, negotiationsApproved）<br>- ② 参加主体種別 `EntityType` 新設（主権国家、超国家機関、地域機関、特別実体、歴史的国家）<br>- ③ 歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）および国家継承モデル新設<br>- ④ 統合主体探索ヘルパー（`getEntity`）の配備 | 国際法学・国際関係史基準に完全準拠したスキーマ2.0基盤確立 | **【完了】(Drop 32)** |
-| **Drop 33**<br>(Track [IR-RigorousDataModel] Phase 2) | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7/G20, パリ協定, Pax Silica, NATO**<br>- ワルシャワ条約機構の構成国を歴史的主体（SUN, DDR, CSK）へ正式移行<br>- EU候補国の交渉決定・実質交渉開始の多段階分離（BIH, UKR, MDA等）<br>- EUR, AFU の参加主体種別（supranational, regional_org）明示 | 代表的枠組みにおけるSchema 2.0の実効性実証 | **【完了】(Drop 33)** |
-| **Drop 34**<br>(Track [IR-RigorousDataModel] Phase 3) | **地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | **WorldMap.tsx, TableView.tsx, CountryProfileModal.tsx, TimelineSlider.tsx, utils/date.ts**<br>- 地図描画における歴史的主体（SUN, DDR, CSK, YUG）と現代後継国ポリゴンの動的フォールバック・ハイライト描画<br>- 地図ツールチップでの歴史的主体情報・国家継承注記のリッチ表示<br>- テーブル一覧・詳細モーダルでの参加主体種別バッジ（超国家機関、地域国際機関、特別実体、歴史的国家）新設<br>- 候補国における交渉合意決定日（negotiationsApproved）の表示対応 | 歴史的主体・多段階加盟プロセスの直感的可視化 & Schema 2.0 UI統合完了 | **【完了】(Drop 34)** |
-| **Drop 35**<br>(Track [IR-RigorousDataModel] Phase 4) | **全34枠組みへの展開・データ整合性検証・完全移行** | **frameworks.ts 全34枠組み**<br>- 全枠組みへの法的性質 `frameworkType` 完全設定（treaty, international_org, regional_integration, summit_forum, political_dialogue）<br>- 各枠組みの法的性質と加盟記録フィールド（signed, ratified, inForce, joined, accession）の厳格整合性検証（異常値ゼロ件確認）<br>- 推測日付の完全排除検証 | データベース全34枠組みのSchema 2.0完全移行達成 | **【完了】(Drop 35)** |
-| **Drop 36**<br>(Track [Eurasia-CentralAsia]) | **ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連解体後の多国間安全保障・経済統合・中央アジア地域協力の完全網羅（全34→40枠組み到達） | **【計画策定済】(Drop 36予定)** |
+| **Track [CodeQuality-Refinement]** | **Schema 2.0 連携バグ修正・Lint警告解消・UI/バンドル最適化** | **TableView, CompareView, CountryListView, CountryProfileModal, FrameworkView, vite.config.ts**<br>- `TableView` における歴史的主体（SUN, DDR, CSK）のフィルタ・ソート欠落バグ修正<br>- `CompareView` の比較対象を正式構成員に厳格化 & 二重state排除<br>- `CountryListView` の参加数カウントから `non_party` / `withdrawn` を除外<br>- `CountryProfileModal` の背景クリック・Escキー閉鎖対応、ヘッダーへの `frameworkType` バッジ表示<br>- `oxlint` 警告ゼロ化および Vite ビルド時のチャンク分割 | コンポーネント間のデータ整合性確保、静的解析警告の解消、バンドル分割による初期ロード効率化 | **【計画策定済】** |
+| **Track [Eurasia-CentralAsia]** | **ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連圏・中央アジア地域の安全保障・経済統合・地域協力枠組みの収録（全34→40枠組み） | **【計画策定済】** |
 
 ---
 
-## 2. 今後の Track 詳細計画
+## 2. 各Trackの詳細
 
-### 【完了】Drop 32: Track [IR-RigorousDataModel] Phase 1 - スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設
+### 2-1. 【計画策定済】Track [CodeQuality-Refinement] - Schema 2.0 連携バグ修正・Lint警告解消・UI/バンドル最適化
 
-国際法学・条約実務・国家継承史における事実関係を寸分の曖昧さもなく表現するための**データベーススキーマ全面刷新（Schema 2.0）**の第1段階として、型定義と歴史的主体マスタの基盤を確立する。
+#### 背景・課題
+- コードベース評価により、`TableView` のフィルタ・ソート処理等で `getEntity()` ではなく `COUNTRY_BY_ALPHA3` のみを参照しており、歴史的主体（`SUN`, `DDR`, `CSK`）が一覧表示から除外される不具合が判明。
+- `CompareView` で候補国（`candidate`）や未批准署名国（`signatory`）が参加国として集計されているほか、`CountryListView` で `non_party` や `withdrawn` が参加枠組み数に含まれている。
+- `oxlint` 実行時に `docs/` 配下のビルド成果物が走査対象となっており、また一部コンポーネントに `react(set-state-in-effect)` や `react(only-export-components)` の警告が存在する。
 
-#### 5大コア要件と設計仕様
-1. **日付の意味の明確化**:
-   - `signed`, `ratified`, `inForce`, `accession`, `joined` を厳格分離。
-   - 枠組みの法的性質 `FrameworkType`（`'treaty' | 'international_org' | 'regional_integration' | 'summit_forum' | 'political_dialogue'`）を新設。
-2. **国家と国際機関・地域統合体の区別**:
-   - `EntityType`（`'sovereign_state' | 'supranational' | 'regional_org' | 'special_entity' | 'historical_state'`）を新設。
-   - `Country` および `MembershipRecord` に `entityType` を持たせ、主権国家と地域組織（EUR, AFU）を明示分離。
-3. **候補国資格と実際の加盟交渉プロセスの区別**:
-   - `negotiationsApproved`（交渉開始決定）と `negotiationsStarted`（実質交渉・IGC開始）を個別に記録。
-4. **歴史上の国家と現在の国家の区別**:
-   - 歴史的主体（`HistoricalEntity`）および国家継承（`StateSuccession`）の型定義とマスタ新設（`SUN`, `DDR`, `CSK`, `YUG`）。
-5. **公式一次資料至上主義と未確認日付の厳格管理**:
-   - 公式資料で特定できない月日は推測で埋めず、年のみまたは省略を徹底。
+#### Change Request (CR) 表
+| CR ID | 対象ファイル | 変更内容 | 期待結果 |
+|:---:|:---|:---|:---|
+| CR-CQ-1 | `src/components/TableView.tsx` | 地域抽出・検索フィルタ・ソート処理のすべてで `getEntity(m.countryCode)` を使用するよう修正。ステータスフィルタのリセット処理を派生値化 | 歴史的主体（SUN, DDR, CSK）のテーブル一覧正常表示 & `set-state-in-effect` 警告解消 |
+| CR-CQ-2 | `src/components/CompareView.tsx` | 比較対象を正式構成員（`member`, `party`, `participating_state`）に限定（候補国・署名国を含む切替オプション追加）、主体取得に `getEntity` を適用、二重 state を廃止 | `Agent.md` 第9項との整合性確保 & `set-state-in-effect` 警告解消 |
+| CR-CQ-3 | `src/components/CountryListView.tsx` | 各国の参加枠組み数集計から `non_party`, `unsigned`, `withdrawn` を除外 | 国一覧カードの参加枠組み数バッジの正確化 |
+| CR-CQ-4 | `src/components/FrameworkView.tsx`<br>`src/components/CountryProfileModal.tsx` | タイムラインの `candidateStartYear` に `negotiationsApproved` を追加。枠組みヘッダーに `frameworkType` バッジを表示。モーダルに背景クリック・`Escape` キー閉鎖を追加 | Schema 2.0 メタデータのUI反映およびモーダル操作性の向上 |
+| CR-CQ-5 | `package.json`, `src/App.tsx`, `vite.config.ts` | `"lint": "oxlint src"` への変更、ルーティング関数の `src/utils/routing.ts` 分離、ビルド時のチャンク分割設定 | `oxlint` 警告の解消および 500kB チャンクサイズ警告の解消 |
 
 ---
 
-### 【完了】Drop 33: Track [IR-RigorousDataModel] Phase 2 - 代表的枠組みでの先行データモデル検証・移行
-ワルシャワ条約機構（`warsaw_pact`）の歴史的主体（SUN, DDR, CSK）への切り替え、EUの候補国プロセスの多段階分離、G7/G20の地域統合体主体の明示を実施。
+### 2-2. 【計画策定済】Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加
+
+#### 背景・課題
+- 旧ソ連構成国、中央アジア、コーカサス、およびアジア地域における多国間安全保障・経済統合・信頼醸成の主要6枠組み（CIS, EAEU, CICA, GUAM, ECO, CAREC）を新規追加し、既存の CSTO・SCO とあわせてユーラシア地域の国際関係を網羅する。
+
+#### Change Request (CR) 表
+| CR ID | 枠組みID / 名称 | カテゴリ / 法的性質 | 創設・構成国・一次資料仕様 |
+|:---:|:---|:---|:---|
+| CR-EU-1 | `cis`<br>独立国家共同体 (CIS) | `regional` / `international_org` | 1991年12月創設、1993年1月憲章調印。本部：ミンスク。正式加盟9カ国（RUS, BLR, KAZ, KGZ, TJK, UZB, ARM, AZE, MDA）、準加盟1カ国（TKM）、脱退2カ国（GEO, UKR）。出典：cis.minsk.by、外務省 |
+| CR-EU-2 | `eaeu`<br>ユーラシア経済同盟 (EAEU) | `economic` / `regional_integration` | 2014年5月29日調印、2015年1月1日発効。本部：モスクワ。正式加盟5カ国（RUS, BLR, KAZ, ARM, KGZ）、オブザーバー3カ国（MDA, UZB, CUB）。出典：eaeunion.org、外務省 |
+| CR-EU-3 | `cica`<br>アジア信頼醸成措置会議 (CICA) | `security` / `political_dialogue` | 1992年提唱、1999年外相会合、2002年首脳会議。本部：アスタナ。正式加盟28カ国、オブザーバー国（JPN, USA等）。出典：s-cica.org、外務省 |
+| CR-EU-4 | `guam`<br>民主主義と経済発展のための機構-GUAM | `regional` / `international_org` | 1997年10月設立、2001年ヤルタ憲章、2006年国際機関化。本部：キーウ。正式加盟4カ国（GEO, UKR, AZE, MDA）、脱退1カ国（UZB）。出典：guam-organization.org、外務省 |
+| CR-EU-5 | `eco`<br>経済協力機構 (ECO) | `economic` / `international_org` | 1985年設立（原加盟：IRN, PAK, TUR）、1992年拡大。本部：テヘラン。正式加盟10カ国（IRN, PAK, TUR, AFG, AZE, KAZ, KGZ, TJK, TKM, UZB）。出典：eco.int、外務省 |
+| CR-EU-6 | `carec`<br>中央アジア地域経済協力 (CAREC) | `economic` / `political_dialogue` | 1997年創設（ADB主導）。事務局：マニラ（ADB内）。参加11カ国（AFG, AZE, GEO, KAZ, KGZ, MNG, PAK, CHN, TJK, TKM, UZB）。出典：carecprogram.org、ADB |
 
 ---
 
-### 【完了】Drop 34: Track [IR-RigorousDataModel] Phase 3 - 地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応
-`WorldMap.tsx` における歴史的主体の後継国ポリゴンマッピング描画・ツールチップ表示、`TableView.tsx` における主体種別バッジおよび交渉プロセスの詳細可視化、`CountryProfileModal.tsx` における国家継承解説ボックスを実装。
+## 3. 実装済 Drop一覧（Drop 1 〜 Drop 36）
 
----
-
-### 【完了】Drop 35: Track [IR-RigorousDataModel] Phase 4 - 全34枠組みへの展開・データ整合性検証・完全移行
-全34枠組みへの `frameworkType`（法的性質）の完全設定、およびデータモデル整合性の総点検・完全移行。条約型（treaty: 12）と非条約型（summit_forum: 5, political_dialogue: 6, international_org: 6, regional_integration: 5）の日付イベント（signed, ratified, inForce, joined, accession）の厳格適正化と推測日付排除を完遂。全1090メンバーレコードの整合性異常値ゼロ件を確認。
-
----
-
-### 【計画策定済】Drop 36: Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6大重要枠組みの新規追加（CIS, EAEU, CICA, GUAM, ECO, CAREC）
-
-旧ソ連構成国、中央アジア、コーカサス、およびアジア全域にまたがる安全保障・経済統合・信頼醸成の6大重要国際枠組み（CIS, EAEU, CICA, GUAM, ECO, CAREC）を新規追加し、既存の CSTO や SCO と合わせたユーラシア国際関係の完全可視化を実現する。
-
-
-#### 対象枠組み一覧と設計仕様
-
-1. **独立国家共同体（CIS: Commonwealth of Independent States）**
-   - **ID**: `cis` / **カテゴリ**: `regional` (地域統合・地域機構)
-   - **創設**: 1991年12月8日（ベロヴェーシ合意）、1991年12月21日（アルマ・アタ宣言）、1993年1月22日（CIS憲章調印）
-   - **本部/事務局**: ミンスク（ベラルーシ）
-   - **構成国**: 正式加盟国9カ国（RUS, BLR, KAZ, KGZ, TJK, UZB, ARM, AZE, MDA）、準加盟国1カ国（TKM）、脱退国2カ国（GEO［2009年脱退］, UKR［2018年脱退通告］）
-   - **一次資料**: CIS執行委員会公式ポータル（cis.minsk.by）、日本外務省資料
-
-2. **ユーラシア経済同盟（EAEU: Eurasian Economic Union）**
-   - **ID**: `eaeu` / **カテゴリ**: `economic` (経済・貿易連携)
-   - **創設**: 2014年5月29日調印、2015年1月1日発効
-   - **本部/事務局**: モスクワ（ロシア）
-   - **構成国**: 正式加盟国5カ国（RUS, BLR, KAZ, ARM, KGZ）、オブザーバー国3カ国（MDA, UZB, CUB）
-   - **一次資料**: ユーラシア経済委員会（EEC）公式サイト（eaeunion.org）、日本外務省資料
-
-3. **アジア信頼醸成措置会議（CICA: Conference on Interaction and Confidence-Building Measures in Asia）**
-   - **ID**: `cica` / **カテゴリ**: `security` (安全保障・多国間協議)
-   - **提唱/創設**: 1992年（ナザルバエフ大統領提唱）、1999年第1回外相会合（アルマティ宣言）、2002年第1回首脳会議
-   - **本部/事務局**: アスタナ（カザフスタン）
-   - **構成国**: 正式加盟28カ国（CHN, RUS, IND, PAK, KAZ, TUR, IRN, ISR, PSE, THA, VNM, KOR, ARE等）、オブザーバー国（JPN, USA, IDN, PHL, MYS, UKR等）
-   - **一次資料**: CICA事務局公式サイト（s-cica.org）、日本外務省資料
-
-4. **民主主義と経済発展のための機構-GUAM（Organization for Democracy and Economic Development - GUAM）**
-   - **ID**: `guam` / **カテゴリ**: `regional` (地域統合・安全保障協力)
-   - **創設**: 1997年10月10日設立、2001年ヤルタ憲章、2006年キエフサミットにて国際機関化
-   - **本部/事務局**: キエフ（ウクライナ）
-   - **構成国**: 正式加盟国4カ国（GEO［ジョージア］, UKR［ウクライナ］, AZE［アゼルバイジャン］, MDA［モルドバ］）、脱退国1カ国（UZB［1999年加入・2005年脱退］）
-   - **一次資料**: GUAM事務局公式サイト（guam-organization.org）、日本外務省資料
-
-5. **経済協力機構（ECO: Economic Cooperation Organization）**
-   - **ID**: `eco` / **カテゴリ**: `economic` (経済・貿易連携)
-   - **創設**: 1985年設立（原加盟3カ国: IRN, PAK, TUR）、1992年拡大（中央アジア・コーカサス7カ国加盟）
-   - **本部/事務局**: テヘラン（イラン）
-   - **構成国**: 正式加盟国10カ国（IRN, PAK, TUR, AFG, AZE, KAZ, KGZ, TJK, TKM, UZB）
-   - **一次資料**: ECO事務局公式サイト（eco.int）、日本外務省資料
-
-6. **中央アジア地域経済協力（CAREC: Central Asia Regional Economic Cooperation）**
-   - **ID**: `carec` / **カテゴリ**: `economic` (経済・開発協力)
-   - **創設**: 1997年（アジア開発銀行 ADB 主導立ち上げ）、2001年包括的協力開始
-   - **事務局**: マニラ（アジア開発銀行 ADB 本部内）
-   - **構成国**: 参加国11カ国（AFG, AZE, GEO, KAZ, KGZ, MNG, PAK, CHN, TJK, TKM, UZB）、開発パートナー機関（ADB, WB, IMF, EBRD, AIIB等）
-   - **一次資料**: CARECプログラム公式サイト（carecprogram.org）、アジア開発銀行（ADB）資料
-
-
----
-
-## 3. アーカイブ：実装済み一覧（Drop 1 〜 Drop 35）
-
-World Blocs プロジェクトの全実装済み Drop および完了した開発構想（Tracks）の詳細記録です。
-
-### 3-1. 完了した開発構想（Tracks 実績）
-
-| Track ID | 構想テーマ | 主な対象枠組み・機能 | 到達成果 / 改善価値 | 対応 Drop |
-|:---:|:---|:---|:---|:---:|
-| **Track [IR-RigorousDataModel] (Phase 4)** | **全34枠組みへの展開・データ整合性検証・完全移行** | **frameworks.ts 全34枠組み**<br>- 全34枠組みへの法的性質 `frameworkType`（treaty: 12, international_org: 6, regional_integration: 5, summit_forum: 5, political_dialogue: 6）の完全設定<br>- 条約型と非条約型（サミット・政治対話）の日付・加盟フィールド（signed, ratified, inForce, joined, accession）の厳格整合性検証<br>- 旧プロパティ（inForceDate）の完全排除 & 全1090メンバーレコードの異常値ゼロ件確認 | データベース全34枠組みのSchema 2.0完全移行達成 | **Drop 35** |
-| **Track [IR-RigorousDataModel] (Phase 3)** | **地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | **WorldMap.tsx, TableView.tsx, CountryProfileModal.tsx, TimelineSlider.tsx, utils/date.ts**<br>- 地図描画における歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）の後継国現代ポリゴン（RUS, DEU, CZE, SVK等）への動的フォールバック・ハイライト連動<br>- 地図ツールチップでの歴史的主体名・国旗絵文字・国家継承注記のリッチ表示<br>- テーブル一覧・詳細モーダルでの参加主体種別バッジ（超国家機関、地域国際機関、特別実体、歴史的国家）新設<br>- 候補国における交渉合意決定日（`negotiationsApproved`）の表示対応<br>- 国詳細モーダルにおける歴史的主体と国家継承解説ボックスの表示 | 歴史的主体・多段階加盟プロセスの直感的可視化 & Schema 2.0 UI統合完了 | **Drop 34** |
-| **Track [IR-RigorousDataModel] (Phase 2)** | **代表的枠組みでの先行データモデル検証・移行** | **ワルシャワ条約機構, EU, G7, G20, パリ協定, Pax Silica, NATO**<br>- ワルシャワ条約機構の構成国を歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`）へ正式移行<br>- EU候補国の交渉決定（`negotiationsApproved`）と実質交渉開始（`negotiationsStarted`）を厳格多段階分離（BIH, UKR, MDA等）<br>- G7, G20, パリ協定, Pax Silica における `EUR`（EU: `supranational`）および `AFU`（AU: `regional_org`）の参加主体種別を明示<br>- NATO, ワルシャワ条約機構, パリ協定, EU, G7/G20, Pax Silica への `frameworkType` 設定 | 代表的枠組みにおけるSchema 2.0の実効性実証・データ整合性確立 | **Drop 33** |
-| **Track [IR-RigorousDataModel] (Phase 1)** | **スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設 (Schema 2.0 基盤)** | **types/index.ts, data/historicalEntities.ts, data/countries.ts**<br>- `EntityType` 新設（主権国家、超国家機関、地域機関、特別実体、歴史的国家）<br>- `StateSuccession` および `HistoricalEntity` 新設（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG` のISO 3166-3規格準拠）<br>- `FrameworkType` 新設（条約、常設機関、地域統合、サミット、政治対話）<br>- `MembershipRecord` への `negotiationsApproved`（交渉合意）と `negotiationsStarted`（実質交渉開始）の分離配備<br>- 統合探索ヘルパー `getEntity(code)` 配備および下位互換性確保 | 国際法学・国際関係史の厳密基準に完全準拠したデータベースアーキテクチャ（Schema 2.0）の基盤確立 | **Drop 32** |
-| **Track [Perf-TopoJSON]** | **世界地図 TopoJSON データの JS バンドル直接内包 & アセット一元化** | **WorldMap, countries-110m.json**<br>- `public/data` および `docs/data` の重複 JSON を全廃し、`src/data/countries-110m.json` の1箇所にマスターを集約<br>- `WorldMap.tsx` における非同期 HTTP fetch を撤廃し、モジュールロード時の同期 TopoJSON 変換（直接 `import`）へ刷新<br>- 地図レンダリング待ち時間・通信オーバーヘッドを完全ゼロ化 | データの完全一元管理 & 地図初期表示の高速化・通信エラーゼロ化 | **Drop 31** |
-| **Track [FactCheck-EuropeAmericas]** | **全枠組み厳密ファクトチェック第5弾：欧州・米州・通商経済 8枠組み（＋全34枠組み公式ソース配備完了）** | **EU, EEA, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, GAFTA（＋OSCE）**<br>- 欧州連合公式（europa.eu）、EFTA事務局、OECD、米通商代表部（USTR）、メルコスール事務局、太平洋同盟、ASEAN事務局、アラブ連盟事務局、OSCE事務局、および日本外務省公式記録のみを情報源として突合<br>- 各枠組み詳細画面ヘッダーに公式一次資料ダイレクトリンク（`sources`）新設<br>- 正式加盟・構成員数（EU: 27, EEA: 30, OECD: 38, USMCA: 3, メルコスール: 5, 太平洋同盟: 4, AFTA: 11, GAFTA: 18, OSCE: 57）および各種除外ルール（候補国、準加盟、オブザーバー、脱退等）の100%厳格確認<br>- **全34枠組みへの公式一次資料リンク（sources）配備 100% 達成** | 欧州・米州・メガ経済圏・通商ブロックの公式記録完全同期 & 全34枠組みファクトチェック完全制覇 | **Drop 30** |
-| **Track [FactCheck-RegionalEurasia]** | **全枠組み厳密ファクトチェック第4弾：中東・ユーラシア・歴史的安全保障 5枠組み** | **ワルシャワ条約機構, SCO, アラブ連盟, AZEC, 平和協議会**<br>- 国連条約局（UNTC）、各組織事務局（SCO事務局、アラブ連盟事務局）、各国政府（経産省・外務省、米国Avalon Project）公式記録および国連安保理決議のみを情報源として突合<br>- 各枠組み詳細画面ヘッダーに公式一次資料ダイレクトリンク（`sources`）新設<br>- 正式加盟・構成員数（ワルシャワ条約機構: 6, SCO: 10, アラブ連盟: 22, AZEC: 11, 平和協議会: 28）および各種除外ルール（脱退国、オブザーバー、対話パートナー、未発効等）の100%厳格確認 | 歴史的安保・中東・ユーラシア・アジア脱炭素枠組みの国際法・公式記録100%完全同期 & データ信頼性確立 | **Drop 29** |
-| **Track [FactCheck-AsiaPacific]** | **全枠組み厳密ファクトチェック第3弾：アジア太平洋・大洋州・先端外交 6枠組み** | **CPTPP, RCEP, APEC, ASEAN, Pax Silica, WAICO**<br>- 寄託者政府（NZ外務貿易省 MFAT、ASEAN事務局）、APEC事務局、および各国政府（日本外務省・経産省、米国国務省、中国外交部）公式記録のみを情報源として突合<br>- 各枠組み詳細画面ヘッダーに公式一次資料ダイレクトリンク（`sources`）新設<br>- 正式加盟・構成員数（CPTPP: 12, RCEP: 15, APEC: 21, ASEAN: 11, Pax Silica: 25, WAICO: 37）および各種除外ルール（申請国・候補国、非署名、パートナー、オブザーバー等）の100%厳格確認 | 条約寄託記録・国際機関・各国政府公式記録との100%完全同期 & アジア太平洋・先端外交枠組みのデータ信頼性確立 | **Drop 28** |
-| **Track [FactCheck-Treaties]** | **全枠組み厳密ファクトチェック第2弾：国連条約・環境・軍縮・司法 6枠組み** | **パリ協定, NPT, TPNW, ICC, UNCLOS, P5**<br>- 国連条約局（UNTC）、国連軍縮部（UNODA）、国際刑事裁判所（ICC締約国会議）、国連海洋法課（DOALOS）、国連安全保障理事会（UNSC）、および日本外務省公式記録のみを情報源として突合<br>- 各枠組み詳細画面ヘッダーに公式一次資料ダイレクトリンク（`sources`）新設<br>- 正式加盟・締約当事者数（パリ協定: 194, NPT: 192, TPNW: 16, ICC: 38, UNCLOS: 40, P5: 5）および各種除外ルール（未批准署名、脱退通告、非締約大国等）の100%厳格確認 | 国際法規・国連条約寄託公式記録との100%完全同期 & グローバル条約枠組みのデータ信頼性確立 | **Drop 27** |
-| **Track [FactCheck-Summits]** | **全枠組み厳密ファクトチェック第1弾：主要首脳サミット・戦略対話 6枠組み** | **G7, G20, AUKUS, Quad, Five Eyes, BRICS**<br>- 枠組み公式サイト・各国政府（日本外務省、米国国務省・国防総省、英国政府、豪州国防省、ロシア政府等）公式記録のみを情報源として突合<br>- 各枠組み詳細画面ヘッダーに公式一次資料ダイレクトリンク（`sources`）新設<br>- 正式加盟・構成員数（G7: 8, G20: 21, AUKUS: 3, Quad: 4, Five Eyes: 5, BRICS: 10）および各種パートナー・候補除外ルールの100%厳格確認 | 政府・枠組み公式一次資料との完全同期 & 首脳外交・戦略的枠組みのデータ信頼性最大化 | **Drop 26** |
-| **Track [Security-CSTO]** | **CSTO アルメニア参加凍結注記 & 議会会議オブザーバー（AFG/SRB）追加** | **CSTO (`csto`), sources**<br>- アルメニア（2024年2月参加凍結表明・正式加盟維持）の注記精緻化<br>- CSTO議会会議オブザーバーとしてアフガニスタン（`AFG`）を新設、セルビア（`SRB`）の注記整合<br>- 日本外務省一次資料リンク（地域枠組み・CSTO）の配備 | 外務省公式資料との100%完全整合 & 安全保障同盟の最新情勢・議会オブザーバー網羅 | **Drop 25** |
-| **Track [Data-Integrity]** | **最新正式加盟・メンバー数の厳格カウントルール適用 & Agent.md 反映** | **FrameworkView, Agent.md (第13条新設)**<br>- 枠組みヘッダー右上の「参加国・地域」カードにおいて、候補国・オブザーバー・対話パートナー・脱退国等を完全除外<br>- 最新（現行）の正式加盟・メンバー（member, party, participating_state, ratified）の数を全34枠組みで厳格表示（NATOなら32カ国、EUなら27カ国、BRICSなら10カ国等）<br>- Agent.md 第3章に第13条として参加国数カウント規範を明文化 | 枠組み説明文や各機関の公式発表との加盟国数100%完全一致 & プラットフォーム信頼性の向上 | **Drop 24** |
-| **Track [Peace-Board]** | **平和協議会（Board of Peace）の新規追加** | **平和協議会 (`board_of_peace`), countries**<br>- 2026年最新の国際機関「平和協議会（Board of Peace / 平和評議会）」を新設（第34番目の枠組み）<br>- 米国、中東湾岸、イスラエル、中南米、東欧、中央アジア、東南アジアなど全28カ国・地域を完全マッピング<br>- コソボ（`XKX`）国マスタ新設 & 地図脱落防止UI連携<br>- 平和協議会公式サイト（boardofpeace.org）および国連安保理決議2803号への一次資料リンク配備 | 2026年最新の国際安全保障・ガザ復興統治枠組みの網羅（全34枠組み到達） | **Drop 23** |
-| **Track [Security-Alliances]** | **安全保障枠組みのデータ厳密化 & 一次資料リンク機能新設** | **NATO (`nato`), types, FrameworkView**<br>- 候補国（ジョージア 2008年、ボスニア 2018年）の日付プロパティ補完によるタイムライン再現性向上<br>- ギリシャ（1974〜1980年軍事機構離脱・復帰）、スペイン（1986年国民投票・1999年完全参加）の歴史注記補完<br>- 公式条約寄託者記録（米国国務省）・公式条約本文等への一次資料リンク基盤新設 | 条約寄託記録との完全同期 & 一次情報源への即時到達性向上 | **Drop 22** |
-| **Track [New-Blocs]** | **新興・最先端協力枠組みのデータ是正** | **Pax Silica (`pax_silica`), WAICO (`waico`)**<br>- Pax Silica への EU（`EUR`）追加、オランダ署名年適正化<br>- 非条約宣言における `ratified` 排除<br>- 無関係な国（ポルトガル、カナダ、エストニア）の排除<br>- WAICO 設立署名（20260716）と批准・発効の法的区別 | 米国国務省および中国公式発表との100%完全同期、最先端AI・半導体外交枠組みのデータ完全性確保 | **Drop 14** |
-| **Track [Platform-UI]** | **UI表現・一覧・地図レンダリング・操作性の最適化** | **フロントエンド基盤・可視化・検索セレクタ・ナビゲーション**<br>- 画面トップ Navbar から不要な `IR-DB` バッジおよび検索欄の完全撤廃（Drop 20）<br>- フッターのコピーライト表記を `World Blocs 2026` に適正化（Drop 20）<br>- 枠組み選択ハイブリッドコンボボックス（検索＋選択両立、名称直後アクロニム配置、カテゴリ非表示）（Drop 19）<br>- 枠組みリスト動的ステータスフィルタ & 上部件数サマリーバー表示（Drop 15）<br>- 地図左上への「地域組織」および「地図未表示国」の集約・情報統一・囲み枠撤廃（Drop 16）<br>- 非国家主体（EUR, AFU）および微小国のフローティング表示（Drop 12） | データの可視化精度向上、画面領域の最大活用、33枠組みへの素早い到達、およびクリーンでノイズのないモダンUIの確立 | **Drop 12, 15, 16, 19, 20** |
-| **Track [UI-Legend]** | **凡例カテゴリ・ステータス視認性最適化** | **地図・テーブル凡例基盤・カラーパレット**<br>- `member`（ロイヤルブルー `#2563eb`）、`party`（インディゴ `#4f46e5`）、`participating_state`（ディープスカイ `#0284c7`）の色彩分離<br>- 凡例表示における内部エイリアスキー除外 & インジケーターの視認性向上 | 複雑な法的・制度的ステータス関係の直感的把握向上 & 凡例の重複感完全解消 | **Drop 21** |
-| **Track [Trade-Econ]** | **経済統合・地域協力15枠組みの全面再整理 & 新スキーマ移行** | **CPTPP, RCEP, ASEAN, BRICS, SCO, APEC, アラブ連盟, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, EEA, GAFTA, AZEC（計15枠組み）**<br>- Drop 9 新スキーマ（`*Year` 撤廃・String型化）へ完全移行<br>- メルコスール ベネズエラ `withdrawn` 削除（資格停止のみ）、ボリビア加盟反映<br>- OECD ロシア `status: 'non_party'` 是正（加盟歴なし、2022年加盟交渉終了注記）、タイ 協議開始反映<br>- 非条約フォーラム（BRICS, APEC, AZEC, SCO, ASEAN）の `ratified` 排除<br>- CPTPP 申請国年月日・英国11カ国二国間発効日補完<br>- SCO 面積比率「約6割強（約65%）」是正、USMCA 2026年レビュー注記 | 経済・通商枠組みの国際法・公式発表完全同期 & 全旧プロパティの一掃 | **Drop 17** |
-| **Track [Treaty-Law]** | **条約・国際法枠組みの厳密ファクトチェック & 新スキーマ移行** | **NPT, ICC, TPNW, UNCLOS, P5（計5枠組み）**<br>- NPT 従属地域（GRL, NCL, PRI）締約国計上除外 & 宗主国notes集約（公式締約国191同期）<br>- NPT / P5 台湾の歴史的代表権移行注記（withdrawn排除・non_party化）<br>- NPT 批准・加入年是正（ポルトガル1977年、スペイン1987年）<br>- TPNW 条約第15条（寄託後90日発効ルール）に基づく発効日厳密再計算<br>- ICC ニジェール批准年是正、アルメニア寄託日と発効日の分離、サヘル3カ国脱退通告（2026年）と発効（2027年）の分離<br>- P5 非条約組織からの `ratified` 完全排除<br>- 全5枠組みの旧プロパティ一掃（データベース全33枠組みで残存ゼロ件到達） | 国際条約データベース（UNTC等）との完全突合・領域適用明確化 & 全DBの完全スキーマ統一 | **Drop 18** |
-
----
-
-### 3-2. Drop 1 〜 Drop 35 到達成果サマリー
-
-| Drop ID | 完了日 | 施策名 | 主な成果・変更ファイル | 到達成果 / 改善価値 |
+| Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
 |:---:|:---:|:---|:---|:---|
-| **Drop 1** | 2026-10-03 | **プロジェクト初期化 & 国際関係データベース（IR-DB）構築** | Vite, React 19, TypeScript, Tailwind CSS, Lucide アイコンによる SPA 基盤構築。初期枠組み（NATO, EU, G7, G20, ASEAN, BRICS, SCO, ワルシャワ条約機構）の実装。 | 国際関係・勢力圏インタラクティブ可視化プラットフォームの基礎確立 |
-| **Drop 2** | 2026-10-03 | **GitHub Pages 公開設定 & ローカル実行環境整備** | `vite.config.ts` の `outDir: 'docs'` 設定、GitHub Pages デプロイパイプライン構築、Windows 用起動・停止バッチ（`start.bat`, `stop.bat`）整備、プロジェクト名を `world-blocs` に統一。 | 本番デプロイパイプライン及びローカル開発環境の確立 |
-| **Drop 3** | 2026-10-04 | **重要国際枠組み拡充 & 直接URLルーティング（404 Redirect）実装** | 国際刑事裁判所（ICC）、アジア太平洋経済協力（APEC）、アラブ連盟、国連海洋法条約（UNCLOS）、国連安保理常任理事国（P5）を追加。GitHub Pages SPA 用 404 リダイレクト（`/EU`, `/NATO` 等）実装。 | 主要司法・海洋・安全保障枠組みの網羅 & SPA ディープリンク対応 |
-| **Drop 4** | 2026-10-04 | **経済協力・地域貿易枠組み拡充 & 比較プリセット整備** | 経済協力開発機構（OECD）、USMCA、メルコスール、太平洋同盟、AFTA、EEA、GAFTA を追加。比較ビュー（CompareView）に OECD × BRICS, EU × EEA などのプリセット拡充。 | 経済・通商枠組みの比較分析基盤の確立 |
-| **Drop 5** | 2026-10-05 | **タイムライン表示・ステータス優先順位の適正化** | タイムラインスライダーにおいて、候補国・オブザーバーが申請年（appliedYear）以前に表示される不具合を修正。ステータス優先順位（member > signatory > candidate > observer）の厳格化。 | 歴史的タイムラインスライダーの時系列再現精度の向上 |
-| **Drop 6** | 2026-10-05 | **UI 日英バイリンガルローカライズ & 言語切替機能実装** | `LanguageContext` の新設、全UIコンポーネント（ヘッダー、マップ凡例、テーブル、モーダル、比較画面）の日英二言語対応、デフォルト言語を日本語（JA）に固定。 | 国際標準の二言語UI対応の実現 |
-| **Drop 7** | 2026-10-11 | **セキュリティ強化 & SPA ルーティング・ベースパス完全修正** | CSV Formula Injection（DDE攻撃）防止サニタイズ実装、厳格な Content Security Policy (CSP) メタタグ配備、Blob URL メモリリーク防止、GitHub Pages ディープリンク（`/world-blocs/compare/...`）での 404 アセット消失を解決（base path: `/world-blocs/` 設定）。 | 本番セキュリティ基準準拠 & ディープリンク完全動作保証 |
-| **Drop 8** | 2026-10-11 | **先端枠組み比較（WAICO × Pax Silica）& ユニークURL ルーティング実装** | 最先端AI・半導体外交枠組み「WAICO」「Pax Silica」の比較プリセット新設、`/compare/:frameworkA/:frameworkB` による個別URL共有機能、比較ビューの初期未選択状態化。 | 先端外交枠組みの比較分析機能 & 状態保持URL共有 |
-| **Drop 9** | 2026-10-12 | **加盟国日付スキーマの Year サフィックス撤廃 & String型化** | `ratifiedYear` 等の旧数値を廃止し、`signed`, `ratified`, `accession`, `inForce`, `joined`, `firstParticipated`, `declarationSigned`, `applied`, `candidate`, `negotiationsStarted`, `suspended`, `withdrawalNotified`, `withdrawn` へ完全移行。共通日付ユーティリティ（`src/utils/date.ts`）新設。 | 法的イベントと日付の厳密分離 & 年・年月・年月日の柔軟な日付パース基盤確立 |
-| **Drop 10** | 2026-10-12 | **プロジェクト共通修正ルールの策定 & `Agent.md` への反映** | 機械的置換の禁止、一次資料・寄託者記録重視、条約締約国と適用領域の区別、脱退通告と脱退発効の分離、公式候補国資格の限定、推測日付排除など全12条（後に追加され全13条）の共通修正ルールを確立。 | データ品質ガード & AIエージェント行動規範の恒久化 |
-| **Drop 11** | 2026-10-12 | **安全保障・首脳外交 10枠組みの公式記録に基づく再整理 & 厳密化** | NATO, OSCE, CSTO, ワルシャワ条約機構, EU, G7, G20, AUKUS, Quad, Five Eyes の全加盟国データを条約本文・寄託者記録に基づき完全再整理。NATO 加盟国32カ国・フランス統合軍事機構離脱復帰注記・拡大国 accession 個別特定、G20 への欧州連合（`EUR`）およびアフリカ連合（`AFU`）正式追加、非条約組織からの `ratified` 排除。 | 安全保障・外交枠組みの国際法・寄託記録完全同期 |
-| **Drop 12** | 2026-10-12 | **国際規格 ISO 3166-1 alpha-3 直接統一 & 地図脱落防止UI** | 非公式コード（C630等）を廃止しデータ側で正式ISOコード（PRI等）に統一（Agent.md第13条反映）。地図ポリゴンを持たない地域統合体（EUR, AFU）および低解像度地図で省略される小島嶼国・微小国（SGP, MLT, VAT等）のフローティング描画・モーダル連携を実装。 | 双方向マップ不要の決定論的マッチ & 非国家・島嶼国の完全可視化 |
-| **Drop 13** | 2026-10-12 | **パリ協定（気候変動）の国連公式記録（UNTC）への完全同期** | 国連公式記録（XXVII-7-d）に基づき、全198参加者（194締約当事者［193カ国+EU］、未批准署名国3カ国［IRN, LBY, YEM］、脱退国1カ国［USA: 2026年1月27日脱退発効］、直接加入3カ国［VAT, NIC, SYR］）を個別特定。旧プロパティを完全一掃し `signed`, `ratified`, `accession`, `withdrawn` へ移行。 | 国連公式記録との100%完全一致 & 全締約国194網羅 |
-| **Drop 14** | 2026-10-12 | **Track [New-Blocs]: 新興最先端協力枠組み（Pax Silica & WAICO）のデータ是正** | Pax Silica (`pax_silica`) への EU（`EUR`）追加、オランダ（`NLD`）の二段階参加（2025年非署名参加、2026年正式署名）分離、非署名参加国（台湾 `TWN`）の適正化、無関係な国（ポルトガル、カナダ、エストニア）の完全除外（米国国務省公式署名当事者25+台湾1に完全同期）。WAICO (`waico`) 設立協定調印からの `ratified` 排除、バングラデシュのオブザーバー適正化、旧プロパティ全廃。 | 米国国務省・中国公式発表との100%完全一致 & 最先端外交枠組み是正 |
-| **Drop 15** | 2026-10-12 | **Track [Platform-UI]: リスト表示UI改善（動的ステータスフィルタ & 表示件数の上部配置）** | 枠組みリスト表示（`TableView`）において、全固定選択肢ではなく当該枠組みに実際に存在するステータスのみを抽出してドロップダウンに表示（枠組み切り替え時自動リセット）。「全 XXカ国・地域を表示中」の件数表示をテーブル下部からテーブル上部（ツールバー直下）に明瞭配置。国別一覧（`CountryListView`）にも上部件数バーを配備。 | 絞り込み操作性の劇的向上 & 件数視認性の改善 |
-| **Drop 16** | 2026-10-12 | **Track [Platform-UI]: 地図UI改善（地域組織・非国家参加および地図未表示国の左上集約 & 表示統一）** | 地図コンポーネント（`WorldMap`）において、下部に分散していた「地図未表示の参加国」を「地域組織・非国家参加」と同じ左上位置に集約。表示情報を統一（国旗＋名称＋ステータス）。ISOコードの非表示化、地域・国の囲み枠（ボーダーやチップ背景）を撤廃し、すっきりとした行リストUIへ刷新。 | 地図操作エリアの最大化 & フローティング要素の配置・情報統一 |
-| **Drop 17** | 2026-10-12 | **Track [Trade-Econ]: 経済統合・地域協力15枠組みの全面再整理 & 新スキーマ移行** | CPTPP, RCEP, ASEAN, BRICS, SCO, APEC, アラブ連盟, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, EEA, GAFTA, AZEC（計15枠組み）の全メンバーを Drop 9 新スキーマ（`*Year` 撤廃・String型化）へ完全移行。<br>- メルコスール: ベネズエラ `withdrawn` 削除（資格停止のみ）、ボリビア 2024年7月加盟反映。<br>- OECD: ロシア `status: 'non_party'` 是正（加盟歴なし、2022年加盟交渉終了注記）、タイ 協議開始反映。<br>- CPTPP: アルゼンチン（2026年6月申請、予備協議開始決定）追加、申請国（UKR, IDN, PHL, ARE, KHM）日付特定、コスタリカ 2026年5月実質妥結、英国 11カ国二国間発効日補完、米国 TPP署名・離脱履歴整理。<br>- 非条約フォーラム: BRICS, SCO, APEC, AZEC, ASEAN から不適切な `ratified` を完全排除、東ティモール 2025年正式加盟・AFTA注記反映。<br>- SCO: 面積比率「ユーラシア大陸の面積の約6割強（約65%）」是正。<br>- USMCA: 2026年7月1日第1回共同レビューにおける米国の更新不同意表明注記。 | 経済・通商枠組みの国際法・公式発表完全同期 & 全旧プロパティ一掃 |
-| **Drop 18** | 2026-10-12 | **Track [Treaty-Law]: 国際条約・国際法5枠組みの厳密ファクトチェック & 全スキーマ移行完了** | NPT, TPNW, ICC, UNCLOS, P5（計5枠組み）の全メンバーを Drop 9 新日付スキーマへ完全移行。<br>- NPT: 従属地域（GRL, NCL, PRI）除外による公式締約国数191整合、台湾 `status: 'non_party'` 是正、ポルトガル 1977年加入日是正。<br>- TPNW: 第15条（90日ルール）発効日再計算（CHL, PER, IDN, PHL）、発効前批准国（AUT, NZL, VAT等）の `20210122` 統一。<br>- ICC: ニジェール批准年是正（2002年）、アルメニア寄託日と発効日の分離、サヘル3カ国脱退通告（2026年）と発効（2027年）の分離（`withdrawalNotified: '202606'`）、署名撤回国の通告日記録。<br>- P5: 非条約組織からの `ratified` 完全排除、国連憲章発効（1945年）および中国代表権移行（1971年）の正確な記録。<br>- UNCLOS: 全48構成員の完全新スキーマ移行。<br>- **全33枠組み走査により旧 Year プロパティの完全一掃（残存ゼロ件）を達成**。 | 国際法・寄託者記録との完全同期 & データベース全33枠組みの旧 Year プロパティ一掃（残存ゼロ件到達） |
-| **Drop 19** | 2026-10-13 | **Track [Platform-UI]: 枠組み選択コンボボックス（検索＋選択ハイブリッドUI）実装** | 従来の `<select>` ドロップダウンを、インクリメンタル検索と一覧選択をシームレスに両立するカスタム `FrameworkCombobox` へ刷新。<br>- `FrameworkView` および `CompareView`（枠組みA・B）へ適用。<br>- 日本語名（または英語名）の直後にアクロニムを表示（例: `北大西洋条約機構 (NATO)`）。<br>- カテゴリ名バッジの非表示化によるフラットで見やすいUI。<br>- キーボード操作（↑/↓/Enter/Esc）および外部クリック自動クローズ対応。<br>- 日英完全ローカライズ、ワンクリッククリアボタン内蔵。 | 33枠組みへの素早い到達 & 直感的な探索・比較UXの飛躍的向上 |
-| **Drop 20** | 2026-10-13 | **Track [Platform-UI]: トップヘッダー・フッターの表示スリム化** | `Navbar` およびフッターの不要要素を完全撤廃し、画面をクリーン化。<br>- `Navbar`: タイトル横の `IR-DB` バッジを削除（シンプルに `World Blocs` のみ表示）。<br>- `Navbar`: Drop 19 コンボボックス実装で冗長となった画面トップのグローバル検索欄および検索結果ポップアップを完全削除。ナビゲーションと日英切替を整理。<br>- フッター: `translations.ts`（日英）の著作権表記を `World Blocs (IR-DB) © 2026` から `World Blocs 2026`（「IR-DB」および不要な「©」記号を削除）へ適正化。 | ヘッダー領域の整理・ノイズ削減 & クリーンでモダンなブランド統一UIの確立 |
-| **Drop 21** | 2026-10-13 | **Track [UI-Legend]: 凡例カテゴリ・ステータス視認性最適化** | 主要構成員ステータス（member, party, participating_state）の色彩分離および凡例表示の視認性最適化。<br>- `member`（ロイヤルブルー `#2563eb`）、`party`（インディゴ `#4f46e5`）、`participating_state`（ディープスカイブルー `#0284c7`）の色彩分離。<br>- `WorldMap.tsx` における通常描画色・ホバー色の完全連動。<br>- `FrameworkView.tsx` の凡例表示から後方互換用エイリアスキー（ratified, signed, non-party）を完全除外。<br>- インジケーター（色ポチ）への微細リング枠付与による視認性向上。 | 複雑な法的・制度的ステータス関係の直感的把握向上 & 凡例の重複感完全解消 |
-| **Drop 22** | 2026-10-13 | **Track [Security-Alliances]: NATO データ精度向上 & 一次資料リンク機能新設** | NATO（北大西洋条約機構）のファクトチェックに基づくデータ精度向上および公式一次資料リンク基盤の実装。<br>- ジョージア（`candidate: '2008'`）、ボスニア・ヘルツェゴビナ（`candidate: '2018'`）の日付補完により、タイムラインでの時系列シミュレーション精度向上。<br>- ギリシャ（1974〜1980年軍事機構離脱・復帰）、スペイン（1986年国民投票・1999年完全参加）の歴史注記補完。<br>- `Framework` 型に `sources` を新設し、米国国務省（条約寄託者記録）およびNATO公式加盟国・条約本文へのダイレクトリンクUIを配備。 | 条約寄託者記録との完全同期 & 一次情報源への即時アクセシビリティ確立 |
-| **Drop 23** | 2026-10-14 | **Track [Peace-Board]: 平和協議会（Board of Peace）の新規追加** | 2026年最新の国際機関「平和協議会（Board of Peace / BOP / 平和評議会）」を新規追加（第34番目の枠組み）。<br>- 米国、中東湾岸、イスラエル、中南米、東欧、中央アジア、東南アジアなど全28カ国・地域を完全マッピング。<br>- コソボ（`XKX`）国マスタ新設 & 地図脱落防止UI連携。<br>- 平和協議会公式サイト（boardofpeace.org）および国連安保理決議2803号への一次資料リンク配備。 | 2026年最新の国際安全保障・ガザ復興統治枠組みの網羅（全34枠組み到達） |
-| **Drop 24** | 2026-10-14 | **Track [Data-Integrity]: 最新正式加盟・メンバー数の厳格カウントルール適用 & Agent.md 反映** | 枠組み詳細画面ヘッダー右上の「参加国・地域」カードにおいて、候補国・オブザーバー・対話パートナー・脱退国等の非正式メンバーを除外し、最新（現行）の正式加盟・メンバー（member, party, participating_state, ratified）の数を全34枠組みで厳格表示（NATO: 35→32、EU: 37→27、G7: 9→8、AUKUS: 4→3、BRICS: 23→10、SCO: 17→10、パリ協定: 198→194等）。<br>- スライダー過去年選択時は当時の正式加盟数を補助表示。<br>- `Agent.md` 第3章に第13条として参加国数カウント規範を新設。 | 枠組み説明文や各機関の公式発表との加盟国数100%完全一致 & プラットフォーム信頼性の向上 |
-| **Drop 25** | 2026-10-14 | **Track [Security-CSTO]: CSTO アルメニア参加凍結注記 & 議会会議オブザーバー（AFG/SRB）追加** | 日本外務省公式資料「中央アジア関連の主な地域枠組み（集団安全保障条約機構等）」に基づき、集団安全保障条約機構（CSTO）のデータを精緻化。<br>- アルメニア（`ARM`）の2024年2月参加凍結（活動・拠出停止）の注記補完（正式加盟扱い維持）。<br>- CSTO議会会議オブザーバーとしてアフガニスタン（`AFG`）を新規登録（2013年〜）、セルビア（`SRB`）の注記を整合。<br>- 日本外務省の公式解説ページを一次資料リンク（`sources`）に配備。 | 外務省公式資料との100%完全整合 & 安全保障同盟の最新情勢・議会オブザーバー網羅（正式加盟6カ国厳格維持） |
-| **Drop 26** | 2026-10-15 | **Track [FactCheck-Summits]: 全枠組み厳密ファクトチェック第1弾（主要首脳サミット・戦略対話 6枠組み）** | G7, G20, AUKUS, Quad, Five Eyes, BRICS の全6枠組みについて、枠組み公式サイト・各国政府（日本外務省、米国国務省・国防総省、英国政府、豪州国防省、ロシア政府等）公式記録のみに基づく厳密ファクトチェックを完遂。<br>- 各枠組みに公式一次資料ダイレクトリンク（`sources`）新設。<br>- 最新正式構成員数（G7: 8, G20: 21, AUKUS: 3, Quad: 4, Five Eyes: 5, BRICS: 10）およびパートナー・候補国の除外ルールとの100%整合を確認。 | 政府・枠組み公式一次資料との完全同期 & 首脳外交・戦略対話枠組みの信頼性確立 |
-| **Drop 27** | 2026-10-15 | **Track [FactCheck-Treaties]: 全枠組み厳密ファクトチェック第2弾（国連条約・環境・軍縮・司法 6枠組み）** | パリ協定, NPT, TPNW, ICC, UNCLOS, P5 の全6枠組みについて、国連条約局（UNTC）、国連軍縮部（UNODA）、国際刑事裁判所（ICC）、国連海洋法課（DOALOS）、国連安全保障理事会（UNSC）、および日本外務省公式記録のみに基づく厳密ファクトチェックを完遂。<br>- 各枠組みに公式一次資料ダイレクトリンク（`sources`）新設。<br>- 最新正式構成員数（パリ協定: 194, NPT: 192, TPNW: 16, ICC: 38, UNCLOS: 40, P5: 5）および各種除外ルール（未批准署名、脱退通告、非締約大国等）の100%整合を確認。 | 国際法規・国連条約寄託公式記録との100%完全同期 & グローバル条約枠組みの信頼性確立 |
-| **Drop 28** | 2026-10-15 | **Track [FactCheck-AsiaPacific]: 全枠組み厳密ファクトチェック第3弾（アジア太平洋・大洋州・先端外交 6枠組み）** | CPTPP, RCEP, APEC, ASEAN, Pax Silica, WAICO の全6枠組みについて、条約寄託政府（ニュージーランド外務貿易省 MFAT、ASEAN事務局）、APEC事務局、各国政府（日本外務省・経産省、米国国務省、中国外交部）公式記録のみに基づく厳密ファクトチェックを完遂。<br>- 各枠組みに公式一次資料ダイレクトリンク（`sources`）新設。<br>- 最新正式構成員数（CPTPP: 12, RCEP: 15, APEC: 21, ASEAN: 11, Pax Silica: 25, WAICO: 37）および各種除外ルール（申請国・候補国、非署名、パートナー、オブザーバー等）の100%整合を確認。 | 条約寄託記録・国際機関・各国政府公式記録との100%完全同期 & アジア太平洋・先端外交枠組みの信頼性確立 |
-| **Drop 29** | 2026-10-15 | **Track [FactCheck-RegionalEurasia]: 全枠組み厳密ファクトチェック第4弾（中東・ユーラシア・歴史的安全保障 5枠組み）** | ワルシャワ条約機構, SCO, アラブ連盟, AZEC, 平和協議会 の全5枠組みについて、国連条約局（UNTC）、SCO事務局、アラブ連盟事務局、経済産業省、外務省、米国アバロン・プロジェクト公式記録のみに基づく厳密ファクトチェックを完遂。<br>- 各枠組みに公式一次資料ダイレクトリンク（`sources`）新設。<br>- 最新正式構成員数（ワルシャワ条約機構: 6, SCO: 10, アラブ連盟: 22, AZEC: 11, 平和協議会: 28）および各種除外ルール（脱退国、オブザーバー、対話パートナー、未発効等）の100%整合を確認。 | 歴史的安保・中東・ユーラシア・アジア脱炭素枠組みの国際法・公式記録100%完全同期 & データ信頼性確立 |
-| **Drop 30** | 2026-10-15 | **Track [FactCheck-EuropeAmericas]: 全枠組み厳密ファクトチェック第5弾（欧州・米州・通商経済 8枠組み＋全34枠組み制覇）** | EU, EEA, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, GAFTA（＋OSCE）について、欧州連合公式（europa.eu）、EFTA事務局、OECD、米通商代表部（USTR）、メルコスール事務局、太平洋同盟、ASEAN事務局、アラブ連盟事務局、OSCE事務局、外務省公式記録のみに基づく厳密ファクトチェックを完遂。<br>- 各枠組みに公式一次資料ダイレクトリンク（`sources`）新設。<br>- 最新正式構成員数（EU: 27, EEA: 30, OECD: 38, USMCA: 3, メルコスール: 5, 太平洋同盟: 4, AFTA: 11, GAFTA: 18, OSCE: 57）および各種除外ルール（候補国、準加盟、オブザーバー、脱退等）の100%整合を確認。<br>- **既存全34枠組みへの公式一次資料リンク（sources）配備 100% 完全達成**。 | 欧州・米州・メガ経済圏・通商ブロックの公式記録完全同期 & 全34枠組みファクトチェック完全制覇 |
-| **Drop 31** | 2026-10-16 | **Track [Perf-TopoJSON]: 世界地図 TopoJSON データの JS バンドル直接内包 & アセット一元化** | `public/data/countries-110m.json` および `docs/data/countries-110m.json` の多重管理を解消し、`src/data/countries-110m.json` の1箇所に集約。<br>- `WorldMap.tsx` における非同期 HTTP fetch を廃止し、TopoJSON 直接 `import` ＆モジュールスコープ同期変換へ刷新。<br>- 地図描画待機時間を完全排除し、初期ロード時の通信失敗リスクを解消。<br>- `scripts/generate_countries.js` の参照パス適正化。 | 地図データ原本の完全一元化 & 地図初期表示の高速化・通信エラー耐性の向上 |
-| **Drop 32** | 2026-10-16 | **Track [IR-RigorousDataModel] (Phase 1): スキーマ・型定義の全面拡張 & 歴史的主体マスタ新設** | 国際関係法学・条約実務に準拠した新データモデル（Schema 2.0）基盤確立。<br>- `EntityType`（主権国家、超国家機関、地域機関、特別実体、歴史的国家）新設。<br>- `StateSuccession` および `HistoricalEntity` 新設（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG` のISO 3166-3規格準拠）。<br>- `FrameworkType` 新設（条約、常設機関、地域統合、サミット、政治対話）。<br>- `MembershipRecord` への `negotiationsApproved`（交渉合意）と `negotiationsStarted`（実質交渉開始）の分離配備。<br>- 統合探索ヘルパー `getEntity(code)` 配備および下位互換性確保。 | 国際法学・国際関係史基準に完全準拠したスキーマ2.0基盤確立 |
-| **Drop 33** | 2026-10-16 | **Track [IR-RigorousDataModel] (Phase 2): 代表的枠組みでの先行データモデル検証・移行** | 代表的6枠組み（ワルシャワ条約機構、EU、G7、G20、パリ協定、Pax Silica）への先行適用・実証。<br>- ワルシャワ条約機構の構成国を歴史的主体（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`）へ正式移行。<br>- EU候補国の交渉決定（`negotiationsApproved`）と実質交渉開始（`negotiationsStarted`）を厳格多段階分離（BIH, UKR, MDA等）。<br>- G7, G20, パリ協定, Pax Silica における `EUR`（EU: `supranational`）および `AFU`（AU: `regional_org`）の参加主体種別を明示。<br>- 代表枠組みへの `frameworkType` 設定および `src/utils/date.ts` の交渉合意対応。 | 代表的枠組みにおけるSchema 2.0の実効性実証・データ整合性確立 |
-| **Drop 34** | 2026-10-17 | **Track [IR-RigorousDataModel] (Phase 3): 地図描画・テーブル一覧・UIコンポーネントの Schema 2.0 対応** | Schema 2.0 に対応したUI可視化レイヤーの全面刷新。<br>- `WorldMap.tsx`: 歴史的主体（SUN, DDR, CSK, YUG）の後継国現代ポリゴン（RUS, DEU, CZE, SVK等）への動的フォールバック・ハイライト描画、ツールチップでの歴史的国名・国旗・国家継承注記のリッチ表示、地域組織バナーの動的生成、小島嶼国リストの適正化。<br>- `TableView.tsx`: 参加主体種別バッジ（超国家機関、地域国際機関、特別実体、歴史的国家）新設、候補国における交渉合意決定日（`negotiationsApproved`）の表示、歴史的主体の継承先解説表示。<br>- `CountryProfileModal.tsx`: 歴史的主体モーダルにおける「歴史的国家」バッジおよび国家継承解説ボックスの表示。 | 歴史的主体・多段階加盟プロセスの直感的可視化 & Schema 2.0 UI統合完了 |
-| **Drop 35** | 2026-10-17 | **Track [IR-RigorousDataModel] (Phase 4): 全34枠組みへの展開・データ整合性検証・完全移行** | 既存全34枠組みへの法的性質（`frameworkType`）の完全設定およびデータ整合性の総点検・完全移行。<br>- 全34枠組みを5つの類型（条約 `treaty`: 12, 常設国際機関 `international_org`: 6, 地域統合体 `regional_integration`: 5, 首脳協議フォーラム `summit_forum`: 5, 政治対話枠組み `political_dialogue`: 6）へ厳格分類・配備。<br>- 条約型と非条約型（サミット・政治対話）の日付・加盟フィールド（signed, ratified, inForce, joined, accession）の法的整合性を総点検。<br>- 旧プロパティ（`inForceDate`）の完全一掃、および全1,090メンバーレコードの異常値ゼロ件を検証。<br>- **Track [IR-RigorousDataModel]（Schema 2.0）の全4フェーズ（Drop 32〜35）完全達成**。 | データベース全34枠組みのSchema 2.0完全移行達成 & 国際法学基準データモデルの完成 |
+| **Drop 36** | 2026-10-18 | **Track [UI-CategoryRedesign]: カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | `src/data/frameworks.ts`, `src/types/index.ts` | 5大カテゴリ表示名の簡潔化（安全保障、経済・通商、地域統合、首脳・戦略対話、国際法・条約）、Quad・Pax Silica・WAICO の「首脳・戦略対話」への再配置（各カテゴリ枠組み数：8, 10, 4, 7, 5） |
 
+| Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
+|:---:|:---:|:---|:---|:---|
+| **Drop 35** | 2026-10-17 | **Track [IR-RigorousDataModel] (Phase 4): 全34枠組みへの展開・データ整合性検証** | `src/data/frameworks.ts` | 全34枠組みへの `frameworkType` 設定完了（treaty:12, international_org:6, regional_integration:5, summit_forum:5, political_dialogue:6）。全1,090レコードの整合性検証（異常値 0 件） |
+| **Drop 34** | 2026-10-17 | **Track [IR-RigorousDataModel] (Phase 3): 地図・テーブル・モーダルの Schema 2.0 対応** | `WorldMap.tsx`, `TableView.tsx`, `CountryProfileModal.tsx` | 歴史的主体（SUN, DDR, CSK, YUG）の後継国ポリゴン描画・ツールチップ表示、参加主体種別バッジ、`negotiationsApproved` 表示、国家継承解説ボックスの実装 |
+| **Drop 33** | 2026-10-16 | **Track [IR-RigorousDataModel] (Phase 2): 代表的枠組みでの先行データモデル移行** | `src/data/frameworks.ts`, `src/utils/date.ts` | ワルシャワ条約機構の歴史的主体（SUN, DDR, CSK）移行、EU候補国の交渉合意・交渉開始の分離、G7/G20/パリ協定/Pax Silica の `EUR`・`AFU` 主体種別明示 |
+| **Drop 32** | 2026-10-16 | **Track [IR-RigorousDataModel] (Phase 1): スキーマ拡張 & 歴史的主体マスタ新設** | `src/types/index.ts`, `src/data/historicalEntities.ts`, `src/data/countries.ts` | `EntityType`、`StateSuccession`、`HistoricalEntity`（ISO 3166-3 準拠）、`FrameworkType`、`negotiationsApproved`、`getEntity(code)` ヘルパーの新設 |
+| **Drop 31** | 2026-10-16 | **Track [Perf-TopoJSON]: 世界地図 TopoJSON データのバンドル内包 & 一元化** | `WorldMap.tsx`, `src/data/countries-110m.json` | `public/data` と `docs/data` の重複 JSON を廃止し `src/data/` に集約。非同期 fetch を同期 import へ変更し初期描画の通信待機を解消 |
+| **Drop 30** | 2026-10-15 | **Track [FactCheck-EuropeAmericas]: ファクトチェック第5弾（欧州・米州・通商 8枠組み）** | `src/data/frameworks.ts` | EU(27), EEA(30), OECD(38), USMCA(3), メルコスール(5), 太平洋同盟(4), AFTA(11), GAFTA(18), OSCE(57) の一次資料突合と `sources` 配備（全34枠組み配備完了） |
+| **Drop 29** | 2026-10-15 | **Track [FactCheck-RegionalEurasia]: ファクトチェック第4弾（中東・ユーラシア 5枠組み）** | `src/data/frameworks.ts` | ワルシャワ条約機構(6), SCO(10), アラブ連盟(22), AZEC(11), 平和協議会(28) の一次資料突合と `sources` 配備 |
+| **Drop 28** | 2026-10-15 | **Track [FactCheck-AsiaPacific]: ファクトチェック第3弾（アジア太平洋・先端外交 6枠組み）** | `src/data/frameworks.ts` | CPTPP(12), RCEP(15), APEC(21), ASEAN(11), Pax Silica(25), WAICO(37) の寄託政府・公式記録突合と `sources` 配備 |
+| **Drop 27** | 2026-10-15 | **Track [FactCheck-Treaties]: ファクトチェック第2弾（国連条約・環境・軍縮・司法 6枠組み）** | `src/data/frameworks.ts` | パリ協定(194), NPT(192), TPNW(16), ICC(38), UNCLOS(40), P5(5) の国連条約局（UNTC）等公式記録突合と `sources` 配備 |
+| **Drop 26** | 2026-10-15 | **Track [FactCheck-Summits]: ファクトチェック第1弾（主要首脳サミット 6枠組み）** | `src/data/frameworks.ts` | G7(8), G20(21), AUKUS(3), Quad(4), Five Eyes(5), BRICS(10) の各国政府公式記録突合と `sources` 配備 |
+| **Drop 25** | 2026-10-14 | **Track [Security-CSTO]: CSTO アルメニア参加凍結注記 & 議会オブザーバー追加** | `src/data/frameworks.ts` | アルメニアの2024年2月活動停止注記追加、CSTO議会会議オブザーバー（AFG, SRB）の記録整備、外務省資料リンク追加 |
+| **Drop 24** | 2026-10-14 | **Track [Data-Integrity]: 正式加盟・メンバー数の厳格カウントルール適用** | `FrameworkView.tsx`, `Agent.md` | ヘッダーの「参加国・地域」数から候補国・オブザーバー・脱退国等を除外し、現行の正式メンバー数のみを集計する仕様へ修正 |
+| **Drop 23** | 2026-10-14 | **Track [Peace-Board]: 平和協議会（Board of Peace）の新規追加** | `src/data/frameworks.ts`, `src/data/countries.ts` | 第34番目の枠組みとして平和協議会（28カ国・地域）を追加、コソボ（`XKX`）マスタ追加 |
+| **Drop 22** | 2026-10-13 | **Track [Security-Alliances]: NATO データ精度向上 & 一次資料リンク機能新設** | `src/data/frameworks.ts`, `src/types/index.ts`, `FrameworkView.tsx` | 候補国（GEO, BIH）日付補完、ギリシャ・スペイン注記補完、`sources` フィールドとリンク表示UIの新設 |
+| **Drop 21** | 2026-10-13 | **Track [UI-Legend]: 凡例カテゴリ・ステータス視認性最適化** | `src/data/frameworks.ts`, `WorldMap.tsx`, `FrameworkView.tsx` | `member` (`#2563eb`)、`party` (`#4f46e5`)、`participating_state` (`#0284c7`) の配色分離と凡例からの互換エイリアス除外 |
+| **Drop 20** | 2026-10-13 | **Track [Platform-UI]: トップヘッダー・フッターの表示スリム化** | `Navbar.tsx`, `src/i18n/translations.ts` | Navbar の不要バッジと重複検索欄を削除、フッター表記を `World Blocs 2026` に変更 |
+| **Drop 19** | 2026-10-13 | **Track [Platform-UI]: 枠組み選択コンボボックス（検索＋選択UI）実装** | `FrameworkCombobox.tsx`, `FrameworkView.tsx`, `CompareView.tsx` | インクリメンタル検索とキーボード操作に対応したカスタムコンボボックスの実装 |
+| **Drop 18** | 2026-10-12 | **Track [Treaty-Law]: 国際条約・国際法5枠組みのファクトチェック & 新スキーマ移行** | `src/data/frameworks.ts` | NPT, TPNW, ICC, UNCLOS, P5 の新日付スキーマ移行完了（全33枠組みから旧 `*Year` プロパティを排除） |
+| **Drop 17** | 2026-10-12 | **Track [Trade-Econ]: 経済統合・地域協力15枠組みの再整理 & 新スキーマ移行** | `src/data/frameworks.ts` | CPTPP, RCEP, ASEAN, BRICS, SCO, APEC, アラブ連盟, OECD, USMCA, メルコスール等の新日付スキーマ移行と事実関係修正 |
+| **Drop 16** | 2026-10-12 | **Track [Platform-UI]: 地図UI改善（地域組織・地図未表示国の左上集約）** | `WorldMap.tsx` | 地図下部にあった小島嶼国リストを左上の地域組織バナー下に統合し、リスト形式へ整理 |
+| **Drop 15** | 2026-10-12 | **Track [Platform-UI]: リスト表示UI改善（動的ステータスフィルタ & 件数上部配置）** | `TableView.tsx`, `CountryListView.tsx` | 当該枠組みに存在するステータスのみを選択肢に表示し、表示件数バーをテーブル上部に配置 |
+| **Drop 14** | 2026-10-12 | **Track [New-Blocs]: 新興協力枠組み（Pax Silica & WAICO）のデータ是正** | `src/data/frameworks.ts` | Pax Silica への `EUR` 追加、オランダ・台湾のステータス整理、WAICO の非条約 `ratified` 排除 |
+| **Drop 13** | 2026-10-12 | **パリ協定（気候変動）の国連公式記録（UNTC）同期** | `src/data/frameworks.ts` | 国連条約局記録に基づき全198参加者（194締約当事者、未批准3、脱退1）の日付・ステータスを整備 |
+| **Drop 12** | 2026-10-12 | **国際規格 ISO 3166-1 alpha-3 統一 & 地図脱落防止UI** | `src/data/countries.ts`, `WorldMap.tsx` | 非公式コード（C630等）を正式ISOコード（PRI等）に統一、地域統合体・微小国のフローティング表示実装 |
+| **Drop 11** | 2026-10-12 | **安全保障・首脳外交 10枠組みの公式記録に基づく再整理** | `src/data/frameworks.ts` | NATO, OSCE, CSTO, ワルシャワ条約機構, EU, G7, G20, AUKUS, Quad, Five Eyes の寄託記録同期、G20 への `EUR`・`AFU` 追加 |
+| **Drop 10** | 2026-10-12 | **プロジェクト共通修正ルールの策定 & `Agent.md` への反映** | `Agent.md` | 一次資料基準、締約国と適用領域の区別、脱退通告と発効の分離、推測日付排除等のデータ編集ルールを定義 |
+| **Drop 9** | 2026-10-12 | **加盟国日付スキーマの Year サフィックス撤廃 & String型化** | `src/types/index.ts`, `src/utils/date.ts` | 数値型 `*Year` を廃止し `yyyy`/`yyyymm`/`yyyymmdd` 文字列型の日付フィールドと日付パース関数を新設 |
+| **Drop 8** | 2026-10-11 | **先端枠組み比較（WAICO × Pax Silica）& ユニークURLルーティング実装** | `App.tsx`, `CompareView.tsx` | `/compare/:frameworkA/:frameworkB` のURL同期および比較プリセットの追加 |
+| **Drop 7** | 2026-10-11 | **セキュリティ強化 & SPA ルーティング・ベースパス修正** | `index.html`, `TableView.tsx`, `vite.config.ts` | CSV Formula Injection 対策サニタイズ、CSPメタタグ設定、GitHub Pages 用 `base: '/world-blocs/'` 設定 |
+| **Drop 6** | 2026-10-05 | **UI 日英バイリンガルローカライズ & 言語切替機能実装** | `LanguageContext.tsx`, `src/i18n/translations.ts` | 全UIコンポーネントの日英二言語切替機能実装（デフォルト言語：日本語） |
+| **Drop 5** | 2026-10-05 | **タイムライン表示・ステータス優先順位の適正化** | `FrameworkView.tsx`, `TimelineSlider.tsx` | 候補国・オブザーバーが申請年以前に表示される不具合を修正し、ステータス優先順位を定義 |
+| **Drop 4** | 2026-10-04 | **経済協力・地域貿易枠組み拡充 & 比較プリセット整備** | `src/data/frameworks.ts`, `CompareView.tsx` | OECD, USMCA, メルコスール, 太平洋同盟, AFTA, EEA, GAFTA の追加と比較プリセット整備 |
+| **Drop 3** | 2026-10-04 | **国際枠組み拡充 & 直接URLルーティング（404 Redirect）実装** | `src/data/frameworks.ts`, `public/404.html` | ICC, APEC, アラブ連盟, UNCLOS, P5 の追加、GitHub Pages SPA 用 404 リダイレクト実装 |
+| **Drop 2** | 2026-10-03 | **GitHub Pages 公開設定 & ローカル実行環境整備** | `vite.config.ts`, `start.bat`, `stop.bat` | `outDir: 'docs'` ビルド設定、起動・停止用バッチファイル整備 |
+| **Drop 1** | 2026-10-03 | **プロジェクト初期化 & 国際関係データベース構築** | `src/` 全般 | Vite + React 19 + TypeScript + Tailwind CSS による SPA 構築、初期8枠組みの実装 |
 
+---
 
+## 4. アーカイブ：実装済み一覧（詳細）
 
-
-
-
-
+| Track ID | 構想テーマ | 技術仕様・変更詳細 | 到達成果 | 対応 Drop |
+|:---:|:---|:---|:---|:---:|
+| **Track [UI-CategoryRedesign]** | **カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | - `src/data/frameworks.ts` の `CATEGORY_LABELS` を簡潔な5分類（安全保障 / 経済・通商 / 地域統合 / 首脳・戦略対話 / 国際法・条約）へ更新。<br>- `quad`, `pax_silica`, `waico` のカテゴリを `security` から `summit`（首脳・戦略対話）へ再配置。<br>- `src/types/index.ts` の `FrameworkCategory` コメント注記を同期。 | カテゴリフィルターボタンの視認性向上、各カテゴリの枠組み数適正化（8, 10, 4, 7, 5） | **Drop 36** |
+| **Track [IR-RigorousDataModel]** | **国際法・条約実務・国家継承基準のデータモデル刷新 (Schema 2.0)** | - **Phase 1 (Drop 32)**: `EntityType`（主権国家、超国家機関、地域機関、特別実体、歴史的国家）、`HistoricalEntity`（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）、`StateSuccession`、`FrameworkType`、`negotiationsApproved`、`getEntity(code)` を新設。<br>- **Phase 2 (Drop 33)**: ワルシャワ条約機構の歴史的主体移行、EU候補国の多段階マイルストーン分離、G7/G20/パリ協定/Pax Silica の非国家主体種別明示。<br>- **Phase 3 (Drop 34)**: `WorldMap.tsx` での後継国ポリゴン動的フォールバック描画と歴史注記ツールチップ、`TableView.tsx` の主体種別バッジ・交渉合意日表示、`CountryProfileModal.tsx` の国家継承ボックス実装。<br>- **Phase 4 (Drop 35)**: 全34枠組みへの `frameworkType` 設定、冗長フィールド削除、全1,090レコードの自動検証（異常値 0 件）。 | 国際法・国家継承関係を構造化データとして保持・可視化する Schema 2.0 への移行完了 | **Drop 32, 33, 34, 35** |
+| **Track [Perf-TopoJSON]** | **世界地図 TopoJSON データのバンドル内包 & アセット一元化** | - `public/data` および `docs/data` の重複 JSON を廃止し、`src/data/countries-110m.json` に集約。<br>- `WorldMap.tsx` の非同期 fetch を廃止し、モジュールロード時の同期 TopoJSON 変換へ変更。 | アセット重複の解消および地図初期表示時の通信待機時間ゼロ化 | **Drop 31** |
+| **Track [FactCheck-All34]** | **全34枠組みの一次資料・寄託者記録に基づくファクトチェック & 公式ソース配備** | - **第1弾 Summits (Drop 26)**: G7, G20, AUKUS, Quad, Five Eyes, BRICS。<br>- **第2弾 Treaties (Drop 27)**: パリ協定, NPT, TPNW, ICC, UNCLOS, P5。<br>- **第3弾 AsiaPacific (Drop 28)**: CPTPP, RCEP, APEC, ASEAN, Pax Silica, WAICO。<br>- **第4弾 RegionalEurasia (Drop 29)**: ワルシャワ条約機構, SCO, アラブ連盟, AZEC, 平和協議会。<br>- **第5弾 EuropeAmericas (Drop 30)**: EU, EEA, OECD, USMCA, メルコスール, 太平洋同盟, AFTA, GAFTA, OSCE。 | 全34枠組みの加盟国数・除外ルールの公式記録突合完了、および全34枠組みへの一次資料リンク（`sources`）配備 | **Drop 26, 27, 28, 29, 30** |
+| **Track [Security-CSTO / Alliances]** | **安全保障枠組みのデータ精緻化 & 一次資料リンク基盤実装** | - NATO の候補国日付・歴史注記補完および `sources` リンクUI実装（Drop 22）。<br>- CSTO のアルメニア活動凍結注記および議会オブザーバー（AFG, SRB）追加（Drop 25）。 | 条約寄託記録・外務省資料との整合性確保 | **Drop 22, 25** |
+| **Track [Data-Integrity]** | **正式加盟・メンバー数の厳格カウントルール適用** | - `FrameworkView.tsx` のヘッダー集計から候補国・オブザーバー・脱退国等を除外し、現行の正式メンバーのみを集計。<br>- `Agent.md` にカウント基準を明文化。 | 公式発表の加盟国数との数値一致（NATO:32, EU:27, BRICS:10, パリ協定:194等） | **Drop 24** |
+| **Track [Peace-Board]** | **平和協議会（Board of Peace）の新規追加** | - 平和協議会（28カ国・地域）のデータ追加、コソボ（`XKX`）国マスタ新設、国連安保理決議2803号リンク配備。 | 収録枠組み数を33から34へ拡充 | **Drop 23** |
+| **Track [Platform-UI / UI-Legend]** | **UI表現・一覧・地図レンダリング・凡例視認性の改善** | - 非国家主体（EUR, AFU）および微小国のフローティング表示（Drop 12）、動的ステータスフィルタ・上部件数表示（Drop 15）、地図左上へのリスト集約（Drop 16）、検索コンボボックス実装（Drop 19）、Navbar・フッターの整理（Drop 20）、凡例カラーの分離（Drop 21）。 | 画面ノイズの削減、ステータス識別性の向上、枠組み検索の操作性改善 | **Drop 12, 15, 16, 19, 20, 21** |
+| **Track [Trade-Econ / Treaty-Law / New-Blocs]** | **既存枠組みの新日付スキーマ移行 & 事実関係修正** | - Pax Silica・WAICO の参加国・ステータス是正（Drop 14）。<br>- 経済・地域協力15枠組みの新日付スキーマ移行（Drop 17）。<br>- 国際条約5枠組みの寄託記録突合・従属地域整理・新日付スキーマ移行（Drop 18）。 | 全枠組みにおける数値型 `*Year` プロパティの廃止と文字列型日付スキーマへの統一 | **Drop 14, 17, 18** |
