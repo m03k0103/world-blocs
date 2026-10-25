@@ -1,6 +1,6 @@
 # World Blocs 改善・機能拡充マスタードキュメント (Drops.md)
 
-> 最終更新: 2026-10-18  
+> 最終更新: 2026-10-25  
 > 運用規約は [`GLOBAL_RULES.md`](file:///C:/Users/m03k0/.gemini/antigravity/rules/GLOBAL_RULES.md) 第3章7項、および [`Agent.md`](file:///d:/dev/World/Agent.md) に準拠します。  
 > 未着手の将来構想テーマは **「Track（トラック）」** として管理し、着手・完了した個別施策単位にはその時点の最新連番を付与して **「Drop（ドロップ）」** としてアーカイブ化します。
 
@@ -33,15 +33,14 @@
 
 ---
 
-## 3. 実装済 Drop一覧（Drop 1 〜 Drop 37）
+## 3. 実装済 Drop一覧（Drop 1 〜 Drop 38）
 
 | Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
 |:---:|:---:|:---|:---|:---|
+| **Drop 38** | 2026-10-25 | **Track [UI-StateVsNonStateParticipants]: 凡例ゼロ件非表示 & 国家・非国家参加主体（State vs Non-State）の分離表示** | `FrameworkView.tsx`, `TableView.tsx`, `entityUtils.tsx`, `translations.ts` | 凡例の0件ステータス完全非表示、EU（EUR）・AU（AFU）等非国家主体の参加国除外、State Participants / Non-State Participants 分離集計・明示、oxlint 警告0件、本番ビルド成功 |
 | **Drop 37** | 2026-10-18 | **Track [CodeQuality-Refinement]: Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | `TableView.tsx`, `CompareView.tsx`, `CountryListView.tsx`, `FrameworkView.tsx`, `CountryProfileModal.tsx`, `FrameworkCombobox.tsx`, `LanguageContext.tsx`, `routing.ts`, `vite.config.ts`, `package.json` | 歴史的主体（SUN, DDR, CSK）のテーブル一覧・比較画面正常表示、参加枠組み数厳格カウント、Escape/背景閉鎖対応、`oxlint` 警告ゼロ化（1,132件➔0件）、Vite チャンク分割によるバンドル最適化（単一633kB➔vendor 218kB, d3 21kB, app 393kB） |
 | **Drop 36** | 2026-10-18 | **Track [UI-CategoryRedesign]: カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | `src/data/frameworks.ts`, `src/types/index.ts` | 5大カテゴリ表示名の簡潔化（安全保障、経済・通商、地域統合、首脳・戦略対話、国際法・条約）、Quad・Pax Silica・WAICO の「首脳・戦略対話」への再配置（各カテゴリ枠組み数：8, 10, 4, 7, 5） |
 
-| Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
-|:---:|:---:|:---|:---|:---|
 | **Drop 35** | 2026-10-17 | **Track [IR-RigorousDataModel] (Phase 4): 全34枠組みへの展開・データ整合性検証** | `src/data/frameworks.ts` | 全34枠組みへの `frameworkType` 設定完了（treaty:12, international_org:6, regional_integration:5, summit_forum:5, political_dialogue:6）。全1,090レコードの整合性検証（異常値 0 件） |
 | **Drop 34** | 2026-10-17 | **Track [IR-RigorousDataModel] (Phase 3): 地図・テーブル・モーダルの Schema 2.0 対応** | `WorldMap.tsx`, `TableView.tsx`, `CountryProfileModal.tsx` | 歴史的主体（SUN, DDR, CSK, YUG）の後継国ポリゴン描画・ツールチップ表示、参加主体種別バッジ、`negotiationsApproved` 表示、国家継承解説ボックスの実装 |
 | **Drop 33** | 2026-10-16 | **Track [IR-RigorousDataModel] (Phase 2): 代表的枠組みでの先行データモデル移行** | `src/data/frameworks.ts`, `src/utils/date.ts` | ワルシャワ条約機構の歴史的主体（SUN, DDR, CSK）移行、EU候補国の交渉合意・交渉開始の分離、G7/G20/パリ協定/Pax Silica の `EUR`・`AFU` 主体種別明示 |
@@ -84,6 +83,7 @@
 
 | Track ID | 構想テーマ | 技術仕様・変更詳細 | 到達成果 | 対応 Drop |
 |:---:|:---|:---|:---|:---:|
+| **Track [UI-StateVsNonStateParticipants]** | **凡例ゼロ件非表示 & 国家・非国家参加主体（State vs Non-State）の分離表示** | - **凡例改善**: 選択年に対象主体が存在しないステータス（count === 0）を凡例から完全除外。<br>- **集計適正化**: EU（EUR）・AU（AFU）等の非国家主体を「参加国」カウントから除外し、主権国家（State Participants）と非国家主体（Non-State Participants）を厳格に分離集計。<br>- **UI明示**: `FrameworkView` ヘッダーおよび凡例バッジ、`TableView` サマリーバーに国家数と非国家主体数・名称（EU, AU）の内訳を表示。<br>- **共通化**: `src/utils/entityUtils.tsx` を新設し主体種別判定・表示短縮ラベルを統一。 | 凡例のノイズ解消、国際法・国際関係実務に即した正確な参加主体内訳の可視化 | **Drop 38** |
 | **Track [CodeQuality-Refinement]** | **Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | - **バグ修正**: `TableView.tsx` の地域抽出・フィルタ・ソート、および `CompareView.tsx` の主体取得に `getEntity(code)` を適用し、歴史的主体（SUN, DDR, CSK）の欠落を是正。<br>- **集計適正化**: `CompareView.tsx` の比較対象および `CountryListView.tsx` の参加枠組み数集計を `member`, `party`, `participating_state` のみに厳格化（`Agent.md` 第9項準拠）。<br>- **UI改善**: `FrameworkView.tsx` のタイムライン計算に `negotiationsApproved` を反映しヘッダーに `frameworkType` バッジを表示。`CountryProfileModal.tsx` に背景クリックおよび `Escape` キー閉鎖を追加。<br>- **静的解析・バンドル最適化**: `package.json` を `"lint": "oxlint src"` に変更しルーティング関数を `routing.ts` に分離（警告 1,132件 ➔ 0件）。`vite.config.ts` で `vendor` (218kB) / `d3` (21kB) / `app` (393kB) に分割（500kB警告解消）。 | コンポーネント間データ整合性確保、静的解析警告ゼロ化、初期ロード効率化 | **Drop 37** |
 | **Track [UI-CategoryRedesign]** | **カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | - `src/data/frameworks.ts` の `CATEGORY_LABELS` を簡潔な5分類（安全保障 / 経済・通商 / 地域統合 / 首脳・戦略対話 / 国際法・条約）へ更新。<br>- `quad`, `pax_silica`, `waico` のカテゴリを `security` から `summit`（首脳・戦略対話）へ再配置。<br>- `src/types/index.ts` の `FrameworkCategory` コメント注記を同期。 | カテゴリフィルターボタンの視認性向上、各カテゴリの枠組み数適正化（8, 10, 4, 7, 5） | **Drop 36** |
 | **Track [IR-RigorousDataModel]** | **国際法・条約実務・国家継承基準のデータモデル刷新 (Schema 2.0)** | - **Phase 1 (Drop 32)**: `EntityType`（主権国家、超国家機関、地域機関、特別実体、歴史的国家）、`HistoricalEntity`（ソ連 `SUN`, 東独 `DDR`, チェコ `CSK`, ユーゴ `YUG`）、`StateSuccession`、`FrameworkType`、`negotiationsApproved`、`getEntity(code)` を新設。<br>- **Phase 2 (Drop 33)**: ワルシャワ条約機構の歴史的主体移行、EU候補国の多段階マイルストーン分離、G7/G20/パリ協定/Pax Silica の非国家主体種別明示。<br>- **Phase 3 (Drop 34)**: `WorldMap.tsx` での後継国ポリゴン動的フォールバック描画と歴史注記ツールチップ、`TableView.tsx` の主体種別バッジ・交渉合意日表示、`CountryProfileModal.tsx` の国家継承ボックス実装。<br>- **Phase 4 (Drop 35)**: 全34枠組みへの `frameworkType` 設定、冗長フィールド削除、全1,090レコードの自動検証（異常値 0 件）。 | 国際法・国家継承関係を構造化データとして保持・可視化する Schema 2.0 への移行完了 | **Drop 32, 33, 34, 35** |

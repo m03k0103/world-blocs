@@ -9,6 +9,7 @@ import { FrameworkCombobox } from './FrameworkCombobox';
 import { Map, Table, Building2, Globe, FileText, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { extractYear, getEffectiveMembershipYear } from '../utils/date';
+import { isNonStateParticipant, isStateParticipant, isFullMemberStatus, getEntityShortLabel } from '../utils/entityUtils';
 
 interface FrameworkViewProps {
   selectedFramework: Framework | null;
@@ -169,20 +170,23 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
   }, [computedMembership]);
 
   // 正式加盟・メンバー（full member / state party / participating state / ratified）判定
-  const isFullMemberStatus = (status: MembershipStatus): boolean => {
-    return status === 'member' || status === 'party' || status === 'participating_state' || status === 'ratified';
-  };
-
-  // 最新（現行）の正式加盟・メンバー数
-  const latestMemberCount = useMemo(() => {
-    if (!selectedFramework) return 0;
-    return selectedFramework.members.filter((m) => isFullMemberStatus(m.status)).length;
+  // 最新（現行）の正式加盟・メンバー（国家と非国家主体を分離集計）
+  const latestMembers = useMemo(() => {
+    if (!selectedFramework) return { states: [], nonStates: [] };
+    const fullMembers = selectedFramework.members.filter((m) => isFullMemberStatus(m.status));
+    const states = fullMembers.filter((m) => isStateParticipant(m.countryCode));
+    const nonStates = fullMembers.filter((m) => isNonStateParticipant(m.countryCode));
+    return { states, nonStates };
   }, [selectedFramework]);
 
-  // 選択年における正式加盟・メンバー数
-  const activeMemberCount = useMemo(() => {
-    return computedMembership.filter((m) => isFullMemberStatus(m.currentStatus)).length;
+  // 選択年における正式加盟・メンバー（国家と非国家主体を分離集計）
+  const activeMembers = useMemo(() => {
+    const fullMembers = computedMembership.filter((m) => isFullMemberStatus(m.currentStatus));
+    const states = fullMembers.filter((m) => isStateParticipant(m.countryCode));
+    const nonStates = fullMembers.filter((m) => isNonStateParticipant(m.countryCode));
+    return { states, nonStates };
   }, [computedMembership]);
+
 
   // マイルストーンの生成
   const milestones = useMemo(() => {
@@ -315,18 +319,38 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
             </div>
 
             {/* 右側サマリーバッジ */}
-            <div className="shrink-0 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex lg:flex-col gap-4 justify-around">
+            <div className="shrink-0 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex lg:flex-col gap-4 justify-around min-w-[140px]">
               <div className="text-center">
-                <div className="text-xs text-blue-200 font-medium">{t('membersCount')}</div>
-                <div className="text-3xl font-black font-mono mt-0.5 text-white">
-                  {latestMemberCount}
-                  <span className="text-sm font-normal text-blue-200 ml-1">{t('countriesSuffix')}</span>
+                <div className="text-xs text-blue-200 font-medium">
+                  {latestMembers.nonStates.length > 0 ? t('stateParticipants') : t('membersCount')}
                 </div>
+                <div className="text-3xl font-black font-mono mt-0.5 text-white">
+                  {latestMembers.states.length}
+                  <span className="text-sm font-normal text-blue-200 ml-1">
+                    {latestMembers.nonStates.length > 0 ? t('stateParticipantsSuffix') : t('countriesSuffix')}
+                  </span>
+                </div>
+                {latestMembers.nonStates.length > 0 && (
+                  <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/30 text-blue-100 border border-blue-400/30 text-[11px] font-medium">
+                    <span>+{latestMembers.nonStates.length} {t('nonStateParticipantsSuffix')}</span>
+                    <span className="opacity-90 font-mono text-[10px]">
+                      ({latestMembers.nonStates.map((m) => getEntityShortLabel(m.countryCode)).join(', ')})
+                    </span>
+                  </div>
+                )}
                 {selectedYear !== currentMaxYear && (
-                  <div className="text-[11px] text-blue-300/80 font-mono mt-0.5">
+                  <div className="text-[11px] text-blue-300/80 font-mono mt-1">
                     {language === 'ja'
-                      ? `${selectedYear}年当時: ${activeMemberCount}カ国`
-                      : `${selectedYear}: ${activeMemberCount}`}
+                      ? `${selectedYear}年当時: ${activeMembers.states.length}カ国${
+                          activeMembers.nonStates.length > 0
+                            ? ` + ${activeMembers.nonStates.length}非国家主体 (${activeMembers.nonStates.map((m) => getEntityShortLabel(m.countryCode)).join(', ')})`
+                            : ''
+                        }`
+                      : `${selectedYear}: ${activeMembers.states.length} States${
+                          activeMembers.nonStates.length > 0
+                            ? ` + ${activeMembers.nonStates.length} Non-State (${activeMembers.nonStates.map((m) => getEntityShortLabel(m.countryCode)).join(', ')})`
+                            : ''
+                        }`}
                   </div>
                 )}
               </div>
@@ -393,9 +417,15 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
               if (k === 'ratified' || k === 'signed' || k === 'non-party') return null;
 
               const count = statusCounts[k] || 0;
-              if (count === 0 && selectedYear === currentMaxYear && !selectedFramework.members.some(m => m.status === k)) {
-                return null;
-              }
+              // 対象が 0 件のステータスは凡例に表示しない（ユーザー要請に準拠）
+              if (count === 0) return null;
+
+              // 当該ステータスのメンバーから国家と非国家主体を内訳計算
+              const statusMembers = computedMembership.filter((m) => m.currentStatus === k);
+              const nonStateMembersInStatus = statusMembers.filter((m) => isNonStateParticipant(m.countryCode));
+              const stateCount = statusMembers.length - nonStateMembersInStatus.length;
+              const hasNonState = nonStateMembersInStatus.length > 0;
+
               return (
                 <div
                   key={k}
@@ -409,7 +439,13 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                     {language === 'en' ? v.labelEn : v.labelJa}
                   </span>
                   <span className="font-mono font-bold text-slate-500 dark:text-slate-400 text-[11px] ml-0.5">
-                    ({count})
+                    {hasNonState ? (
+                      language === 'ja'
+                        ? `(${stateCount}カ国 + ${nonStateMembersInStatus.length}非国家主体: ${nonStateMembersInStatus.map(m => getEntityShortLabel(m.countryCode)).join(', ')})`
+                        : `(${stateCount} States + ${nonStateMembersInStatus.length} Non-State: ${nonStateMembersInStatus.map(m => getEntityShortLabel(m.countryCode)).join(', ')})`
+                    ) : (
+                      `(${count})`
+                    )}
                   </span>
                 </div>
               );
