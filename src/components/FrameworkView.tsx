@@ -102,13 +102,8 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
         else if (m.status === 'non_party' || m.status === 'non-party') {
           currentStatus = selectedYear >= selectedFramework.establishedYear ? 'non_party' : null;
         }
-        // 6. 正式加盟国・条約締約国・参加国 (member / party / participating_state / ratified)
-        else if (
-          m.status === 'member' ||
-          m.status === 'party' ||
-          m.status === 'participating_state' ||
-          m.status === 'ratified'
-        ) {
+        // 6. 正式加盟国・条約締約国・参加国・非国家参加者 (isFullMemberStatus)
+        else if (isFullMemberStatus(m.status)) {
           if (effectiveJoinYear && selectedYear >= effectiveJoinYear) {
             currentStatus = m.status;
           } else if (signedYear && selectedYear >= signedYear) {
