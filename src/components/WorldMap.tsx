@@ -194,6 +194,9 @@ export const WorldMap: React.FC<WorldMapProps> = ({
           return isHovered ? '#4338ca' : '#4f46e5'; // インディゴ（条約締約国）
         case 'participating_state':
           return isHovered ? '#0369a1' : '#0284c7'; // ディープスカイブルー（参加国）
+        case 'non_state_member':
+        case 'non_state_party':
+          return isHovered ? '#7c3aed' : '#8b5cf6'; // パープル（非国家参加者）
         case 'signatory':
         case 'signed':
           return isHovered ? '#0284c7' : '#38bdf8'; // ライトスカイブルー（署名国）

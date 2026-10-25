@@ -19,6 +19,8 @@ export type MembershipStatus =
   | 'member'              // 国際機関の正式加盟国、または協議枠組みの正式メンバー（G7, G20, NATO, ASEAN等）
   | 'party'               // 法的拘束力を持つ国際条約の締約国（パリ協定, NPT, ICC, UNCLOS等）
   | 'participating_state' // 政治的合意フォーラムの参加国（OSCE等）
+  | 'non_state_member'    // 非国家参加者の正式メンバー（G7, G20, Pax Silica における EU, AU 等）
+  | 'non_state_party'     // 非国家参加者の条約締約組織（パリ協定における EU 等の地域経済統合組織 REIO）
   | 'signatory'           // 条約・共同宣言への署名国（未発効または未批准）
   | 'candidate'           // 正式に承認された加盟候補国（EU等）
   | 'partner'             // パートナー国、協力パートナー（BRICSパートナー国、OSCE協力パートナー国等）

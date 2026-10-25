@@ -60,8 +60,32 @@ export function isStateParticipant(entityOrCode: BaseEntity | string | null | un
 /**
  * 正式加盟・メンバー（full member / state party / participating state / ratified）判定
  */
-export function isFullMemberStatus(status: MembershipStatus): boolean {
+/**
+ * 非国家参加者ステータスであるか判定
+ */
+export function isNonStateStatus(status: MembershipStatus | string): boolean {
+  return status === 'non_state_member' || status === 'non_state_party';
+}
+
+/**
+ * 主権国家の正式加盟・締約ステータスであるか判定
+ */
+export function isStateMemberStatus(status: MembershipStatus | string): boolean {
   return status === 'member' || status === 'party' || status === 'participating_state' || status === 'ratified';
+}
+
+/**
+ * 正式加盟・構成員（国家および非国家参加者の正規構成員）判定
+ */
+export function isFullMemberStatus(status: MembershipStatus): boolean {
+  return (
+    status === 'member' ||
+    status === 'party' ||
+    status === 'participating_state' ||
+    status === 'ratified' ||
+    status === 'non_state_member' ||
+    status === 'non_state_party'
+  );
 }
 
 /**

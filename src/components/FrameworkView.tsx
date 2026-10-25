@@ -9,7 +9,7 @@ import { FrameworkCombobox } from './FrameworkCombobox';
 import { Map, Table, Building2, Globe, FileText, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { extractYear, getEffectiveMembershipYear } from '../utils/date';
-import { isNonStateParticipant, isStateParticipant, isFullMemberStatus, NON_STATE_ENTITY_COLOR } from '../utils/entityUtils';
+import { isNonStateParticipant, isStateParticipant, isFullMemberStatus } from '../utils/entityUtils';
 
 interface FrameworkViewProps {
   selectedFramework: Framework | null;
@@ -163,6 +163,15 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
   
 
   // 正式加盟・メンバー（full member / state party / participating state / ratified）判定
+  // ステータス別集計カウント
+  const statusCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    computedMembership.forEach((m) => {
+      counts[m.currentStatus] = (counts[m.currentStatus] || 0) + 1;
+    });
+    return counts;
+  }, [computedMembership]);
+
   // 最新（現行）の正式加盟・メンバー（国家と非国家主体を分離集計）
   const latestMembers = useMemo(() => {
     if (!selectedFramework) return { states: [], nonStates: [] };
@@ -403,17 +412,13 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="font-bold text-slate-500 mr-1">{t('legend')}</span>
             
-            {/* 主権国家（State Participants）のステータス別バッジ */}
             {Object.entries(STATUS_LABELS).map(([k, v]) => {
               // 後方互換用エイリアスキーは凡例から除外
               if (k === 'ratified' || k === 'signed' || k === 'non-party') return null;
 
-              // 当該ステータスに属する主権国家のみをカウント
-              const statusMembers = computedMembership.filter((m) => m.currentStatus === k);
-              const stateCount = statusMembers.filter((m) => isStateParticipant(m.countryCode)).length;
-
-              // 主権国家が 0 件のステータスは凡例に表示しない
-              if (stateCount === 0) return null;
+              const count = statusCounts[k] || 0;
+              // 対象が 0 件のステータスは凡例に表示しない
+              if (count === 0) return null;
 
               return (
                 <div
@@ -428,37 +433,11 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                     {language === 'en' ? v.labelEn : v.labelJa}
                   </span>
                   <span className="font-mono font-bold text-slate-500 dark:text-slate-400 text-[11px] ml-0.5">
-                    ({stateCount})
+                    ({count})
                   </span>
                 </div>
               );
             })}
-
-            {/* 非国家主体（Non-State Participants: EU, AU等）の独立バッジ */}
-            {(() => {
-              const activeNonStateMembers = computedMembership.filter(
-                (m) => isNonStateParticipant(m.countryCode) && m.currentStatus !== 'withdrawn' && m.currentStatus !== 'non_party'
-              );
-              if (activeNonStateMembers.length === 0) return null;
-
-              return (
-                <div
-                  key="non-state-participants"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50/80 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800"
-                >
-                  <span
-                    className="w-2.5 h-2.5 rounded-full shrink-0 ring-1 ring-black/10 dark:ring-white/20"
-                    style={{ backgroundColor: NON_STATE_ENTITY_COLOR }}
-                  ></span>
-                  <span className="font-medium text-purple-900 dark:text-purple-200">
-                    {t('nonStateParticipants')}
-                  </span>
-                  <span className="font-mono font-bold text-purple-700 dark:text-purple-300 text-[11px] ml-0.5">
-                    ({activeNonStateMembers.length})
-                  </span>
-                </div>
-              );
-            })()}
           </div>
 
           {/* タブ切り替え（地図 / リスト） */}

@@ -68,19 +68,14 @@ export const TableView: React.FC<TableViewProps> = ({
     return Array.from(set).sort();
   }, [members]);
 
-  // 当該枠組みに実際に存在するステータス一覧（主権国家ステータスと非国家参加者を分離）
+  // 当該枠組みに実際に存在するステータス一覧（STATUS_LABELS定義順）
   const availableStatuses = useMemo(() => {
     const set = new Set<string>();
-    let hasNonState = false;
     members.forEach((m) => {
-      if (isNonStateParticipant(m.countryCode)) {
-        hasNonState = true;
-      } else if (m.currentStatus) {
-        set.add(m.currentStatus);
-      }
+      if (m.currentStatus) set.add(m.currentStatus);
     });
     const order = Object.keys(STATUS_LABELS);
-    const sorted = Array.from(set).sort((a, b) => {
+    return Array.from(set).sort((a, b) => {
       const idxA = order.indexOf(a);
       const idxB = order.indexOf(b);
       if (idxA !== -1 && idxB !== -1) return idxA - idxB;
@@ -88,10 +83,6 @@ export const TableView: React.FC<TableViewProps> = ({
       if (idxB !== -1) return 1;
       return a.localeCompare(b);
     });
-    if (hasNonState) {
-      sorted.push('non_state');
-    }
-    return sorted;
   }, [members]);
 
   // 枠組み切り替え等で選択中ステータスが存在しない場合の安全な派生ステータス
@@ -117,12 +108,8 @@ export const TableView: React.FC<TableViewProps> = ({
           return false;
         }
 
-        if (effectiveStatus !== 'all') {
-          if (effectiveStatus === 'non_state') {
-            if (!isNonStateParticipant(m.countryCode)) return false;
-          } else {
-            if (isNonStateParticipant(m.countryCode) || m.currentStatus !== effectiveStatus) return false;
-          }
+        if (effectiveStatus !== 'all' && m.currentStatus !== effectiveStatus) {
+          return false;
         }
 
         return true;
@@ -179,12 +166,9 @@ export const TableView: React.FC<TableViewProps> = ({
 
     const rows = filteredMembers.map((m) => {
       const c = getEntity(m.countryCode);
-      const isNonState = isNonStateParticipant(m.countryCode);
-      const statusLabel = isNonState
-        ? (language === 'en' ? 'Non-State Participant' : '非国家参加者')
-        : (STATUS_LABELS[m.currentStatus]
-            ? (language === 'en' ? STATUS_LABELS[m.currentStatus].labelEn : STATUS_LABELS[m.currentStatus].labelJa)
-            : m.currentStatus);
+      const statusLabel = STATUS_LABELS[m.currentStatus]
+        ? (language === 'en' ? STATUS_LABELS[m.currentStatus].labelEn : STATUS_LABELS[m.currentStatus].labelJa)
+        : m.currentStatus;
 
       const dateDetail = getMembershipDateDetail(m, language);
 
@@ -253,13 +237,6 @@ export const TableView: React.FC<TableViewProps> = ({
           >
             <option value="all">{t('filterStatusAll')}</option>
             {availableStatuses.map((k) => {
-              if (k === 'non_state') {
-                return (
-                  <option key={k} value={k}>
-                    {t('nonStateParticipants')}
-                  </option>
-                );
-              }
               const labelObj = STATUS_LABELS[k];
               const label = labelObj
                 ? (language === 'en' ? labelObj.labelEn : labelObj.labelJa)
@@ -397,21 +374,15 @@ export const TableView: React.FC<TableViewProps> = ({
                       {c.region}
                     </td>
                     <td className="py-3 px-4">
-                      {isNonStateParticipant(m.countryCode) ? (
-                        <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300 border border-purple-300 dark:border-purple-700/60">
-                          {t('nonStateParticipants')}
-                        </span>
-                      ) : (
-                        <span
-                          className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                            statusMeta ? statusMeta.color : 'bg-slate-200 text-slate-700'
-                          }`}
-                        >
-                          {statusMeta
-                            ? (language === 'en' ? statusMeta.labelEn : statusMeta.labelJa)
-                            : m.currentStatus}
-                        </span>
-                      )}
+                      <span
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                          statusMeta ? statusMeta.color : 'bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {statusMeta
+                          ? (language === 'en' ? statusMeta.labelEn : statusMeta.labelJa)
+                          : m.currentStatus}
+                      </span>
                     </td>
                     <td className="py-3 px-4 font-mono text-xs font-semibold text-slate-700 dark:text-slate-300">
                       <div>
