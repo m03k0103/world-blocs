@@ -9,7 +9,7 @@ import { FrameworkCombobox } from './FrameworkCombobox';
 import { Map, Table, Building2, Globe, FileText, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { extractYear, getEffectiveMembershipYear } from '../utils/date';
-import { isNonStateParticipant, isStateParticipant, isFullMemberStatus, getEntityShortLabel, NON_STATE_ENTITY_COLOR } from '../utils/entityUtils';
+import { isNonStateParticipant, isStateParticipant, isFullMemberStatus, NON_STATE_ENTITY_COLOR } from '../utils/entityUtils';
 
 interface FrameworkViewProps {
   selectedFramework: Framework | null;
@@ -326,9 +326,6 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                 {latestMembers.nonStates.length > 0 && (
                   <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/30 text-blue-100 border border-blue-400/30 text-[11px] font-medium">
                     <span>+{latestMembers.nonStates.length} {t('nonStateParticipantsSuffix')}</span>
-                    <span className="opacity-90 font-mono text-[10px]">
-                      ({latestMembers.nonStates.map((m) => getEntityShortLabel(m.countryCode)).join(', ')})
-                    </span>
                   </div>
                 )}
                 {selectedYear !== currentMaxYear && (
@@ -336,12 +333,12 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                     {language === 'ja'
                       ? `${selectedYear}年当時: ${activeMembers.states.length}カ国${
                           activeMembers.nonStates.length > 0
-                            ? ` + ${activeMembers.nonStates.length}非国家主体 (${activeMembers.nonStates.map((m) => getEntityShortLabel(m.countryCode)).join(', ')})`
+                            ? ` + ${activeMembers.nonStates.length}非国家参加者`
                             : ''
                         }`
                       : `${selectedYear}: ${activeMembers.states.length} States${
                           activeMembers.nonStates.length > 0
-                            ? ` + ${activeMembers.nonStates.length} Non-State (${activeMembers.nonStates.map((m) => getEntityShortLabel(m.countryCode)).join(', ')})`
+                            ? ` + ${activeMembers.nonStates.length} Non-State`
                             : ''
                         }`}
                   </div>
@@ -457,7 +454,7 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
                     {t('nonStateParticipants')}
                   </span>
                   <span className="font-mono font-bold text-purple-700 dark:text-purple-300 text-[11px] ml-0.5">
-                    ({activeNonStateMembers.length}: {activeNonStateMembers.map((m) => getEntityShortLabel(m.countryCode)).join(', ')})
+                    ({activeNonStateMembers.length})
                   </span>
                 </div>
               );

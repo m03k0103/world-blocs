@@ -287,10 +287,12 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         const renderMemberItem = (country: Country, data: CountryMapData) => {
           const isSelected = selectedCountryAlpha3 === country.alpha3;
           const fill = getCountryFill(country.alpha3, false, isSelected);
-          const statusLabel =
-            data.status && STATUS_LABELS[data.status]
-              ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
-              : data.status;
+          const isNonState = isNonStateParticipant(country.alpha3);
+          const statusLabel = isNonState
+            ? (language === 'en' ? 'Non-State Participant' : '非国家参加者')
+            : (data.status && STATUS_LABELS[data.status]
+                ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
+                : data.status);
 
           return (
             <button
