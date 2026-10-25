@@ -7,6 +7,7 @@ import { STATUS_LABELS } from '../data/frameworks';
 import type { Country, MembershipStatus, HistoricalEntity } from '../types';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { isNonStateParticipant, NON_STATE_ENTITY_COLOR, NON_STATE_ENTITY_HOVER_COLOR } from '../utils/entityUtils';
 
 // TopoJSONをGeoJSON feature配列へ変換（モジュールロード時に1度だけ実行）
 const geojson: any = topojson.feature(
@@ -177,6 +178,10 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       }
 
       // 単一枠組みモード
+      // 非国家主体（EU, AU 等）の場合は主権国家と区別して専用色（パープル）を適用
+      if (isNonStateParticipant(alpha3)) {
+        return isHovered ? NON_STATE_ENTITY_HOVER_COLOR : NON_STATE_ENTITY_COLOR;
+      }
       if (!data || !data.status) {
         return isHovered ? '#cbd5e1' : 'var(--map-neutral, #e2e8f0)';
       }

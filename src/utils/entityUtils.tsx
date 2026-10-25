@@ -5,6 +5,12 @@ import { HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/historicalEntities';
 export type BaseEntity = Country | HistoricalEntity;
 
 /**
+ * 非国家主体（超国家機関・地域国際機関）専用のカラー
+ */
+export const NON_STATE_ENTITY_COLOR = '#8b5cf6'; // バイオレット・パープル
+export const NON_STATE_ENTITY_HOVER_COLOR = '#7c3aed';
+
+/**
  * ISO3コードまたはエンティティオブジェクトからエンティティを取得
  */
 export function getEntity(code: string): BaseEntity | undefined {
