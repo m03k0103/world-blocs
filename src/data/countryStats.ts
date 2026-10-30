@@ -504,11 +504,29 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "genderGapRank": 139,
     "year": 2024
   },
+  "CAN": {
+    "alpha3": "CAN",
+    "population": 40097761,
+    "gdp": 2242182,
+    "gdpPerCapita": 54866,
+    "genderGapScore": 0.772,
+    "genderGapRank": 36,
+    "year": 2024
+  },
   "GAB": {
     "alpha3": "GAB",
     "population": 2436566,
     "gdp": 21013,
     "gdpPerCapita": 8624,
+    "year": 2024
+  },
+  "CMR": {
+    "alpha3": "CMR",
+    "population": 28647560,
+    "gdp": 53205,
+    "gdpPerCapita": 1857,
+    "genderGapScore": 0.672,
+    "genderGapRank": 112,
     "year": 2024
   },
   "KHM": {
@@ -518,6 +536,22 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2075,
     "genderGapScore": 0.686,
     "genderGapRank": 102,
+    "year": 2024
+  },
+  "CYP": {
+    "alpha3": "CYP",
+    "population": 1251488,
+    "gdp": 34220,
+    "gdpPerCapita": 37136,
+    "genderGapScore": 0.678,
+    "genderGapRank": 106,
+    "year": 2024
+  },
+  "CUB": {
+    "alpha3": "CUB",
+    "population": 11194449,
+    "gdp": 107352,
+    "gdpPerCapita": 9590,
     "year": 2024
   },
   "GRC": {
@@ -579,6 +613,56 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2111,
     "genderGapScore": 0.718,
     "genderGapRank": 77,
+    "year": 2024
+  },
+  "CIV": {
+    "alpha3": "CIV",
+    "population": 31165654,
+    "gdp": 86911,
+    "gdpPerCapita": 2789,
+    "year": 2024
+  },
+  "CRI": {
+    "alpha3": "CRI",
+    "population": 5212173,
+    "gdp": 96058,
+    "gdpPerCapita": 18430,
+    "genderGapScore": 0.793,
+    "genderGapRank": 35,
+    "year": 2024
+  },
+  "COM": {
+    "alpha3": "COM",
+    "population": 852075,
+    "gdp": 1422,
+    "gdpPerCapita": 1669,
+    "genderGapScore": 0.631,
+    "genderGapRank": 136,
+    "year": 2024
+  },
+  "COL": {
+    "alpha3": "COL",
+    "population": 52695952,
+    "gdp": 407000,
+    "gdpPerCapita": 7723,
+    "genderGapScore": 0.758,
+    "genderGapRank": 32,
+    "year": 2024
+  },
+  "COG": {
+    "alpha3": "COG",
+    "population": 6106869,
+    "gdp": 15501,
+    "gdpPerCapita": 2538,
+    "year": 2024
+  },
+  "COD": {
+    "alpha3": "COD",
+    "population": 102262808,
+    "gdp": 73760,
+    "gdpPerCapita": 721,
+    "genderGapScore": 0.612,
+    "genderGapRank": 141,
     "year": 2024
   },
   "SAU": {
@@ -647,6 +731,15 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2155,
     "genderGapScore": 0.727,
     "genderGapRank": 45,
+    "year": 2024
+  },
+  "CHE": {
+    "alpha3": "CHE",
+    "population": 8921981,
+    "gdp": 938458,
+    "gdpPerCapita": 105655,
+    "genderGapScore": 0.795,
+    "genderGapRank": 18,
     "year": 2024
   },
   "SWE": {
@@ -771,6 +864,15 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "genderGapRank": 68,
     "year": 2024
   },
+  "CZE": {
+    "alpha3": "CZE",
+    "population": 10827529,
+    "gdp": 337405,
+    "gdpPerCapita": 31366,
+    "genderGapScore": 0.702,
+    "genderGapRank": 88,
+    "year": 2024
+  },
   "TCD": {
     "alpha3": "TCD",
     "population": 18278568,
@@ -787,6 +889,15 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4391,
     "genderGapScore": 0.642,
     "genderGapRank": 128,
+    "year": 2024
+  },
+  "CHL": {
+    "alpha3": "CHL",
+    "population": 19629590,
+    "gdp": 333760,
+    "gdpPerCapita": 17003,
+    "genderGapScore": 0.781,
+    "genderGapRank": 21,
     "year": 2024
   },
   "DNK": {
@@ -1401,9 +1512,9 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
   },
   "HKG": {
     "alpha3": "HKG",
-    "population": 50000,
-    "gdp": 500,
-    "gdpPerCapita": 10000,
+    "population": 7498100,
+    "gdp": 407000,
+    "gdpPerCapita": 54280,
     "year": 2024
   },
   "ESH": {
@@ -1425,6 +1536,22 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "population": 23420442,
     "gdp": 802958,
     "gdpPerCapita": 34432,
+    "year": 2024
+  },
+  "CAF": {
+    "alpha3": "CAF",
+    "population": 5742315,
+    "gdp": 2810,
+    "gdpPerCapita": 489,
+    "year": 2024
+  },
+  "CHN": {
+    "alpha3": "CHN",
+    "population": 1409670000,
+    "gdp": 18532633,
+    "gdpPerCapita": 13136,
+    "genderGapScore": 0.678,
+    "genderGapRank": 107,
     "year": 2024
   },
   "TLS": {
@@ -1505,6 +1632,15 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 24337,
     "genderGapScore": 0.777,
     "genderGapRank": 30,
+    "year": 2024
+  },
+  "CPV": {
+    "alpha3": "CPV",
+    "population": 598682,
+    "gdp": 2718,
+    "gdpPerCapita": 4540,
+    "genderGapScore": 0.761,
+    "genderGapRank": 37,
     "year": 2024
   },
   "DMA": {
@@ -1651,11 +1787,18 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 27487,
     "year": 2024
   },
+  "COK": {
+    "alpha3": "COK",
+    "population": 17564,
+    "gdp": 300,
+    "gdpPerCapita": 17080,
+    "year": 2024
+  },
   "NIU": {
     "alpha3": "NIU",
-    "population": 50000,
-    "gdp": 500,
-    "gdpPerCapita": 10000,
+    "population": 1937,
+    "gdp": 35,
+    "gdpPerCapita": 18069,
     "year": 2024
   },
   "XKX": {
