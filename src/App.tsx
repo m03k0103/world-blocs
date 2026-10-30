@@ -5,6 +5,7 @@ import { Navbar } from './components/Navbar';
 import { FrameworkView } from './components/FrameworkView';
 import { CompareView } from './components/CompareView';
 import { CountryListView } from './components/CountryListView';
+import { StatsView } from './components/StatsView';
 import { CountryProfileModal } from './components/CountryProfileModal';
 import { Globe } from 'lucide-react';
 import { LanguageProvider } from './context/LanguageProvider';
@@ -129,6 +130,13 @@ function AppContent() {
           />
         )}
 
+        
+        {currentMode === 'stats' && (
+          <StatsView
+            onSelectCountry={handleSelectCountry}
+            selectedCountryAlpha3={modalCountry?.alpha3}
+          />
+        )}
         {currentMode === 'country' && (
           <CountryListView onSelectCountry={handleSelectCountry} />
         )}

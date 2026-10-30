@@ -23,16 +23,25 @@ export interface CountryMapData {
   // 比較モード用フラグ
   inFrameworkA?: boolean;
   inFrameworkB?: boolean;
+  // コロプレス（統計）モード用プロパティ
+  statValue?: number;
+  statFormatted?: string;
+  statRank?: number;
+  statShare?: string;
+  customFill?: string;
+  customHoverFill?: string;
+  isFilteredOut?: boolean;
 }
 
 interface WorldMapProps {
   countryDataMap: Record<string, CountryMapData>; // キーは alpha3
-  mode?: 'single' | 'compare';
+  mode?: 'single' | 'compare' | 'choropleth';
   colorA?: string;
   colorB?: string;
   colorBoth?: string;
   labelA?: string;
   labelB?: string;
+  statIndicatorName?: string;
   onSelectCountry?: (country: Country) => void;
   selectedCountryAlpha3?: string | null;
   hasFrameworkSelected?: boolean;
@@ -162,6 +171,16 @@ export const WorldMap: React.FC<WorldMapProps> = ({
 
       if (isSelected) {
         return '#f97316'; // 選択中は鮮やかなオレンジ
+      }
+
+      if (mode === 'choropleth') {
+        if (data?.isFilteredOut) {
+          return isHovered ? '#cbd5e1' : 'var(--map-neutral, #e2e8f0)';
+        }
+        if (data?.customFill) {
+          return isHovered ? (data.customHoverFill || '#0ea5e9') : data.customFill;
+        }
+        return isHovered ? '#cbd5e1' : 'var(--map-neutral, #e2e8f0)';
       }
 
       if (mode === 'compare') {

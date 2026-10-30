@@ -1,8 +1,9 @@
 import React, { useMemo, useEffect } from 'react';
 import type { Country, Framework } from '../types';
 import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
+import { COUNTRY_STATS, formatStatValue } from '../data/countryStats';
 import { HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
-import { X, Award, History } from 'lucide-react';
+import { X, Award, History, Users, DollarSign, TrendingUp, Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
 
@@ -139,6 +140,70 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
               </span>
             </div>
           </div>
+          {/* 基本統計指標 (人口・名目GDP・一人当たりGDP・ジェンダーギャップ指数) */}
+          {(() => {
+            const stats = COUNTRY_STATS[country.alpha3];
+            if (!stats) return null;
+            return (
+              <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 space-y-2.5">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  {language === 'ja' ? '基本統計・主要指標' : 'Key Statistics & Indicators'}
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <div className="p-2.5 bg-white dark:bg-slate-800/90 rounded-xl border border-slate-200/80 dark:border-slate-700/60 shadow-xs">
+                    <div className="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                      <Users className="w-3 h-3 text-emerald-500 shrink-0" />
+                      {language === 'ja' ? '人口' : 'Population'}
+                    </div>
+                    <div className="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1">
+                      {formatStatValue('population', stats.population, language)}
+                    </div>
+                  </div>
+                  <div className="p-2.5 bg-white dark:bg-slate-800/90 rounded-xl border border-slate-200/80 dark:border-slate-700/60 shadow-xs">
+                    <div className="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                      <DollarSign className="w-3 h-3 text-blue-500 shrink-0" />
+                      {language === 'ja' ? '名目GDP' : 'Nominal GDP'}
+                    </div>
+                    <div className="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1">
+                      {formatStatValue('gdp', stats.gdp, language)}
+                    </div>
+                  </div>
+                  <div className="p-2.5 bg-white dark:bg-slate-800/90 rounded-xl border border-slate-200/80 dark:border-slate-700/60 shadow-xs">
+                    <div className="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                      <TrendingUp className="w-3 h-3 text-indigo-500 shrink-0" />
+                      {language === 'ja' ? '一人当たりGDP' : 'GDP per Capita'}
+                    </div>
+                    <div className="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1">
+                      {formatStatValue('gdp_per_capita', stats.gdpPerCapita, language)}
+                    </div>
+                  </div>
+                  <div className="p-2.5 bg-white dark:bg-slate-800/90 rounded-xl border border-slate-200/80 dark:border-slate-700/60 shadow-xs">
+                    <div className="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                      <Sparkles className="w-3 h-3 text-purple-500 shrink-0" />
+                      {language === 'ja' ? 'ジェンダーギャップ' : 'Gender Gap'}
+                    </div>
+                    <div className="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1 flex items-baseline gap-1">
+                      {stats.genderGapScore !== undefined ? (
+                        <>
+                          <span>{formatStatValue('gender_gap', stats.genderGapScore, language)}</span>
+                          {stats.genderGapRank && (
+                            <span className="text-[11px] font-normal text-purple-600 dark:text-purple-400 font-mono">
+                              (#{stats.genderGapRank})
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-slate-400 text-xs font-normal">
+                          {language === 'ja' ? '対象外' : 'N/A'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
 
           {joinedFrameworks.length === 0 ? (
             <div className="text-center py-12 text-slate-400">

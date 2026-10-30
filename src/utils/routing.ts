@@ -46,6 +46,16 @@ export function parseRouteFromUrl(basePath: string): ParsedRoute {
     segments.shift();
   }
 
+  // 1-0. 統計マップパス: /stats
+  if (segments.length > 0 && segments[0].toLowerCase() === 'stats') {
+    return {
+      mode: 'stats',
+      framework: null,
+      compareA: null,
+      compareB: null,
+    };
+  }
+
   // 1-1. 掛け合わせ比較パス: /compare/...
   if (segments.length > 0 && segments[0].toLowerCase() === 'compare') {
     let compA: Framework | null = null;
@@ -127,6 +137,15 @@ export function parseRouteFromUrl(basePath: string): ParsedRoute {
     };
   }
 
+  if (qMode === 'stats') {
+    return {
+      mode: 'stats',
+      framework: null,
+      compareA: null,
+      compareB: null,
+    };
+  }
+
   if (qMode === 'country' || qMode === 'countries') {
     return {
       mode: 'country',
@@ -192,6 +211,9 @@ export function getTargetUrl(
   compA: Framework | null,
   compB: Framework | null
 ): string {
+  if (mode === 'stats') {
+    return `${basePath}/stats`;
+  }
   if (mode === 'compare') {
     if (compA && compB) {
       return `${basePath}/compare/${formatFrameworkSlug(compA)}/${formatFrameworkSlug(compB)}`;

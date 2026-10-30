@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ViewMode, Country, Framework } from '../types';
-import { Globe, Layers, GitCompare, Shield, Languages } from 'lucide-react';
+import { Globe, Layers, GitCompare, Shield, Languages, BarChart3 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 interface NavbarProps {
@@ -68,6 +68,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <GitCompare className="w-4 h-4" />
                 <span>{t('navCompare')}</span>
+              </button>
+              <button
+                onClick={() => onModeChange('stats')}
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                  currentMode === 'stats'
+                    ? 'bg-white dark:bg-slate-700 text-amber-600 dark:text-amber-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                }`}
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span>{t('navStats')}</span>
               </button>
 
               <button

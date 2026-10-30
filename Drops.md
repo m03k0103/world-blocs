@@ -1,6 +1,6 @@
 # World Blocs 改善・機能拡充マスタードキュメント (Drops.md)
 
-> 最終更新: 2026-10-25  
+> 最終更新: 2026-10-31  
 > 運用規約は [`GLOBAL_RULES.md`](file:///C:/Users/m03k0/.gemini/antigravity/rules/GLOBAL_RULES.md) 第3章7項、および [`Agent.md`](file:///d:/dev/World/Agent.md) に準拠します。  
 > 未着手の将来構想テーマは **「Track（トラック）」** として管理し、着手・完了した個別施策単位にはその時点の最新連番を付与して **「Drop（ドロップ）」** としてアーカイブ化します。
 
@@ -10,13 +10,33 @@
 
 | Track ID / Drop | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
+| **Track [Stats-AdvancedIndicators]** | **高次統計・安全保障・ガバナンス指標の拡充（HDI・軍事費・民主主義指数等）** | **統計指標マップの収録指標拡張**<br>- 人間開発指数（HDI / 国連開発計画 UNDP）<br>- 軍事費・防衛費（総額・対GDP比 / SIPRI基準）<br>- 民主主義指数（EIU）および報道の自由度指数（RSF）等のガバナンス指標 | 安全保障同盟（NATO等）の防衛費負担分析や、枠組み別の人間開発・ガバナンス水準の多角的比較 | **【構想】** |
 | **Track [Eurasia-CentralAsia]** | **ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加** | **CIS, EAEU, CICA, GUAM, ECO, CAREC（計6枠組み新設）**<br>- 独立国家共同体（`cis`）<br>- ユーラシア経済同盟（`eaeu`）<br>- アジア信頼醸成措置会議（`cica`）<br>- 民主主義と経済発展のための機構-GUAM（`guam`）<br>- 経済協力機構（`eco`）<br>- 中央アジア地域経済協力（`carec`） | 旧ソ連圏・中央アジア地域の安全保障・経済統合・地域協力枠組みの収録（全34→40枠組み） | **【計画策定済】** |
 
 ---
 
 ## 2. 各Trackの詳細
 
-### 2-1. 【計画策定済】Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加
+### 2-1. 【完了】Drop 39: Track [Stats-ChoroplethMap] - 統計・指標グラデーションマップの新規実装
+
+#### 背景・課題
+- 各国際枠組み（G7, G20, NATO, BRICS, EU, CPTPP等）の地政学的・経済的規模を定量的に把握するには、単なる加盟国数の比較だけでなく、人口、経済規模（名目GDP）、所得水準（一人当たりGDP）、社会指標（ジェンダーギャップ指数）を世界地図上のグラデーション（コロプレスマップ）として視覚化し、枠組み単位で抽出・集計できる仕組みが必要である。
+
+#### 実装スコープ
+- **基本4指標の収録**: 人口（国連/世界銀行）、名目GDP（IMF/世界銀行、百万USD）、一人当たり名目GDP（IMF/世界銀行、USD）、ジェンダーギャップ指数（世界経済フォーラム WEF Global Gender Gap Report、スコア 0.000〜1.000 および順位）。
+- **グラデーション描画（Choropleth Map）**: 指標特性に応じたスケール変換（人口・GDP・一人当たりGDPは対数スケール、GGGIは線形スケール）により、極端な外れ値に引きずられず視認性の高いカラースケールで世界地図を塗色。
+- **枠組み連動フィルタ & シェア集計**: 全世界表示に加え、任意の枠組み（34枠組み）を選択して加盟国（主権国家）のみをグラデーション抽出し、世界全体に占める人口シェア・GDPシェア、枠組み内平均、ランキング一覧・CSV出力を提供。
+- **国別プロファイル統合**: 国詳細モーダル（`CountryProfileModal`）にも当該国の4指標サマリーを表示。
+
+### 2-2. 【構想】Track [Stats-AdvancedIndicators] - 高次統計・安全保障・ガバナンス指標の拡充
+
+#### 背景・課題
+- 基本4指標に続き、安全保障同盟や地域統合体の性質をより多面的に分析するため、以下の高次指標を段階的に拡充する：
+  1. **人間開発指数（HDI）**: 国連開発計画（UNDP）Human Development Report 基準（0.000〜1.000）。
+  2. **軍事費・防衛費（Military Expenditure）**: SIPRI（ストックホルム国際平和研究所）基準の防衛費総額（USD）および対GDP比（%）。NATOの2%基準達成状況等の可視化に対応。
+  3. **ガバナンス・民主主義指標**: 民主主義指数（EIU Democracy Index）や報道の自由度指数（RSF）など、価値観外交や体制比較に資する指標。
+
+### 2-3. 【計画策定済】Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加
 
 #### 背景・課題
 - 旧ソ連構成国、中央アジア、コーカサス、およびアジア地域における多国間安全保障・経済統合・信頼醸成の主要6枠組み（CIS, EAEU, CICA, GUAM, ECO, CAREC）を新規追加し、既存の CSTO・SCO とあわせてユーラシア地域の国際関係を網羅する。
@@ -33,10 +53,11 @@
 
 ---
 
-## 3. 実装済 Drop一覧（Drop 1 〜 Drop 38）
+## 3. 実装済 Drop一覧（Drop 1 〜 Drop 39）
 
 | Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
 |:---:|:---:|:---|:---|:---|
+| **Drop 39** | 2026-10-31 | **Track [Stats-ChoroplethMap]: 統計・指標グラデーションマップ（人口・GDP・一人当たりGDP・ジェンダーギャップ指数）の新規実装** | `countryStats.ts`, `StatsView.tsx`, `WorldMap.tsx`, `CountryProfileModal.tsx`, `Navbar.tsx`, `App.tsx`, `routing.ts` | 人口・名目GDP・一人当たりGDP・ジェンダーギャップ指数の世界約200カ国マスタ配備、対数/線形スケールによるコロプレスマップ描画、34枠組み抽出フィルタ & 人口/GDP世界シェア集計、国詳細モーダルへの統計カード統合、URL `/stats` ルーティング、oxlint 警告0件、本番ビルド成功 |
 | **Drop 38** | 2026-10-25 | **Track [UI-StateVsNonStateParticipants]: 凡例ゼロ件非表示 & 国家・非国家参加者（State vs Non-State）の分離表示** | `frameworks.ts`, `types/index.ts`, `FrameworkView.tsx`, `TableView.tsx`, `CountryProfileModal.tsx`, `WorldMap.tsx` | 凡例の0件ステータス完全非表示、EU（EUR）・AU（AFU）等非国家参加者の参加国除外、ステータス型の細分化（non_state_member, non_state_party）によるデータモデル刷新 & モーダル・凡例・一覧・地図の全画面ステータス完全同期、oxlint 警告0件、本番ビルド成功 |
 | **Drop 37** | 2026-10-18 | **Track [CodeQuality-Refinement]: Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | `TableView.tsx`, `CompareView.tsx`, `CountryListView.tsx`, `FrameworkView.tsx`, `CountryProfileModal.tsx`, `FrameworkCombobox.tsx`, `LanguageContext.tsx`, `routing.ts`, `vite.config.ts`, `package.json` | 歴史的主体（SUN, DDR, CSK）のテーブル一覧・比較画面正常表示、参加枠組み数厳格カウント、Escape/背景閉鎖対応、`oxlint` 警告ゼロ化（1,132件➔0件）、Vite チャンク分割によるバンドル最適化（単一633kB➔vendor 218kB, d3 21kB, app 393kB） |
 | **Drop 36** | 2026-10-18 | **Track [UI-CategoryRedesign]: カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | `src/data/frameworks.ts`, `src/types/index.ts` | 5大カテゴリ表示名の簡潔化（安全保障、経済・通商、地域統合、首脳・戦略対話、国際法・条約）、Quad・Pax Silica・WAICO の「首脳・戦略対話」への再配置（各カテゴリ枠組み数：8, 10, 4, 7, 5） |

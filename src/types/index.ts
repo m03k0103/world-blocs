@@ -173,6 +173,18 @@ export interface Framework {
   members: MembershipRecord[];
 }
 
-export type ViewMode = 'framework' | 'compare' | 'country';
+export type ViewMode = 'framework' | 'compare' | 'stats' | 'country';
+
+export type StatIndicatorId = 'population' | 'gdp' | 'gdp_per_capita' | 'gender_gap';
+
+export interface CountryStatRecord {
+  alpha3: string;           // ISO 3166-1 alpha-3
+  population?: number;      // 人口（人）
+  gdp?: number;             // 名目GDP（百万USD）
+  gdpPerCapita?: number;    // 一人当たり名目GDP（USD）
+  genderGapScore?: number;  // ジェンダーギャップ指数 (0.000 - 1.000)
+  genderGapRank?: number;   // ジェンダーギャップ順位 (1 - 146)
+  year?: number;            // 統計基準年
+}
 
 export type Language = 'ja' | 'en';
