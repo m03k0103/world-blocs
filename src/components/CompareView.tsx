@@ -8,6 +8,7 @@ import type { CountryMapData } from './WorldMap';
 import { FrameworkCombobox } from './FrameworkCombobox';
 import { Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { isFullMemberStatus } from '../utils/entityUtils';
 
 interface CompareViewProps {
   onSelectCountry: (country: Country) => void;
@@ -62,12 +63,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
     if (!frameworkA) return new Set<string>();
     return new Set(
       frameworkA.members
-        .filter((m) =>
-          m.status === 'member' ||
-          m.status === 'party' ||
-          m.status === 'participating_state' ||
-          m.status === 'ratified'
-        )
+        .filter((m) => isFullMemberStatus(m.status))
         .map((m) => m.countryCode)
     );
   }, [frameworkA]);
@@ -76,12 +72,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
     if (!frameworkB) return new Set<string>();
     return new Set(
       frameworkB.members
-        .filter((m) =>
-          m.status === 'member' ||
-          m.status === 'party' ||
-          m.status === 'participating_state' ||
-          m.status === 'ratified'
-        )
+        .filter((m) => isFullMemberStatus(m.status))
         .map((m) => m.countryCode)
     );
   }, [frameworkB]);

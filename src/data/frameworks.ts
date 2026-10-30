@@ -375,7 +375,7 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ITA', status: 'member', joined: '1975' },
       { countryCode: 'CAN', status: 'member', joined: '1976', notes: '1976年プエルトリコ・サミットから参加' },
       // 非列挙特別参加主体 (EU)
-      { countryCode: 'EUR', entityType: 'supranational', status: 'member', firstParticipated: '1977', notes: '非列挙特別参加主体（1977年ロンドン・サミットより欧州委員会委員長・欧州理事会議長が全セッションに恒常参加。7カ国枠外の特別参加主体）' },
+      { countryCode: 'EUR', entityType: 'supranational', status: 'non_state_member', firstParticipated: '1977', notes: '非列挙特別参加主体（1977年ロンドン・サミットより欧州委員会委員長・欧州理事会議長が全セッションに恒常参加。7カ国枠外の特別参加主体）' },
       // 参加停止国 (G8からG7への復帰)
       { countryCode: 'RUS', status: 'suspended', joined: '1997', suspended: '2014', notes: '1997年デンバー・サミットからG8として正式参加。2014年クリミア併合を受け他の7カ国がロシアの参加を無期限停止し、G8からG7へ復帰' }
     ]
@@ -425,8 +425,8 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'SAU', status: 'member', firstParticipated: '1999' },
       { countryCode: 'TUR', status: 'member', firstParticipated: '1999' },
       { countryCode: 'ZAF', status: 'member', firstParticipated: '1999' },
-      { countryCode: 'EUR', entityType: 'supranational', status: 'member', firstParticipated: '1999', notes: '地域統合体（欧州連合、1999年発足時より正式参加）' },
-      { countryCode: 'AFU', entityType: 'regional_org', status: 'member', joined: '20230909', notes: '地域国際機構（アフリカ連合、2023年9月ニューデリー・サミットで常任メンバー化）' }
+      { countryCode: 'EUR', entityType: 'supranational', status: 'non_state_member', firstParticipated: '1999', notes: '地域統合体（欧州連合、1999年発足時より正式参加）' },
+      { countryCode: 'AFU', entityType: 'regional_org', status: 'non_state_member', joined: '20230909', notes: '地域国際機構（アフリカ連合、2023年9月ニューデリー・サミットで常任メンバー化）' }
     ]
   },
   {
@@ -824,7 +824,7 @@ export const FRAMEWORKS: Framework[] = [
     members: [
       { countryCode: 'JPN', status: 'party', signed: '20160422', ratified: '20161108' },
       { countryCode: 'USA', status: 'withdrawn', signed: '20160422', ratified: '20160903', withdrawalNotified: '20250127', withdrawn: '20260127', notes: '国連条約集（UNTC）公式記録（Note 7）。2016年9月3日受諾（2016年11月4日発効）、2020年離脱、2021年1月20日再受諾（2月19日復帰発効）。2025年1月27日に国連事務総長へ再離脱通告（C.N.71.2025.TREATIES-XXVII.7.d）、協定第28条に基づき2026年1月27日に脱退発効' },
-      { countryCode: 'EUR', entityType: 'supranational', status: 'party', signed: '20160422', ratified: '20161005' },
+      { countryCode: 'EUR', entityType: 'supranational', status: 'non_state_party', signed: '20160422', ratified: '20161005' },
       { countryCode: 'GBR', status: 'party', signed: '20160422', ratified: '20161118' },
       { countryCode: 'FRA', status: 'party', signed: '20160422', ratified: '20161005' },
       { countryCode: 'DEU', status: 'party', signed: '20160422', ratified: '20161005' },
@@ -2079,7 +2079,7 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'SGP', status: 'member', joined: '20251212', signed: '20251212', notes: '原署名国' },
       { countryCode: 'ISR', status: 'member', joined: '20251212', signed: '20251212', notes: '原署名国' },
       // 欧州連合（2026年6月23日署名）
-      { countryCode: 'EUR', entityType: 'supranational', status: 'member', joined: '20260623', signed: '20260623', notes: '2026年6月23日署名（欧州連合）' },
+      { countryCode: 'EUR', entityType: 'supranational', status: 'non_state_member', joined: '20260623', signed: '20260623', notes: '2026年6月23日署名（欧州連合）' },
       // 署名・参加国 (2025年末〜2026年拡大)
       { countryCode: 'NLD', status: 'member', firstParticipated: '20251217', signed: '202606', joined: '202606', notes: '2025年12月非署名パートナー参加、2026年6月宣言署名（先端露光装置ASML本拠）' },
       { countryCode: 'QAT', status: 'member', joined: '202601', signed: '202601', notes: '2026年1月参加（エネルギー・データセンター投資）' },
@@ -2259,6 +2259,8 @@ export const STATUS_LABELS: Record<string, { labelJa: string; labelEn: string; c
   member: { labelJa: '正式加盟・メンバー', labelEn: 'Member', color: 'bg-blue-600 text-white', hex: '#2563eb' },
   party: { labelJa: '条約締約国', labelEn: 'State Party', color: 'bg-indigo-600 text-white', hex: '#4f46e5' },
   participating_state: { labelJa: '参加国', labelEn: 'Participating State', color: 'bg-sky-600 text-white', hex: '#0284c7' },
+  non_state_member: { labelJa: '非国家参加者', labelEn: 'Non-State Participant', color: 'bg-purple-600 text-white', hex: '#8b5cf6' },
+  non_state_party: { labelJa: '非国家参加者', labelEn: 'Non-State Participant', color: 'bg-purple-600 text-white', hex: '#8b5cf6' },
   signatory: { labelJa: '署名国（未発効・未批准）', labelEn: 'Signatory', color: 'bg-sky-400 text-white', hex: '#38bdf8' },
   candidate: { labelJa: '加盟候補国', labelEn: 'Candidate / Applicant', color: 'bg-emerald-500 text-white', hex: '#10b981' },
   partner: { labelJa: 'パートナー国', labelEn: 'Partner Country', color: 'bg-violet-500 text-white', hex: '#8b5cf6' },

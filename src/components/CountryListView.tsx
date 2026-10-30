@@ -4,6 +4,7 @@ import { COUNTRIES } from '../data/countries';
 import { FRAMEWORKS } from '../data/frameworks';
 import { Search, Filter, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { isFullMemberStatus } from '../utils/entityUtils';
 
 interface CountryListViewProps {
   onSelectCountry: (country: Country) => void;
@@ -28,12 +29,7 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
     const map = new Map<string, number>();
     FRAMEWORKS.forEach((f) => {
       f.members.forEach((m) => {
-        if (
-          m.status === 'member' ||
-          m.status === 'party' ||
-          m.status === 'participating_state' ||
-          m.status === 'ratified'
-        ) {
+        if (isFullMemberStatus(m.status)) {
           map.set(m.countryCode, (map.get(m.countryCode) || 0) + 1);
         }
       });

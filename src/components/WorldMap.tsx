@@ -7,6 +7,7 @@ import { STATUS_LABELS } from '../data/frameworks';
 import type { Country, MembershipStatus, HistoricalEntity } from '../types';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { isNonStateParticipant, NON_STATE_ENTITY_COLOR, NON_STATE_ENTITY_HOVER_COLOR } from '../utils/entityUtils';
 
 // TopoJSONをGeoJSON feature配列へ変換（モジュールロード時に1度だけ実行）
 const geojson: any = topojson.feature(
@@ -177,6 +178,10 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       }
 
       // 単一枠組みモード
+      // 非国家主体（EU, AU 等）の場合は主権国家と区別して専用色（パープル）を適用
+      if (isNonStateParticipant(alpha3)) {
+        return isHovered ? NON_STATE_ENTITY_HOVER_COLOR : NON_STATE_ENTITY_COLOR;
+      }
       if (!data || !data.status) {
         return isHovered ? '#cbd5e1' : 'var(--map-neutral, #e2e8f0)';
       }
@@ -189,6 +194,9 @@ export const WorldMap: React.FC<WorldMapProps> = ({
           return isHovered ? '#4338ca' : '#4f46e5'; // インディゴ（条約締約国）
         case 'participating_state':
           return isHovered ? '#0369a1' : '#0284c7'; // ディープスカイブルー（参加国）
+        case 'non_state_member':
+        case 'non_state_party':
+          return isHovered ? '#7c3aed' : '#8b5cf6'; // パープル（非国家参加者）
         case 'signatory':
         case 'signed':
           return isHovered ? '#0284c7' : '#38bdf8'; // ライトスカイブルー（署名国）
@@ -282,10 +290,12 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         const renderMemberItem = (country: Country, data: CountryMapData) => {
           const isSelected = selectedCountryAlpha3 === country.alpha3;
           const fill = getCountryFill(country.alpha3, false, isSelected);
-          const statusLabel =
-            data.status && STATUS_LABELS[data.status]
-              ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
-              : data.status;
+          const isNonState = isNonStateParticipant(country.alpha3);
+          const statusLabel = isNonState
+            ? (language === 'en' ? 'Non-State Participant' : '非国家参加者')
+            : (data.status && STATUS_LABELS[data.status]
+                ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
+                : data.status);
 
           return (
             <button

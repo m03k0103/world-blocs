@@ -5,6 +5,7 @@ import { STATUS_LABELS } from '../data/frameworks';
 import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
+import { isNonStateParticipant } from '../utils/entityUtils';
 
 function getEntityTypeBadge(entityType?: EntityType, lang: 'ja' | 'en' = 'ja') {
   if (!entityType || entityType === 'sovereign_state') return null;
@@ -67,7 +68,7 @@ export const TableView: React.FC<TableViewProps> = ({
     return Array.from(set).sort();
   }, [members]);
 
-  // 当該枠組みに実際に存在するステータス一覧
+  // 当該枠組みに実際に存在するステータス一覧（STATUS_LABELS定義順）
   const availableStatuses = useMemo(() => {
     const set = new Set<string>();
     members.forEach((m) => {
@@ -262,9 +263,18 @@ export const TableView: React.FC<TableViewProps> = ({
       {/* 件数サマリーバー（上部表示） */}
       <div className="px-4 py-2.5 bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
         <span className="font-semibold text-slate-700 dark:text-slate-200">
-          {language === 'ja'
-            ? `全 ${filteredMembers.length} カ国・地域を表示中`
-            : `Showing ${filteredMembers.length} countries & territories`}
+          {(() => {
+            const nonStateMembers = filteredMembers.filter((m) => isNonStateParticipant(m.countryCode));
+            const stateCount = filteredMembers.length - nonStateMembers.length;
+            if (nonStateMembers.length > 0) {
+              return language === 'ja'
+                ? `全 ${stateCount} カ国 + ${nonStateMembers.length} 非国家参加者を表示中`
+                : `Showing ${stateCount} States + ${nonStateMembers.length} Non-State Participants`;
+            }
+            return language === 'ja'
+              ? `全 ${filteredMembers.length} カ国・地域を表示中`
+              : `Showing ${filteredMembers.length} countries & territories`;
+          })()}
         </span>
         {(search || selectedRegion !== 'all' || selectedStatus !== 'all') && (
           <button
