@@ -3,7 +3,72 @@
 // - 人口: 国連 World Population Prospects / 世界銀行 (2023-2024)
 // - 名目GDP / 一人当たりGDP: IMF World Economic Outlook (2024) / 世界銀行
 // - ジェンダーギャップ指数: 世界経済フォーラム (WEF) Global Gender Gap Report 2024 (146カ国)
-import type { CountryStatRecord, StatIndicatorId } from '../types';
+import type { CountryStatRecord, StatIndicatorId, IncomeLevelId } from '../types';
+
+
+export interface IncomeLevelConfig {
+  id: IncomeLevelId;
+  nameJa: string;
+  nameEn: string;
+  shortLabelJa: string;
+  shortLabelEn: string;
+  color: string;
+  hoverColor: string;
+  descriptionJa: string;
+  descriptionEn: string;
+  order: number; // 4: HIC, 3: UMIC, 2: LMIC, 1: LIC
+}
+
+export const INCOME_LEVEL_CONFIG: Record<IncomeLevelId, IncomeLevelConfig> = {
+  HIC: {
+    id: 'HIC',
+    nameJa: '高所得国',
+    nameEn: 'High-Income Economies',
+    shortLabelJa: '高所得',
+    shortLabelEn: 'High Income',
+    color: '#2563eb', // ロイヤルブルー
+    hoverColor: '#1d4ed8',
+    descriptionJa: 'GNI per capita $14,006以上（世界銀行基準）。主に先進国および産油国。',
+    descriptionEn: 'GNI per capita of $14,006 or more. Advanced economies and high-income oil producers.',
+    order: 4,
+  },
+  UMIC: {
+    id: 'UMIC',
+    nameJa: '高中所得国',
+    nameEn: 'Upper-Middle-Income Economies',
+    shortLabelJa: '高中所得',
+    shortLabelEn: 'Upper Middle Income',
+    color: '#0ea5e9', // スカイブルー
+    hoverColor: '#0284c7',
+    descriptionJa: 'GNI per capita $4,516〜$14,005。新興経済国（中国、ブラジル、トルコ等）。',
+    descriptionEn: 'GNI per capita between $4,516 and $14,005. Emerging economies like China and Brazil.',
+    order: 3,
+  },
+  LMIC: {
+    id: 'LMIC',
+    nameJa: '低中所得国',
+    nameEn: 'Lower-Middle-Income Economies',
+    shortLabelJa: '低中所得',
+    shortLabelEn: 'Lower Middle Income',
+    color: '#f59e0b', // アンバー
+    hoverColor: '#d97706',
+    descriptionJa: 'GNI per capita $1,146〜$4,515。発展途上経済国（インド、インドネシア等）。',
+    descriptionEn: 'GNI per capita between $1,146 and $4,515. Developing economies such as India and Indonesia.',
+    order: 2,
+  },
+  LIC: {
+    id: 'LIC',
+    nameJa: '低所得国',
+    nameEn: 'Low-Income Economies',
+    shortLabelJa: '低所得',
+    shortLabelEn: 'Low Income',
+    color: '#ef4444', // ローズレッド / コーラル
+    hoverColor: '#dc2626',
+    descriptionJa: 'GNI per capita $1,145以下。開発援助・低利融資の重点対象国。',
+    descriptionEn: 'GNI per capita of $1,145 or less. Primary recipients of concessional development finance.',
+    order: 1,
+  },
+};
 
 export interface StatIndicatorMeta {
   id: StatIndicatorId;
@@ -78,6 +143,20 @@ export const STAT_INDICATORS: Record<StatIndicatorId, StatIndicatorMeta> = {
     descriptionEn: 'Measures gender parity across Economic, Education, Health, and Political pillars (1.0 = parity).',
     palette: ['#fdf4ff', '#f5d0fe', '#f0abfc', '#e879f9', '#d946ef', '#c026d3', '#9333ea', '#581c87'],
   },
+  income_level: {
+    id: 'income_level',
+    nameJa: '所得水準 (世銀分類)',
+    nameEn: 'Income Group (World Bank)',
+    unitJa: '区分',
+    unitEn: 'Group',
+    scaleType: 'linear',
+    sourceJa: '世界銀行 所得水準分類 (FY2025基準)',
+    sourceEn: 'World Bank Country and Lending Groups (FY2025)',
+    sourceUrl: 'https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups',
+    descriptionJa: '一人当たり国民総所得（GNI per capita, Atlas method）に基づく世界銀行の4段階経済分類（低所得・低中所得・高中所得・高所得）。',
+    descriptionEn: 'World Bank 4-tier income classification based on GNI per capita Atlas method (LIC, LMIC, UMIC, HIC).',
+    palette: ['#ef4444', '#f59e0b', '#0ea5e9', '#2563eb'],
+  },
 };
 
 export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
@@ -86,7 +165,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "population": 412623,
     "gdp": 14390,
     "gdpPerCapita": 34875,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BEN": {
     "alpha3": "BEN",
@@ -95,7 +175,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1558,
     "genderGapScore": 0.644,
     "genderGapRank": 133,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "BFA": {
     "alpha3": "BFA",
@@ -104,14 +185,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 942,
     "genderGapScore": 0.64,
     "genderGapRank": 130,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "FLK": {
     "alpha3": "FLK",
     "population": 50000,
     "gdp": 500,
     "gdpPerCapita": 10000,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "GMB": {
     "alpha3": "GMB",
@@ -120,7 +203,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 907,
     "genderGapScore": 0.638,
     "genderGapRank": 119,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "GIN": {
     "alpha3": "GIN",
@@ -129,14 +213,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1795,
     "genderGapScore": 0.614,
     "genderGapRank": 138,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "GNB": {
     "alpha3": "GNB",
     "population": 2150842,
     "gdp": 2151,
     "gdpPerCapita": 1000,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "LBR": {
     "alpha3": "LBR",
@@ -145,14 +231,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 877,
     "genderGapScore": 0.76,
     "genderGapRank": 46,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "PRI": {
     "alpha3": "PRI",
     "population": 3205691,
     "gdp": 120838,
     "gdpPerCapita": 37695,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "SLE": {
     "alpha3": "SLE",
@@ -161,7 +249,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 518,
     "genderGapScore": 0.667,
     "genderGapRank": 113,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "TGO": {
     "alpha3": "TGO",
@@ -170,7 +259,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1086,
     "genderGapScore": 0.706,
     "genderGapRank": 92,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "ISL": {
     "alpha3": "ISL",
@@ -179,7 +269,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 84594,
     "genderGapScore": 0.935,
     "genderGapRank": 1,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "IRL": {
     "alpha3": "IRL",
@@ -188,7 +279,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 112895,
     "genderGapScore": 0.802,
     "genderGapRank": 9,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "AZE": {
     "alpha3": "AZE",
@@ -197,7 +289,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 7456,
     "genderGapScore": 0.655,
     "genderGapRank": 121,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "AFG": {
     "alpha3": "AFG",
@@ -206,7 +299,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 343,
     "genderGapScore": 0.405,
     "genderGapRank": 146,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "USA": {
     "alpha3": "USA",
@@ -215,7 +309,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 86170,
     "genderGapScore": 0.748,
     "genderGapRank": 43,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ARE": {
     "alpha3": "ARE",
@@ -224,7 +319,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 50274,
     "genderGapScore": 0.741,
     "genderGapRank": 74,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "DZA": {
     "alpha3": "DZA",
@@ -233,7 +329,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 5850,
     "genderGapScore": 0.636,
     "genderGapRank": 140,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "ARG": {
     "alpha3": "ARG",
@@ -242,7 +339,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 13970,
     "genderGapScore": 0.757,
     "genderGapRank": 56,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "ALB": {
     "alpha3": "ALB",
@@ -251,7 +349,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 9110,
     "genderGapScore": 0.786,
     "genderGapRank": 17,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "ARM": {
     "alpha3": "ARM",
@@ -260,7 +359,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8716,
     "genderGapScore": 0.721,
     "genderGapRank": 64,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "AGO": {
     "alpha3": "AGO",
@@ -269,14 +369,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3088,
     "genderGapScore": 0.656,
     "genderGapRank": 120,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "YEM": {
     "alpha3": "YEM",
     "population": 34449825,
     "gdp": 16940,
     "gdpPerCapita": 492,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "GBR": {
     "alpha3": "GBR",
@@ -285,7 +387,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 53341,
     "genderGapScore": 0.789,
     "genderGapRank": 15,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ISR": {
     "alpha3": "ISR",
@@ -294,7 +397,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 54217,
     "genderGapScore": 0.72,
     "genderGapRank": 91,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ITA": {
     "alpha3": "ITA",
@@ -303,14 +407,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 40430,
     "genderGapScore": 0.703,
     "genderGapRank": 87,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "IRQ": {
     "alpha3": "IRQ",
     "population": 45504560,
     "gdp": 265894,
     "gdpPerCapita": 5843,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "IRN": {
     "alpha3": "IRN",
@@ -319,7 +425,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 5198,
     "genderGapScore": 0.582,
     "genderGapRank": 143,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "IND": {
     "alpha3": "IND",
@@ -328,7 +435,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2592,
     "genderGapScore": 0.641,
     "genderGapRank": 129,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "IDN": {
     "alpha3": "IDN",
@@ -337,7 +445,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4925,
     "genderGapScore": 0.697,
     "genderGapRank": 100,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "UGA": {
     "alpha3": "UGA",
@@ -346,7 +455,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1109,
     "genderGapScore": 0.724,
     "genderGapRank": 78,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "UKR": {
     "alpha3": "UKR",
@@ -355,14 +465,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 5106,
     "genderGapScore": 0.725,
     "genderGapRank": 62,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "UZB": {
     "alpha3": "UZB",
     "population": 36412350,
     "gdp": 112659,
     "gdpPerCapita": 3094,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "URY": {
     "alpha3": "URY",
@@ -371,7 +483,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 24131,
     "genderGapScore": 0.714,
     "genderGapRank": 81,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ECU": {
     "alpha3": "ECU",
@@ -380,7 +493,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 6682,
     "genderGapScore": 0.749,
     "genderGapRank": 47,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "EGY": {
     "alpha3": "EGY",
@@ -389,7 +503,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3338,
     "genderGapScore": 0.635,
     "genderGapRank": 135,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "EST": {
     "alpha3": "EST",
@@ -398,7 +513,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 31855,
     "genderGapScore": 0.775,
     "genderGapRank": 23,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "SWZ": {
     "alpha3": "SWZ",
@@ -407,7 +523,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4199,
     "genderGapScore": 0.718,
     "genderGapRank": 80,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "ETH": {
     "alpha3": "ETH",
@@ -416,14 +533,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1621,
     "genderGapScore": 0.71,
     "genderGapRank": 75,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "ERI": {
     "alpha3": "ERI",
     "population": 3748901,
     "gdp": 2383,
     "gdpPerCapita": 636,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "SLV": {
     "alpha3": "SLV",
@@ -432,7 +551,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 5551,
     "genderGapScore": 0.714,
     "genderGapRank": 71,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "AUS": {
     "alpha3": "AUS",
@@ -441,7 +561,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 64610,
     "genderGapScore": 0.78,
     "genderGapRank": 24,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "AUT": {
     "alpha3": "AUT",
@@ -450,7 +571,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 58269,
     "genderGapScore": 0.784,
     "genderGapRank": 21,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "OMN": {
     "alpha3": "OMN",
@@ -459,7 +581,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 23967,
     "genderGapScore": 0.614,
     "genderGapRank": 142,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "NLD": {
     "alpha3": "NLD",
@@ -468,7 +591,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 67465,
     "genderGapScore": 0.788,
     "genderGapRank": 28,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "GHA": {
     "alpha3": "GHA",
@@ -477,14 +601,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2205,
     "genderGapScore": 0.698,
     "genderGapRank": 104,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "GUY": {
     "alpha3": "GUY",
     "population": 813834,
     "gdp": 21822,
     "gdpPerCapita": 26814,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "KAZ": {
     "alpha3": "KAZ",
@@ -493,7 +619,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 14155,
     "genderGapScore": 0.71,
     "genderGapRank": 76,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "QAT": {
     "alpha3": "QAT",
@@ -502,7 +629,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 81491,
     "genderGapScore": 0.627,
     "genderGapRank": 139,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "CAN": {
     "alpha3": "CAN",
@@ -511,14 +639,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 55016,
     "genderGapScore": 0.772,
     "genderGapRank": 36,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "GAB": {
     "alpha3": "GAB",
     "population": 2436566,
     "gdp": 21013,
     "gdpPerCapita": 8624,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "CMR": {
     "alpha3": "CMR",
@@ -527,7 +657,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1857,
     "genderGapScore": 0.672,
     "genderGapRank": 112,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "KHM": {
     "alpha3": "KHM",
@@ -536,7 +667,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2075,
     "genderGapScore": 0.686,
     "genderGapRank": 102,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "CYP": {
     "alpha3": "CYP",
@@ -545,14 +677,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 37136,
     "genderGapScore": 0.678,
     "genderGapRank": 106,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "CUB": {
     "alpha3": "CUB",
     "population": 11194449,
     "gdp": 107352,
     "gdpPerCapita": 9590,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "GRC": {
     "alpha3": "GRC",
@@ -561,7 +695,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 24626,
     "genderGapScore": 0.698,
     "genderGapRank": 93,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "KGZ": {
     "alpha3": "KGZ",
@@ -570,7 +705,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2175,
     "genderGapScore": 0.697,
     "genderGapRank": 86,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "GTM": {
     "alpha3": "GTM",
@@ -579,7 +715,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 6082,
     "genderGapScore": 0.664,
     "genderGapRank": 115,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "KWT": {
     "alpha3": "KWT",
@@ -588,14 +725,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 37214,
     "genderGapScore": 0.631,
     "genderGapRank": 137,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "GRL": {
     "alpha3": "GRL",
     "population": 50000,
     "gdp": 500,
     "gdpPerCapita": 10000,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "HRV": {
     "alpha3": "HRV",
@@ -604,7 +743,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 22966,
     "genderGapScore": 0.73,
     "genderGapRank": 59,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "KEN": {
     "alpha3": "KEN",
@@ -613,14 +753,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2111,
     "genderGapScore": 0.718,
     "genderGapRank": 77,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "CIV": {
     "alpha3": "CIV",
     "population": 31165654,
     "gdp": 86911,
     "gdpPerCapita": 2789,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "CRI": {
     "alpha3": "CRI",
@@ -629,7 +771,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 18430,
     "genderGapScore": 0.793,
     "genderGapRank": 35,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "COM": {
     "alpha3": "COM",
@@ -638,7 +781,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1669,
     "genderGapScore": 0.631,
     "genderGapRank": 136,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "COL": {
     "alpha3": "COL",
@@ -647,14 +791,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 7951,
     "genderGapScore": 0.758,
     "genderGapRank": 32,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "COG": {
     "alpha3": "COG",
     "population": 6106869,
     "gdp": 15501,
     "gdpPerCapita": 2538,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "COD": {
     "alpha3": "COD",
@@ -663,7 +809,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 721,
     "genderGapScore": 0.612,
     "genderGapRank": 141,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "SAU": {
     "alpha3": "SAU",
@@ -672,7 +819,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 35528,
     "genderGapScore": 0.64,
     "genderGapRank": 131,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ZMB": {
     "alpha3": "ZMB",
@@ -681,14 +829,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1452,
     "genderGapScore": 0.689,
     "genderGapRank": 85,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "DJI": {
     "alpha3": "DJI",
     "population": 1136455,
     "gdp": 4364,
     "gdpPerCapita": 3840,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "JAM": {
     "alpha3": "JAM",
@@ -697,7 +847,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 7113,
     "genderGapScore": 0.756,
     "genderGapRank": 41,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "GEO": {
     "alpha3": "GEO",
@@ -706,14 +857,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8852,
     "genderGapScore": 0.734,
     "genderGapRank": 55,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "SYR": {
     "alpha3": "SYR",
     "population": 23227014,
     "gdp": 9000,
     "gdpPerCapita": 387,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "SGP": {
     "alpha3": "SGP",
@@ -722,7 +875,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 94897,
     "genderGapScore": 0.739,
     "genderGapRank": 49,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ZWE": {
     "alpha3": "ZWE",
@@ -731,7 +885,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2155,
     "genderGapScore": 0.727,
     "genderGapRank": 45,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "CHE": {
     "alpha3": "CHE",
@@ -740,7 +895,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 107702,
     "genderGapScore": 0.795,
     "genderGapRank": 18,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "SWE": {
     "alpha3": "SWE",
@@ -749,7 +905,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 57223,
     "genderGapScore": 0.816,
     "genderGapRank": 5,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "SDN": {
     "alpha3": "SDN",
@@ -758,7 +915,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 558,
     "genderGapScore": 0.568,
     "genderGapRank": 144,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "ESP": {
     "alpha3": "ESP",
@@ -767,7 +925,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 35327,
     "genderGapScore": 0.791,
     "genderGapRank": 10,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "SUR": {
     "alpha3": "SUR",
@@ -776,7 +935,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 6959,
     "genderGapScore": 0.725,
     "genderGapRank": 60,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "LKA": {
     "alpha3": "LKA",
@@ -785,7 +945,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3828,
     "genderGapScore": 0.658,
     "genderGapRank": 122,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "SVK": {
     "alpha3": "SVK",
@@ -794,7 +955,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 25935,
     "genderGapScore": 0.714,
     "genderGapRank": 63,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "SVN": {
     "alpha3": "SVN",
@@ -803,7 +965,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 34026,
     "genderGapScore": 0.75,
     "genderGapRank": 39,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "SEN": {
     "alpha3": "SEN",
@@ -812,7 +975,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1996,
     "genderGapScore": 0.684,
     "genderGapRank": 105,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "SRB": {
     "alpha3": "SRB",
@@ -821,21 +985,24 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 12384,
     "genderGapScore": 0.73,
     "genderGapRank": 58,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "SOM": {
     "alpha3": "SOM",
     "population": 18143378,
     "gdp": 12804,
     "gdpPerCapita": 706,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "SLB": {
     "alpha3": "SLB",
     "population": 740424,
     "gdp": 1700,
     "gdpPerCapita": 2296,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "THA": {
     "alpha3": "THA",
@@ -844,7 +1011,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 7387,
     "genderGapScore": 0.711,
     "genderGapRank": 65,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "TJK": {
     "alpha3": "TJK",
@@ -853,7 +1021,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1356,
     "genderGapScore": 0.672,
     "genderGapRank": 111,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "TZA": {
     "alpha3": "TZA",
@@ -862,7 +1031,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1275,
     "genderGapScore": 0.723,
     "genderGapRank": 68,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "CZE": {
     "alpha3": "CZE",
@@ -871,7 +1041,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 31828,
     "genderGapScore": 0.702,
     "genderGapRank": 88,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "TCD": {
     "alpha3": "TCD",
@@ -880,7 +1051,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 719,
     "genderGapScore": 0.58,
     "genderGapRank": 143,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "TUN": {
     "alpha3": "TUN",
@@ -889,7 +1061,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4391,
     "genderGapScore": 0.642,
     "genderGapRank": 128,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "CHL": {
     "alpha3": "CHL",
@@ -898,7 +1071,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 16659,
     "genderGapScore": 0.781,
     "genderGapRank": 21,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "DNK": {
     "alpha3": "DNK",
@@ -907,7 +1081,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 71026,
     "genderGapScore": 0.804,
     "genderGapRank": 14,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "DEU": {
     "alpha3": "DEU",
@@ -916,7 +1091,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 56104,
     "genderGapScore": 0.81,
     "genderGapRank": 6,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "DOM": {
     "alpha3": "DOM",
@@ -925,21 +1101,24 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 11128,
     "genderGapScore": 0.704,
     "genderGapRank": 83,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "TTO": {
     "alpha3": "TTO",
     "population": 1534937,
     "gdp": 28140,
     "gdpPerCapita": 18333,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "TKM": {
     "alpha3": "TKM",
     "population": 6516100,
     "gdp": 83884,
     "gdpPerCapita": 12873,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "TUR": {
     "alpha3": "TUR",
@@ -948,7 +1127,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 15893,
     "genderGapScore": 0.644,
     "genderGapRank": 127,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "NGA": {
     "alpha3": "NGA",
@@ -957,7 +1137,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1084,
     "genderGapScore": 0.65,
     "genderGapRank": 125,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "NAM": {
     "alpha3": "NAM",
@@ -966,7 +1147,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 5136,
     "genderGapScore": 0.805,
     "genderGapRank": 8,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "NIC": {
     "alpha3": "NIC",
@@ -975,7 +1157,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2672,
     "genderGapScore": 0.811,
     "genderGapRank": 7,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "NER": {
     "alpha3": "NER",
@@ -984,14 +1167,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 722,
     "genderGapScore": 0.631,
     "genderGapRank": 134,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "NCL": {
     "alpha3": "NCL",
     "population": 50000,
     "gdp": 500,
     "gdpPerCapita": 10000,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "NZL": {
     "alpha3": "NZL",
@@ -1000,7 +1185,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 49432,
     "genderGapScore": 0.835,
     "genderGapRank": 4,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "NPL": {
     "alpha3": "NPL",
@@ -1009,7 +1195,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1413,
     "genderGapScore": 0.663,
     "genderGapRank": 117,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "NOR": {
     "alpha3": "NOR",
@@ -1018,7 +1205,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 89889,
     "genderGapScore": 0.875,
     "genderGapRank": 2,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BHR": {
     "alpha3": "BHR",
@@ -1027,14 +1215,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 30339,
     "genderGapScore": 0.666,
     "genderGapRank": 116,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "HTI": {
     "alpha3": "HTI",
     "population": 11724763,
     "gdp": 24046,
     "gdpPerCapita": 2051,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "PAK": {
     "alpha3": "PAK",
@@ -1043,7 +1233,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1479,
     "genderGapScore": 0.57,
     "genderGapRank": 145,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "PAN": {
     "alpha3": "PAN",
@@ -1052,7 +1243,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 19549,
     "genderGapScore": 0.741,
     "genderGapRank": 52,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "VUT": {
     "alpha3": "VUT",
@@ -1061,14 +1253,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3366,
     "genderGapScore": 0.67,
     "genderGapRank": 109,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "PNG": {
     "alpha3": "PNG",
     "population": 10329931,
     "gdp": 31716,
     "gdpPerCapita": 3070,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "PRY": {
     "alpha3": "PRY",
@@ -1077,14 +1271,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 6677,
     "genderGapScore": 0.721,
     "genderGapRank": 70,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "PSE": {
     "alpha3": "PSE",
     "population": 5483450,
     "gdp": 17396,
     "gdpPerCapita": 3172,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "HUN": {
     "alpha3": "HUN",
@@ -1093,7 +1289,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 23319,
     "genderGapScore": 0.686,
     "genderGapRank": 101,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BGD": {
     "alpha3": "BGD",
@@ -1102,7 +1299,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2593,
     "genderGapScore": 0.689,
     "genderGapRank": 99,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "FJI": {
     "alpha3": "FJI",
@@ -1111,7 +1309,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 6195,
     "genderGapScore": 0.655,
     "genderGapRank": 121,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "PHL": {
     "alpha3": "PHL",
@@ -1120,7 +1319,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3985,
     "genderGapScore": 0.779,
     "genderGapRank": 25,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "FIN": {
     "alpha3": "FIN",
@@ -1129,7 +1329,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 53156,
     "genderGapScore": 0.875,
     "genderGapRank": 3,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BTN": {
     "alpha3": "BTN",
@@ -1138,7 +1339,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3950,
     "genderGapScore": 0.695,
     "genderGapRank": 103,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "BRA": {
     "alpha3": "BRA",
@@ -1147,7 +1349,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 10311,
     "genderGapScore": 0.696,
     "genderGapRank": 57,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "FRA": {
     "alpha3": "FRA",
@@ -1156,7 +1359,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 46103,
     "genderGapScore": 0.781,
     "genderGapRank": 22,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BGR": {
     "alpha3": "BGR",
@@ -1165,7 +1369,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 16087,
     "genderGapScore": 0.744,
     "genderGapRank": 38,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BRN": {
     "alpha3": "BRN",
@@ -1174,7 +1379,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 34267,
     "genderGapScore": 0.701,
     "genderGapRank": 96,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BDI": {
     "alpha3": "BDI",
@@ -1183,7 +1389,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 241,
     "genderGapScore": 0.741,
     "genderGapRank": 44,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "VNM": {
     "alpha3": "VNM",
@@ -1192,14 +1399,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4717,
     "genderGapScore": 0.715,
     "genderGapRank": 72,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "VEN": {
     "alpha3": "VEN",
     "population": 29000000,
     "gdp": 102328,
     "gdpPerCapita": 3529,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "BLR": {
     "alpha3": "BLR",
@@ -1208,7 +1417,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8256,
     "genderGapScore": 0.751,
     "genderGapRank": 41,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "BLZ": {
     "alpha3": "BLZ",
@@ -1217,7 +1427,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8023,
     "genderGapScore": 0.686,
     "genderGapRank": 108,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "PER": {
     "alpha3": "PER",
@@ -1226,7 +1437,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8526,
     "genderGapScore": 0.762,
     "genderGapRank": 34,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "BEL": {
     "alpha3": "BEL",
@@ -1235,7 +1447,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 56582,
     "genderGapScore": 0.793,
     "genderGapRank": 12,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "POL": {
     "alpha3": "POL",
@@ -1244,7 +1457,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 25104,
     "genderGapScore": 0.736,
     "genderGapRank": 48,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BIH": {
     "alpha3": "BIH",
@@ -1253,7 +1467,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8433,
     "genderGapScore": 0.718,
     "genderGapRank": 66,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "BWA": {
     "alpha3": "BWA",
@@ -1262,7 +1477,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8006,
     "genderGapScore": 0.719,
     "genderGapRank": 79,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "BOL": {
     "alpha3": "BOL",
@@ -1271,7 +1487,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3982,
     "genderGapScore": 0.73,
     "genderGapRank": 51,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "PRT": {
     "alpha3": "PRT",
@@ -1280,7 +1497,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 29328,
     "genderGapScore": 0.778,
     "genderGapRank": 26,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "HND": {
     "alpha3": "HND",
@@ -1289,7 +1507,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 3526,
     "genderGapScore": 0.744,
     "genderGapRank": 42,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "MDG": {
     "alpha3": "MDG",
@@ -1298,7 +1517,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 569,
     "genderGapScore": 0.737,
     "genderGapRank": 50,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "MWI": {
     "alpha3": "MWI",
@@ -1307,7 +1527,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 537,
     "genderGapScore": 0.676,
     "genderGapRank": 109,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "MLI": {
     "alpha3": "MLI",
@@ -1316,7 +1537,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 930,
     "genderGapScore": 0.605,
     "genderGapRank": 142,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "MLT": {
     "alpha3": "MLT",
@@ -1325,7 +1547,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 41738,
     "genderGapScore": 0.713,
     "genderGapRank": 84,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "MYS": {
     "alpha3": "MYS",
@@ -1334,7 +1557,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 11874,
     "genderGapScore": 0.676,
     "genderGapRank": 114,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "MMR": {
     "alpha3": "MMR",
@@ -1343,7 +1567,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1255,
     "genderGapScore": 0.65,
     "genderGapRank": 123,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "MEX": {
     "alpha3": "MEX",
@@ -1352,14 +1577,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 13988,
     "genderGapScore": 0.768,
     "genderGapRank": 33,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "MRT": {
     "alpha3": "MRT",
     "population": 4862989,
     "gdp": 10762,
     "gdpPerCapita": 2213,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "MOZ": {
     "alpha3": "MOZ",
@@ -1368,7 +1595,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 664,
     "genderGapScore": 0.776,
     "genderGapRank": 31,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "MDA": {
     "alpha3": "MDA",
@@ -1377,7 +1605,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 7488,
     "genderGapScore": 0.793,
     "genderGapRank": 13,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "MAR": {
     "alpha3": "MAR",
@@ -1386,7 +1615,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4027,
     "genderGapScore": 0.625,
     "genderGapRank": 136,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "MNG": {
     "alpha3": "MNG",
@@ -1395,7 +1625,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 6244,
     "genderGapScore": 0.716,
     "genderGapRank": 67,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "MNE": {
     "alpha3": "MNE",
@@ -1404,7 +1635,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 11636,
     "genderGapScore": 0.714,
     "genderGapRank": 61,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "JOR": {
     "alpha3": "JOR",
@@ -1413,7 +1645,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4725,
     "genderGapScore": 0.637,
     "genderGapRank": 126,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "LAO": {
     "alpha3": "LAO",
@@ -1422,7 +1655,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 2096,
     "genderGapScore": 0.733,
     "genderGapRank": 54,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "LVA": {
     "alpha3": "LVA",
@@ -1431,7 +1665,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 25136,
     "genderGapScore": 0.771,
     "genderGapRank": 27,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "LTU": {
     "alpha3": "LTU",
@@ -1440,14 +1675,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 28407,
     "genderGapScore": 0.8,
     "genderGapRank": 11,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "LBY": {
     "alpha3": "LBY",
     "population": 6888388,
     "gdp": 48221,
     "gdpPerCapita": 7000,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "ROU": {
     "alpha3": "ROU",
@@ -1456,7 +1693,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 20080,
     "genderGapScore": 0.693,
     "genderGapRank": 95,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "LUX": {
     "alpha3": "LUX",
@@ -1465,7 +1703,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 131384,
     "genderGapScore": 0.753,
     "genderGapRank": 40,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "RWA": {
     "alpha3": "RWA",
@@ -1474,7 +1713,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 972,
     "genderGapScore": 0.794,
     "genderGapRank": 34,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "LSO": {
     "alpha3": "LSO",
@@ -1483,7 +1723,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1028,
     "genderGapScore": 0.705,
     "genderGapRank": 89,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "LBN": {
     "alpha3": "LBN",
@@ -1492,14 +1733,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4068,
     "genderGapScore": 0.638,
     "genderGapRank": 132,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "RUS": {
     "alpha3": "RUS",
     "population": 143669648,
     "gdp": 2186462,
     "gdpPerCapita": 14962,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "KOR": {
     "alpha3": "KOR",
@@ -1508,42 +1751,48 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 36239,
     "genderGapScore": 0.696,
     "genderGapRank": 94,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "HKG": {
     "alpha3": "HKG",
     "population": 7498100,
     "gdp": 407000,
     "gdpPerCapita": 54280,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ESH": {
     "alpha3": "ESH",
     "population": 50000,
     "gdp": 500,
     "gdpPerCapita": 10000,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "GNQ": {
     "alpha3": "GNQ",
     "population": 1714671,
     "gdp": 12853,
     "gdpPerCapita": 7496,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "TWN": {
     "alpha3": "TWN",
     "population": 23420442,
     "gdp": 802958,
     "gdpPerCapita": 34432,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "CAF": {
     "alpha3": "CAF",
     "population": 5742315,
     "gdp": 2810,
     "gdpPerCapita": 489,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "CHN": {
     "alpha3": "CHN",
@@ -1552,7 +1801,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 13293,
     "genderGapScore": 0.678,
     "genderGapRank": 107,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "TLS": {
     "alpha3": "TLS",
@@ -1561,7 +1811,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 1502,
     "genderGapScore": 0.71,
     "genderGapRank": 69,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "ZAF": {
     "alpha3": "ZAF",
@@ -1570,14 +1821,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 6267,
     "genderGapScore": 0.785,
     "genderGapRank": 19,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "SSD": {
     "alpha3": "SSD",
     "population": 11088796,
     "gdp": 6517,
     "gdpPerCapita": 588,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "JPN": {
     "alpha3": "JPN",
@@ -1586,7 +1839,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 33797,
     "genderGapScore": 0.663,
     "genderGapRank": 118,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "MKD": {
     "alpha3": "MKD",
@@ -1595,35 +1849,40 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 8758,
     "genderGapScore": 0.715,
     "genderGapRank": 73,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "PRK": {
     "alpha3": "PRK",
     "population": 26160821,
     "gdp": 16500,
     "gdpPerCapita": 630,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LIC"
   },
   "LIE": {
     "alpha3": "LIE",
     "population": 39584,
     "gdp": 7758,
     "gdpPerCapita": 196000,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "AND": {
     "alpha3": "AND",
     "population": 80088,
     "gdp": 3897,
     "gdpPerCapita": 48660,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "ATG": {
     "alpha3": "ATG",
     "population": 94298,
     "gdp": 2127,
     "gdpPerCapita": 22556,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "BRB": {
     "alpha3": "BRB",
@@ -1632,7 +1891,8 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 24337,
     "genderGapScore": 0.777,
     "genderGapRank": 30,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "CPV": {
     "alpha3": "CPV",
@@ -1641,28 +1901,32 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 4540,
     "genderGapScore": 0.761,
     "genderGapRank": 37,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "DMA": {
     "alpha3": "DMA",
     "population": 73040,
     "gdp": 708,
     "gdpPerCapita": 9693,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "GRD": {
     "alpha3": "GRD",
     "population": 126183,
     "gdp": 1406,
     "gdpPerCapita": 11143,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "KIR": {
     "alpha3": "KIR",
     "population": 133515,
     "gdp": 279,
     "gdpPerCapita": 2090,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "MDV": {
     "alpha3": "MDV",
@@ -1671,14 +1935,16 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 13744,
     "genderGapScore": 0.649,
     "genderGapRank": 124,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "MHL": {
     "alpha3": "MHL",
     "population": 41996,
     "gdp": 284,
     "gdpPerCapita": 6763,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "MUS": {
     "alpha3": "MUS",
@@ -1687,126 +1953,144 @@ export const COUNTRY_STATS: Record<string, CountryStatRecord> = {
     "gdpPerCapita": 12601,
     "genderGapScore": 0.704,
     "genderGapRank": 110,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "FSM": {
     "alpha3": "FSM",
     "population": 115224,
     "gdp": 460,
     "gdpPerCapita": 3992,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "MCO": {
     "alpha3": "MCO",
     "population": 39050,
     "gdp": 9996,
     "gdpPerCapita": 240862,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "NRU": {
     "alpha3": "NRU",
     "population": 12780,
     "gdp": 154,
     "gdpPerCapita": 12050,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "PLW": {
     "alpha3": "PLW",
     "population": 18055,
     "gdp": 308,
     "gdpPerCapita": 17059,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "KNA": {
     "alpha3": "KNA",
     "population": 47755,
     "gdp": 1134,
     "gdpPerCapita": 23746,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "LCA": {
     "alpha3": "LCA",
     "population": 180251,
     "gdp": 2520,
     "gdpPerCapita": 13980,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "VCT": {
     "alpha3": "VCT",
     "population": 103698,
     "gdp": 1128,
     "gdpPerCapita": 10878,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "WSM": {
     "alpha3": "WSM",
     "population": 225681,
     "gdp": 1024,
     "gdpPerCapita": 4537,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "SMR": {
     "alpha3": "SMR",
     "population": 33660,
     "gdp": 2033,
     "gdpPerCapita": 60398,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "STP": {
     "alpha3": "STP",
     "population": 231856,
     "gdp": 603,
     "gdpPerCapita": 2601,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "LMIC"
   },
   "SYC": {
     "alpha3": "SYC",
     "population": 100447,
     "gdp": 2141,
     "gdpPerCapita": 21315,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "TON": {
     "alpha3": "TON",
     "population": 107773,
     "gdp": 547,
     "gdpPerCapita": 5075,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "TUV": {
     "alpha3": "TUV",
     "population": 11396,
     "gdp": 63,
     "gdpPerCapita": 5528,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   },
   "VAT": {
     "alpha3": "VAT",
     "population": 764,
     "gdp": 21,
     "gdpPerCapita": 27487,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "COK": {
     "alpha3": "COK",
     "population": 17564,
     "gdp": 300,
     "gdpPerCapita": 17080,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "NIU": {
     "alpha3": "NIU",
     "population": 1937,
     "gdp": 35,
     "gdpPerCapita": 18069,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "HIC"
   },
   "XKX": {
     "alpha3": "XKX",
     "population": 1761985,
     "gdp": 10469,
     "gdpPerCapita": 5942,
-    "year": 2024
+    "year": 2024,
+    "incomeLevel": "UMIC"
   }
 };
 

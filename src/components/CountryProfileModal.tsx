@@ -1,9 +1,9 @@
 import React, { useMemo, useEffect } from 'react';
 import type { Country, Framework } from '../types';
 import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
-import { COUNTRY_STATS, formatStatValue } from '../data/countryStats';
+import { COUNTRY_STATS, formatStatValue, INCOME_LEVEL_CONFIG } from '../data/countryStats';
 import { HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
-import { X, Award, History, Users, DollarSign, TrendingUp, Sparkles } from 'lucide-react';
+import { X, Award, History, Users, DollarSign, TrendingUp, Sparkles, Landmark } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
 
@@ -146,8 +146,23 @@ export const CountryProfileModal: React.FC<CountryProfileModalProps> = ({
             if (!stats) return null;
             return (
               <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 space-y-2.5">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  {language === 'ja' ? '基本統計・主要指標' : 'Key Statistics & Indicators'}
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    {language === 'ja' ? '基本統計・主要指標' : 'Key Statistics & Indicators'}
+                  </div>
+                  {stats.incomeLevel && INCOME_LEVEL_CONFIG[stats.incomeLevel] && (
+                    <span
+                      className="px-2 py-0.5 rounded-md text-[10px] font-bold text-white shadow-xs inline-flex items-center gap-1"
+                      style={{ backgroundColor: INCOME_LEVEL_CONFIG[stats.incomeLevel].color }}
+                    >
+                      <Landmark className="w-2.5 h-2.5" />
+                      <span>
+                        {language === 'ja'
+                          ? `世銀: ${INCOME_LEVEL_CONFIG[stats.incomeLevel].nameJa} (${stats.incomeLevel})`
+                          : `WB: ${INCOME_LEVEL_CONFIG[stats.incomeLevel].nameEn} (${stats.incomeLevel})`}
+                      </span>
+                    </span>
+                  )}
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   <div className="p-2.5 bg-white dark:bg-slate-800/90 rounded-xl border border-slate-200/80 dark:border-slate-700/60 shadow-xs">

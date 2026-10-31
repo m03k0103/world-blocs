@@ -175,7 +175,9 @@ export interface Framework {
 
 export type ViewMode = 'framework' | 'compare' | 'stats' | 'country';
 
-export type StatIndicatorId = 'population' | 'gdp' | 'gdp_per_capita' | 'gender_gap';
+export type IncomeLevelId = 'LIC' | 'LMIC' | 'UMIC' | 'HIC';
+
+export type StatIndicatorId = 'population' | 'gdp' | 'gdp_per_capita' | 'gender_gap' | 'income_level';
 
 export interface CountryStatRecord {
   alpha3: string;           // ISO 3166-1 alpha-3
@@ -184,6 +186,7 @@ export interface CountryStatRecord {
   gdpPerCapita?: number;    // 一人当たり名目GDP（USD）
   genderGapScore?: number;  // ジェンダーギャップ指数 (0.000 - 1.000)
   genderGapRank?: number;   // ジェンダーギャップ順位 (1 - 146)
+  incomeLevel?: IncomeLevelId; // 世界銀行 所得水準分類 (LIC, LMIC, UMIC, HIC)
   year?: number;            // 統計基準年
 }
 

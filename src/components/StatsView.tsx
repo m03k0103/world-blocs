@@ -7,6 +7,7 @@ import {
   STAT_INDICATORS,
   formatStatValue,
   getChoroplethColor,
+  INCOME_LEVEL_CONFIG,
 } from '../data/countryStats';
 import { WorldMap, type CountryMapData } from './WorldMap';
 import { FrameworkCombobox } from './FrameworkCombobox';
@@ -24,6 +25,7 @@ import {
   Globe2,
   ExternalLink,
   Award,
+  Landmark,
 } from 'lucide-react';
 
 interface StatsViewProps {
@@ -130,6 +132,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
         else if (activeIndicator === 'gdp') val = stats.gdp;
         else if (activeIndicator === 'gdp_per_capita') val = stats.gdpPerCapita;
         else if (activeIndicator === 'gender_gap') val = stats.genderGapScore;
+        else if (activeIndicator === 'income_level') val = stats.incomeLevel ? INCOME_LEVEL_CONFIG[stats.incomeLevel]?.order : undefined;
       }
 
       list.push({
@@ -161,6 +164,10 @@ export const StatsView: React.FC<StatsViewProps> = ({
     let countWithData = 0;
     let targetTotalPop = 0;
     let targetTotalGdp = 0;
+    let countHic = 0;
+    let countUmic = 0;
+    let countLmic = 0;
+    let countLic = 0;
 
     targetItems.forEach((item) => {
       sumValue += item.value!;
@@ -168,6 +175,10 @@ export const StatsView: React.FC<StatsViewProps> = ({
       const s = COUNTRY_STATS[item.country.alpha3];
       if (s?.population) targetTotalPop += s.population;
       if (s?.gdp) targetTotalGdp += s.gdp;
+      if (s?.incomeLevel === 'HIC') countHic += 1;
+      else if (s?.incomeLevel === 'UMIC') countUmic += 1;
+      else if (s?.incomeLevel === 'LMIC') countLmic += 1;
+      else if (s?.incomeLevel === 'LIC') countLic += 1;
     });
 
     const averageValue = countWithData > 0 ? sumValue / countWithData : 0;
@@ -183,6 +194,10 @@ export const StatsView: React.FC<StatsViewProps> = ({
       averageValue,
       targetTotalPop,
       targetTotalGdp,
+      countHic,
+      countUmic,
+      countLmic,
+      countLic,
       topItem: targetItems.length > 0 ? targetItems[0] : null,
       bottomItem: targetItems.length > 0 ? targetItems[targetItems.length - 1] : null,
     };
@@ -310,6 +325,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
       language === 'ja' ? '名目GDP (百万USD)' : 'GDP (Million USD)',
       language === 'ja' ? '一人当たりGDP (USD)' : 'GDP per Capita (USD)',
       language === 'ja' ? 'ジェンダーギャップ指数' : 'Gender Gap Score',
+      language === 'ja' ? '世銀所得水準' : 'World Bank Income Level',
     ];
 
     const rows = filteredTableData.map((item) => {
@@ -325,6 +341,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
         stats?.gdp ?? '',
         stats?.gdpPerCapita ?? '',
         stats?.genderGapScore ?? '',
+        stats?.incomeLevel ? (language === 'ja' ? INCOME_LEVEL_CONFIG[stats.incomeLevel].nameJa : INCOME_LEVEL_CONFIG[stats.incomeLevel].nameEn) : '',
       ]
         .map(sanitizeCsvCell)
         .join(',');
@@ -393,7 +410,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
         </div>
 
         {/* 指標切り替えタブ */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
           <button
             onClick={() => setActiveIndicator('population')}
             className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
@@ -427,22 +444,128 @@ export const StatsView: React.FC<StatsViewProps> = ({
             <TrendingUp className="w-4 h-4 shrink-0" />
             <span>{language === 'ja' ? '一人当たりGDP' : 'GDP per Capita'}</span>
           </button>
+          <button
+            onClick={() => setActiveIndicator('gender_gap')}
+            className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeIndicator === 'gender_gap'
+                ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+            }`}
+          >
+            <Sparkles className="w-4 h-4 shrink-0" />
+            <span>{language === 'ja' ? 'ジェンダーギャップ' : 'Gender Gap'}</span>
+          </button>
           <button
-            onClick={() => setActiveIndicator('gender_gap')}
-            className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              activeIndicator === 'gender_gap'
-                ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20'
+            onClick={() => setActiveIndicator('income_level')}
+            className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer col-span-2 sm:col-span-1 ${
+              activeIndicator === 'income_level'
+                ? 'bg-sky-600 text-white shadow-md shadow-sky-600/20'
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
-            <Sparkles className="w-4 h-4 shrink-0" />
-            <span>{language === 'ja' ? 'ジェンダーギャップ' : 'Gender Gap'}</span>
+            <Landmark className="w-4 h-4 shrink-0" />
+            <span>{language === 'ja' ? '世銀所得水準' : 'Income Level'}</span>
           </button>
         </div>
       </div>
 
-      {/* 定量サマリーカード（4枚） */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 定量サマリーカード（4枚） */}
+      {activeIndicator === 'income_level' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* HIC: 高所得国 */}
+          <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border-l-4 border-l-blue-600 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
+                {language === 'ja' ? '高所得国 (HIC)' : 'High Income (HIC)'}
+              </span>
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+            </div>
+            <div className="mt-2 flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+                {indicatorStatsData.countHic}
+              </span>
+              <span className="text-xs font-bold text-slate-500">
+                {indicatorStatsData.countWithData > 0
+                  ? `(${((indicatorStatsData.countHic / indicatorStatsData.countWithData) * 100).toFixed(1)}%)`
+                  : ''}
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">
+              {language === 'ja' ? '一人当たりGNI: $14,006 以上' : 'GNI per capita: ≥ $14,006'}
+            </p>
+          </div>
+
+          {/* UMIC: 高中所得国 */}
+          <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border-l-4 border-l-sky-500 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-sky-600 dark:text-sky-400">
+                {language === 'ja' ? '高中所得国 (UMIC)' : 'Upper-Middle (UMIC)'}
+              </span>
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-500" />
+            </div>
+            <div className="mt-2 flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+                {indicatorStatsData.countUmic}
+              </span>
+              <span className="text-xs font-bold text-slate-500">
+                {indicatorStatsData.countWithData > 0
+                  ? `(${((indicatorStatsData.countUmic / indicatorStatsData.countWithData) * 100).toFixed(1)}%)`
+                  : ''}
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">
+              {language === 'ja' ? '一人当たりGNI: $4,516 〜 $14,005' : 'GNI per capita: $4,516 - $14,005'}
+            </p>
+          </div>
+
+          {/* LMIC: 低中所得国 */}
+          <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border-l-4 border-l-amber-500 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
+                {language === 'ja' ? '低中所得国 (LMIC)' : 'Lower-Middle (LMIC)'}
+              </span>
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+            </div>
+            <div className="mt-2 flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+                {indicatorStatsData.countLmic}
+              </span>
+              <span className="text-xs font-bold text-slate-500">
+                {indicatorStatsData.countWithData > 0
+                  ? `(${((indicatorStatsData.countLmic / indicatorStatsData.countWithData) * 100).toFixed(1)}%)`
+                  : ''}
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">
+              {language === 'ja' ? '一人当たりGNI: $1,146 〜 $4,515' : 'GNI per capita: $1,146 - $4,515'}
+            </p>
+          </div>
+
+          {/* LIC: 低所得国 */}
+          <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border-l-4 border-l-rose-500 border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-rose-600 dark:text-rose-400">
+                {language === 'ja' ? '低所得国 (LIC)' : 'Low Income (LIC)'}
+              </span>
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+            </div>
+            <div className="mt-2 flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+                {indicatorStatsData.countLic}
+              </span>
+              <span className="text-xs font-bold text-slate-500">
+                {indicatorStatsData.countWithData > 0
+                  ? `(${((indicatorStatsData.countLic / indicatorStatsData.countWithData) * 100).toFixed(1)}%)`
+                  : ''}
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">
+              {language === 'ja' ? '一人当たりGNI: $1,145 以下' : 'GNI per capita: ≤ $1,145'}
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* カード1: 対象国数 */}
         <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between">
@@ -584,6 +707,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
           )}
         </div>
       </div>
+      )}
 
       {/* 世界地図セクション */}
       <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm space-y-4">
@@ -621,42 +745,93 @@ export const StatsView: React.FC<StatsViewProps> = ({
 
         {/* カラーバー凡例 & スケール */}
         <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
-            <span>{language === 'ja' ? '指標カラースケール' : 'Indicator Color Scale'}</span>
-            <span className="text-[11px] font-normal text-slate-500">
-              {indicatorMeta.scaleType === 'log'
-                ? language === 'ja'
-                  ? '※ 桁数差を明瞭化するため対数スケール(Log10)で塗色'
-                  : '* Logarithmic scale (Log10) applied'
-                : language === 'ja'
-                ? '※ 線形スケール(0.50〜0.95)'
-                : '* Linear scale (0.50 - 0.95)'}
-            </span>
-          </div>
+          {activeIndicator === 'income_level' ? (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <span>{language === 'ja' ? '世界銀行 所得水準分類 (FY2025 Atlas方式 GNI基準)' : 'World Bank Income Groups (FY2025 Atlas GNI)'}</span>
+                <span className="text-[11px] font-normal text-slate-500">
+                  {language === 'ja' ? '※ 4区分カテゴリカル塗色' : '* 4-tier categorical color coding'}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60">
+                  <span className="w-3.5 h-3.5 rounded-full shrink-0" style={{ backgroundColor: INCOME_LEVEL_CONFIG.HIC.color }} />
+                  <div className="text-[11px] leading-tight">
+                    <div className="font-bold text-blue-900 dark:text-blue-300">
+                      {language === 'ja' ? '高所得国 (HIC)' : 'High Income'}
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400 font-mono text-[10px]">≥ $14,006</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800/60">
+                  <span className="w-3.5 h-3.5 rounded-full shrink-0" style={{ backgroundColor: INCOME_LEVEL_CONFIG.UMIC.color }} />
+                  <div className="text-[11px] leading-tight">
+                    <div className="font-bold text-sky-900 dark:text-sky-300">
+                      {language === 'ja' ? '高中所得国 (UMIC)' : 'Upper-Middle'}
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400 font-mono text-[10px]">$4,516 - $14,005</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60">
+                  <span className="w-3.5 h-3.5 rounded-full shrink-0" style={{ backgroundColor: INCOME_LEVEL_CONFIG.LMIC.color }} />
+                  <div className="text-[11px] leading-tight">
+                    <div className="font-bold text-amber-900 dark:text-amber-300">
+                      {language === 'ja' ? '低中所得国 (LMIC)' : 'Lower-Middle'}
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400 font-mono text-[10px]">$1,146 - $4,515</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60">
+                  <span className="w-3.5 h-3.5 rounded-full shrink-0" style={{ backgroundColor: INCOME_LEVEL_CONFIG.LIC.color }} />
+                  <div className="text-[11px] leading-tight">
+                    <div className="font-bold text-rose-900 dark:text-rose-300">
+                      {language === 'ja' ? '低所得国 (LIC)' : 'Low Income'}
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400 font-mono text-[10px]">≤ $1,145</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <span>{language === 'ja' ? '指標カラースケール' : 'Indicator Color Scale'}</span>
+                <span className="text-[11px] font-normal text-slate-500">
+                  {indicatorMeta.scaleType === 'log'
+                    ? language === 'ja'
+                      ? '※ 桁数差を明瞭化するため対数スケール(Log10)で塗色'
+                      : '* Logarithmic scale (Log10) applied'
+                    : language === 'ja'
+                    ? '※ 線形スケール(0.50〜0.95)'
+                    : '* Linear scale (0.50 - 0.95)'}
+                </span>
+              </div>
 
-          {/* グラデーションバー */}
-          <div
-            className="h-3.5 w-full rounded-full border border-slate-300 dark:border-slate-700 shadow-inner"
-            style={{
-              background: `linear-gradient(to right, ${indicatorMeta.palette.join(', ')})`,
-            }}
-          />
+              {/* グラデーションバー */}
+              <div
+                className="h-3.5 w-full rounded-full border border-slate-300 dark:border-slate-700 shadow-inner"
+                style={{
+                  background: `linear-gradient(to right, ${indicatorMeta.palette.join(', ')})`,
+                }}
+              />
 
-          {/* 最小・中間・最大値ラベル */}
-          <div className="flex items-center justify-between text-[11px] font-mono font-medium text-slate-600 dark:text-slate-400">
-            <span>
-              {language === 'ja' ? '最小: ' : 'Min: '}
-              {formatStatValue(activeIndicator, indicatorStatsData.minVal, language)}
-            </span>
-            <span>
-              {language === 'ja' ? '平均: ' : 'Avg: '}
-              {formatStatValue(activeIndicator, indicatorStatsData.averageValue, language)}
-            </span>
-            <span>
-              {language === 'ja' ? '最大: ' : 'Max: '}
-              {formatStatValue(activeIndicator, indicatorStatsData.maxVal, language)}
-            </span>
-          </div>
+              {/* 最小・中間・最大値ラベル */}
+              <div className="flex items-center justify-between text-[11px] font-mono font-medium text-slate-600 dark:text-slate-400">
+                <span>
+                  {language === 'ja' ? '最小: ' : 'Min: '}
+                  {formatStatValue(activeIndicator, indicatorStatsData.minVal, language)}
+                </span>
+                <span>
+                  {language === 'ja' ? '平均: ' : 'Avg: '}
+                  {formatStatValue(activeIndicator, indicatorStatsData.averageValue, language)}
+                </span>
+                <span>
+                  {language === 'ja' ? '最大: ' : 'Max: '}
+                  {formatStatValue(activeIndicator, indicatorStatsData.maxVal, language)}
+                </span>
+              </div>
+            </>
+          )}
 
           {/* グレーアウト凡例 */}
           <div className="flex items-center gap-4 pt-1.5 border-t border-slate-200/60 dark:border-slate-700/40 text-[11px] text-slate-500 dark:text-slate-400">
@@ -814,19 +989,37 @@ export const StatsView: React.FC<StatsViewProps> = ({
                         {item.country.region}
                       </td>
                       <td className="py-3 px-4">
-                        <div className="space-y-1">
-                          <div className="font-bold text-slate-900 dark:text-white font-mono">
-                            {formatStatValue(activeIndicator, item.value, language)}
-                          </div>
-                          {indicatorMeta.scaleType === 'log' ? null : (
-                            <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-purple-500 rounded-full"
-                                style={{ width: `${ratio}%` }}
-                              />
+                        {activeIndicator === 'income_level' ? (
+                          stats?.incomeLevel ? (
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"
+                              style={{
+                                backgroundColor: `${INCOME_LEVEL_CONFIG[stats.incomeLevel].color}20`,
+                                color: INCOME_LEVEL_CONFIG[stats.incomeLevel].color,
+                                border: `1px solid ${INCOME_LEVEL_CONFIG[stats.incomeLevel].color}40`
+                              }}
+                            >
+                              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: INCOME_LEVEL_CONFIG[stats.incomeLevel].color }} />
+                              <span>{language === 'ja' ? INCOME_LEVEL_CONFIG[stats.incomeLevel].nameJa : INCOME_LEVEL_CONFIG[stats.incomeLevel].nameEn}</span>
+                              <span className="text-[10px] opacity-75">({stats.incomeLevel})</span>
                             </div>
-                          )}
-                        </div>
+                          ) : (
+                            <span className="text-slate-400 text-xs">—</span>
+                          )
+                        ) : (
+                          <div className="space-y-1">
+                            <div className="font-bold text-slate-900 dark:text-white font-mono">
+                              {formatStatValue(activeIndicator, item.value, language)}
+                            </div>
+                            {indicatorMeta.scaleType === 'log' ? null : (
+                              <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-purple-500 rounded-full"
+                                  style={{ width: `${ratio}%` }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </td>
                       <td className="py-3 px-4 text-right font-mono text-slate-700 dark:text-slate-300">
                         {formatStatValue('gdp_per_capita', stats?.gdpPerCapita, language)}

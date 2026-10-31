@@ -17,7 +17,27 @@
 
 ## 2. 各Trackの詳細
 
-### 2-1. 【完了】Drop 39: Track [Stats-ChoroplethMap] - 統計・指標グラデーションマップの新規実装
+### 2-1. 【完了】Drop 40: Track [Stats-WorldBankIncomeLevels] - 世界銀行 所得水準別分類の統計マップ表示
+
+#### 背景・課題
+- 世界銀行（World Bank）の所得水準分類（Low, Lower-Middle, Upper-Middle, High Income）は、各国の経済発展段階や開発金融・援助の適用基準として世界で最も広く参照される指標である。
+- 既存の連続グラデーション（人口、GDP、一人当たりGDP、GGGI）に加え、この所得水準4区分を世界地図上に明瞭なカラーで可視化し、各国際枠組み（G7, G20, ASEAN, BRICS, OECD等）における構成国がどの所得水準に属しているかをサマリー集計・比較できるようにする。
+
+#### 実装スコープ
+- **世界銀行所得水準4区分のマスタ配備**: 世界銀行公式API（FY2025/2024基準）に基づき、全205カ国・地域に `incomeLevel`（`LIC`, `LMIC`, `UMIC`, `HIC`）を付与。
+- **所得グループ専用のカラーパレット**:
+  - 高所得国 (High Income / HIC): ロイヤルブルー (`#2563eb`)
+  - 高中所得国 (Upper Middle Income / UMIC): スカイブルー (`#0ea5e9`)
+  - 低中所得国 (Lower Middle Income / LMIC): アンバー (`#f59e0b`)
+  - 低所得国 (Low Income / LIC): コーラルレッド (`#ef4444`)
+- **統計・指標マップ（StatsView）への統合**:
+  - 指標切替タブに「所得水準（世界銀行）」を追加。
+  - 所得水準選択時、4枚のサマリーカードを「HIC / UMIC / LMIC / LIC」の各国数および構成比（%）表示へ動的切替。
+  - カラーバー凡例を4区分のカテゴリカル凡例チップへ切替。
+  - ランキング一覧テーブルでの所得区分バッジ表示とソート・CSV出力対応。
+- **国詳細モーダルへの所得区分バッジ表示**: 国プロファイルモーダルに所属所得グループを表示。
+
+### 2-2. 【完了】Drop 39: Track [Stats-ChoroplethMap] - 統計・指標グラデーションマップの新規実装
 
 #### 背景・課題
 - 各国際枠組み（G7, G20, NATO, BRICS, EU, CPTPP等）の地政学的・経済的規模を定量的に把握するには、単なる加盟国数の比較だけでなく、人口、経済規模（名目GDP）、所得水準（一人当たりGDP）、社会指標（ジェンダーギャップ指数）を世界地図上のグラデーション（コロプレスマップ）として視覚化し、枠組み単位で抽出・集計できる仕組みが必要である。
@@ -28,7 +48,7 @@
 - **枠組み連動フィルタ & シェア集計**: 全世界表示に加え、任意の枠組み（34枠組み）を選択して加盟国（主権国家）のみをグラデーション抽出し、世界全体に占める人口シェア・GDPシェア、枠組み内平均、ランキング一覧・CSV出力を提供。
 - **国別プロファイル統合**: 国詳細モーダル（`CountryProfileModal`）にも当該国の4指標サマリーを表示。
 
-### 2-2. 【構想】Track [Stats-AdvancedIndicators] - 高次統計・安全保障・ガバナンス指標の拡充
+### 2-3. 【構想】Track [Stats-AdvancedIndicators] - 高次統計・安全保障・ガバナンス指標の拡充
 
 #### 背景・課題
 - 基本4指標に続き、安全保障同盟や地域統合体の性質をより多面的に分析するため、以下の高次指標を段階的に拡充する：
@@ -36,7 +56,7 @@
   2. **軍事費・防衛費（Military Expenditure）**: SIPRI（ストックホルム国際平和研究所）基準の防衛費総額（USD）および対GDP比（%）。NATOの2%基準達成状況等の可視化に対応。
   3. **ガバナンス・民主主義指標**: 民主主義指数（EIU Democracy Index）や報道の自由度指数（RSF）など、価値観外交や体制比較に資する指標。
 
-### 2-3. 【計画策定済】Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加
+### 2-4. 【計画策定済】Track [Eurasia-CentralAsia] - ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加
 
 #### 背景・課題
 - 旧ソ連構成国、中央アジア、コーカサス、およびアジア地域における多国間安全保障・経済統合・信頼醸成の主要6枠組み（CIS, EAEU, CICA, GUAM, ECO, CAREC）を新規追加し、既存の CSTO・SCO とあわせてユーラシア地域の国際関係を網羅する。
@@ -53,10 +73,11 @@
 
 ---
 
-## 3. 実装済 Drop一覧（Drop 1 〜 Drop 39）
+## 3. 実装済 Drop一覧（Drop 1 〜 Drop 40）
 
 | Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
 |:---:|:---:|:---|:---|:---|
+| **Drop 40** | 2026-10-31 | **Track [Stats-WorldBankIncomeLevels]: 世界銀行 所得水準別分類（LIC / LMIC / UMIC / HIC）の統計マップ表示** | `countryStats.ts`, `StatsView.tsx`, `CountryProfileModal.tsx`, `types/index.ts`, `translations.ts` | 世界銀行公式API基準の4段階所得区分（高所得70、高中所得54、低中所得54、低所得27）マスタ配備、カテゴリカル配色（HIC:青, UMIC:水色, LMIC:黄, LIC:赤）、4区分動的サマリーカード（国数・構成比%）、カテゴリカル凡例チップ、テーブルバッジ表示・CSV出力、国プロファイルモーダル統合、oxlint 0警告、本番ビルド成功 |
 | **Drop 39** | 2026-10-31 | **Track [Stats-ChoroplethMap]: 統計・指標グラデーションマップ（人口・GDP・一人当たりGDP・ジェンダーギャップ指数）の新規実装** | `countryStats.ts`, `StatsView.tsx`, `WorldMap.tsx`, `CountryProfileModal.tsx`, `Navbar.tsx`, `App.tsx`, `routing.ts` | 人口・名目GDP・一人当たりGDP・ジェンダーギャップ指数の世界約200カ国マスタ配備、対数/線形スケールによるコロプレスマップ描画、34枠組み抽出フィルタ & 人口/GDP世界シェア集計、国詳細モーダルへの統計カード統合、URL `/stats` ルーティング、oxlint 警告0件、本番ビルド成功 |
 | **Drop 38** | 2026-10-25 | **Track [UI-StateVsNonStateParticipants]: 凡例ゼロ件非表示 & 国家・非国家参加者（State vs Non-State）の分離表示** | `frameworks.ts`, `types/index.ts`, `FrameworkView.tsx`, `TableView.tsx`, `CountryProfileModal.tsx`, `WorldMap.tsx` | 凡例の0件ステータス完全非表示、EU（EUR）・AU（AFU）等非国家参加者の参加国除外、ステータス型の細分化（non_state_member, non_state_party）によるデータモデル刷新 & モーダル・凡例・一覧・地図の全画面ステータス完全同期、oxlint 警告0件、本番ビルド成功 |
 | **Drop 37** | 2026-10-18 | **Track [CodeQuality-Refinement]: Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | `TableView.tsx`, `CompareView.tsx`, `CountryListView.tsx`, `FrameworkView.tsx`, `CountryProfileModal.tsx`, `FrameworkCombobox.tsx`, `LanguageContext.tsx`, `routing.ts`, `vite.config.ts`, `package.json` | 歴史的主体（SUN, DDR, CSK）のテーブル一覧・比較画面正常表示、参加枠組み数厳格カウント、Escape/背景閉鎖対応、`oxlint` 警告ゼロ化（1,132件➔0件）、Vite チャンク分割によるバンドル最適化（単一633kB➔vendor 218kB, d3 21kB, app 393kB） |
@@ -104,6 +125,7 @@
 
 | Track ID | 構想テーマ | 技術仕様・変更詳細 | 到達成果 | 対応 Drop |
 |:---:|:---|:---|:---|:---:|
+| **Track [Stats-WorldBankIncomeLevels]** | **世界銀行 所得水準別分類（LIC / LMIC / UMIC / HIC）の統計マップ表示** | - **世界銀行公式API連携 & 4区分マスタ配備**: 世界銀行 Country and Lending Groups（FY2025基準）に基づき、全205カ国・地域に `incomeLevel`（`LIC`, `LMIC`, `UMIC`, `HIC`）を配備（`src/data/countryStats.ts`）。<br>- **カテゴリカル配色（Categorical Palette）**: 高所得国（#2563eb）、高中所得国（#0ea5e9）、低中所得国（#f59e0b）、低所得国（#ef4444）の明瞭な4色で世界地図を塗色。<br>- **枠組み連動 動的サマリーカード（4枚）**: `income_level` 選択時、4枚のサマリーカードが「HIC / UMIC / LMIC / LIC」の各国数および構成比（%）へ動的切替。各枠組み（G7, G20, ASEAN, NATO等）における所得階層の構成比を可視化。<br>- **カテゴリカル凡例チップ**: GNI per capita基準（$14,006以上、$4,516〜$14,005、$1,146〜$4,515、$1,145以下）を明記した4色凡例チップを表示。<br>- **一覧テーブル & 国詳細モーダル統合**: テーブル指標列でのカラーバッジ表示、ソート、CSV出力、および国プロファイルモーダルヘッダーへの世銀所得区分バッジ表示。 | 各国の経済発展段階・援助対象基準の直感的可視化と、各国際枠組みにおける所得グループ構成の定量的比較 | **Drop 40** |
 | **Track [UI-StateVsNonStateParticipants]** | **凡例ゼロ件非表示 & 国家・非国家参加者（State vs Non-State）の分離表示** | - **凡例改善**: 選択年に対象主体が存在しないステータス（count === 0）を凡例から完全除外。<br>- **集計適正化**: EU（EUR）・AU（AFU）等の非国家参加者を「参加国」カウントから除外し、主権国家（State Participants）と非国家参加者（Non-State Participants）を厳格に分離集計。<br>- **データモデル刷新（案C：ステータス型の細分化）**: `MembershipStatus` に `non_state_member`（非国家構成員）と `non_state_party`（非国家条約締約組織）を新設。G7/G20/Pax Silica/パリ協定の EU・AU レコード（計5件）を新ステータスへ移行。<br>- **全画面ステータス完全同期**: コンポーネント側の個別判定を廃止し、データ駆動（Single Source of Truth）で国プロファイルモーダル、一覧テーブル、凡例、地図パネルの全画面においてパープルの「非国家参加者」バッジを完全同期。<br>- **タイムライン計算および構成員判定の再発防止ガード・横展開**: `FrameworkView.tsx` のタイムライン計算（`computedMembership`）の分岐条件、`CompareView.tsx` の構成員判定、および `CountryListView.tsx` の参加枠組み数集計をすべて共通ヘルパー `isFullMemberStatus` に集約・統一し、新ステータス追加時にもメンバー除外や集計欠落が発生しない構造を確立。<br>- **共通化**: `src/utils/entityUtils.tsx` を新設し主体種別判定および専用カラー定義を統一。 | 凡例のノイズ解消、国際法・国際関係実務に即した正確な参加主体内訳の可視化 | **Drop 38** |
 | **Track [CodeQuality-Refinement]** | **Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | - **バグ修正**: `TableView.tsx` の地域抽出・フィルタ・ソート、および `CompareView.tsx` の主体取得に `getEntity(code)` を適用し、歴史的主体（SUN, DDR, CSK）の欠落を是正。<br>- **集計適正化**: `CompareView.tsx` の比較対象および `CountryListView.tsx` の参加枠組み数集計を `member`, `party`, `participating_state` のみに厳格化（`Agent.md` 第9項準拠）。<br>- **UI改善**: `FrameworkView.tsx` のタイムライン計算に `negotiationsApproved` を反映しヘッダーに `frameworkType` バッジを表示。`CountryProfileModal.tsx` に背景クリックおよび `Escape` キー閉鎖を追加。<br>- **静的解析・バンドル最適化**: `package.json` を `"lint": "oxlint src"` に変更しルーティング関数を `routing.ts` に分離（警告 1,132件 ➔ 0件）。`vite.config.ts` で `vendor` (218kB) / `d3` (21kB) / `app` (393kB) に分割（500kB警告解消）。 | コンポーネント間データ整合性確保、静的解析警告ゼロ化、初期ロード効率化 | **Drop 37** |
 | **Track [UI-CategoryRedesign]** | **カテゴリ体系の再編・スリム化 & 所属枠組みの適正化** | - `src/data/frameworks.ts` の `CATEGORY_LABELS` を簡潔な5分類（安全保障 / 経済・通商 / 地域統合 / 首脳・戦略対話 / 国際法・条約）へ更新。<br>- `quad`, `pax_silica`, `waico` のカテゴリを `security` から `summit`（首脳・戦略対話）へ再配置。<br>- `src/types/index.ts` の `FrameworkCategory` コメント注記を同期。 | カテゴリフィルターボタンの視認性向上、各カテゴリの枠組み数適正化（8, 10, 4, 7, 5） | **Drop 36** |
