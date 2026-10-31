@@ -79,7 +79,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
   const validCountries = useMemo(() => {
     return COUNTRIES.filter(
       (c) =>
-        !c.alpha3.startsWith('C') &&
+        c.alpha3 !== 'Cundefined' &&
         c.alpha3 !== 'ATA' &&
         c.alpha3 !== 'ATF' &&
         c.entityType !== 'supranational' &&
