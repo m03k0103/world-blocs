@@ -66,6 +66,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   colorBoth = '#8b5cf6', // 紫
   labelA = '枠組みA',
   labelB = '枠組みB',
+  statIndicatorName,
   onSelectCountry,
   selectedCountryAlpha3,
   hasFrameworkSelected = true,
@@ -542,6 +543,42 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                 </div>
               ) : (
                 <div className="text-slate-400">{language === 'ja' ? 'いずれも非参加' : 'Non-member'}</div>
+              )}
+            </div>
+          ) : mode === 'choropleth' ? (
+            <div className="space-y-1 pt-1 border-t border-slate-700/60">
+              {hoverInfo.data?.statFormatted ? (
+                <>
+                  <div className="flex items-center justify-between gap-3 font-medium">
+                    <span className="text-slate-300 truncate">
+                      {statIndicatorName || (language === 'ja' ? '指標値' : 'Indicator Value')}:
+                    </span>
+                    <span className="font-semibold text-sky-300 font-mono">
+                      {hoverInfo.data.statFormatted}
+                    </span>
+                  </div>
+                  {(hoverInfo.data.statRank !== undefined || hoverInfo.data.statShare) && (
+                    <div className="flex items-center gap-2 text-[11px] text-slate-300">
+                      {hoverInfo.data.statRank !== undefined && (
+                        <span className="font-semibold text-amber-300 font-mono">
+                          #{hoverInfo.data.statRank}
+                        </span>
+                      )}
+                      {hoverInfo.data.statShare && (
+                        <span className="text-slate-400">{hoverInfo.data.statShare}</span>
+                      )}
+                    </div>
+                  )}
+                  {hoverInfo.data.isFilteredOut && (
+                    <div className="text-[10px] text-slate-400 italic">
+                      {language === 'ja' ? '※ 選択枠組みの対象外' : '* Outside selected framework'}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-slate-400 text-xs">
+                  {language === 'ja' ? 'データ未集計' : 'No data'}
+                </div>
               )}
             </div>
           ) : (

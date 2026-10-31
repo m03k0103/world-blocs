@@ -585,20 +585,15 @@ export const StatsView: React.FC<StatsViewProps> = ({
         </div>
       </div>
 
-      {/* グラデーション世界地図セクション */}
+      {/* 世界地図セクション */}
       <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-              {language === 'ja' ? 'グラデーション世界地図' : 'Global Choropleth Map'}
-            </h2>
-            <div className="text-xs text-slate-500 dark:text-slate-400">
-              {selectedFramework
-                ? `${selectedFramework[language === 'en' ? 'nameEn' : 'nameJa']} (${language === 'ja' ? '加盟国のみ抽出表示' : 'Member states highlighted'})`
-                : language === 'ja'
-                ? '全世界すべての国・地域'
-                : 'Worldwide all countries & territories'}
-            </div>
+          <div className="text-xs text-slate-500 dark:text-slate-400">
+            {selectedFramework
+              ? `${selectedFramework[language === 'en' ? 'nameEn' : 'nameJa']} (${language === 'ja' ? '加盟国のみ抽出表示' : 'Member states highlighted'})`
+              : language === 'ja'
+              ? '全世界すべての国・地域'
+              : 'Worldwide all countries & territories'}
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <span>{language === 'ja' ? '一次資料:' : 'Source:'}</span>
@@ -621,6 +616,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
           statIndicatorName={indicatorMeta[language === 'en' ? 'nameEn' : 'nameJa']}
           onSelectCountry={onSelectCountry}
           selectedCountryAlpha3={selectedCountryAlpha3}
+          hasFrameworkSelected={Boolean(selectedFramework)}
         />
 
         {/* カラーバー凡例 & スケール */}
