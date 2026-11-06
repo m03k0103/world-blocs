@@ -1,26 +1,13 @@
 import type { ViewMode, Framework } from '../types';
-import { FRAMEWORKS } from '../data/frameworks';
+import { findFramework, normalizeFrameworkKey } from './frameworkUtils';
 
-// 文字列を正規化して比較（ハイフン・アンダースコア・スペースを無視）
+// 文字列を正規化して比較（後方互換）
 export function normalizeKey(str: string): string {
-  return str.toLowerCase().replace(/[-_\s]+/g, '');
+  return normalizeFrameworkKey(str);
 }
 
-// 枠組みを特定するヘルパー
-export function findFramework(key: string | null | undefined): Framework | null {
-  if (!key) return null;
-  const decoded = decodeURIComponent(key).trim();
-  const norm = normalizeKey(decoded);
-  return (
-    FRAMEWORKS.find((f) => {
-      if (normalizeKey(f.id) === norm) return true;
-      if (normalizeKey(f.acronym) === norm) return true;
-      if (f.aliases && f.aliases.some((a) => normalizeKey(a) === norm)) return true;
-      return false;
-    }) || null
-  );
-}
-
+// 枠組み特定ヘルパーは frameworkUtils に一元化（完全後方互換 re-export）
+export { findFramework };
 // URL用スラッグの生成（スペースをハイフンに変換）
 export function formatFrameworkSlug(f: Framework): string {
   return encodeURIComponent(f.acronym.replace(/\s+/g, '-'));

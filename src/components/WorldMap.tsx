@@ -1,20 +1,25 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
 import * as d3Geo from 'd3-geo';
 import * as topojson from 'topojson-client';
+import type { Topology } from 'topojson-specification';
+import type { Feature, Geometry } from 'geojson';
 import countriesTopology from '../data/countries-110m.json';
 import { COUNTRY_BY_NUMERIC, COUNTRY_BY_ALPHA3, getEntity, HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
-import { STATUS_LABELS } from '../data/frameworks';
 import type { Country, MembershipStatus, HistoricalEntity } from '../types';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { isNonStateParticipant, NON_STATE_ENTITY_COLOR, NON_STATE_ENTITY_HOVER_COLOR } from '../utils/entityUtils';
+import { useSvgZoomPan } from '../hooks/useSvgZoomPan';
+import { MapTooltip, type HoverInfo } from './map/MapTooltip';
+import { MapEntityBadges } from './map/MapEntityBadges';
 
-// TopoJSONをGeoJSON feature配列へ変換（モジュールロード時に1度だけ実行）
-const geojson: any = topojson.feature(
-  countriesTopology as any,
-  (countriesTopology as any).objects.countries
-);
-const defaultGeographies: any[] = geojson.features;
+// TopoJSONをGeoJSON feature配列へ型安全に変換（モジュールロード時に1度だけ実行）
+const topology = countriesTopology as unknown as Topology;
+const geojson = topojson.feature(
+  topology,
+  topology.objects.countries
+) as unknown as { features: Feature<Geometry, { name?: string }>[] };
+const defaultGeographies = geojson.features;
 
 export interface CountryMapData {
   status?: MembershipStatus;
@@ -47,17 +52,6 @@ interface WorldMapProps {
   hasFrameworkSelected?: boolean;
 }
 
-interface HoverInfo {
-  x: number;
-  y: number;
-  country: Country;
-  data?: CountryMapData;
-  historicalContext?: {
-    entity: HistoricalEntity;
-    isSuccessor: boolean;
-  };
-}
-
 export const WorldMap: React.FC<WorldMapProps> = ({
   countryDataMap,
   mode = 'single',
@@ -75,11 +69,19 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   const geographies = defaultGeographies;
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
 
-  // ズーム & パン状態
-  const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef({ x: 0, y: 0 });
+  // ズーム & パン制御カスタムフック
+  const {
+    zoom,
+    pan,
+    isDragging,
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+    handleWheel,
+    handleZoomIn,
+    handleZoomOut,
+    handleReset,
+  } = useSvgZoomPan({ minZoom: 0.8, maxZoom: 8, initialZoom: 1 });
 
   const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -101,7 +103,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   // 地図上のポリゴンに存在する alpha3 の集合
   const mappedAlpha3Set = useMemo(() => {
     const set = new Set<string>();
-    geographies.forEach(geo => {
+    geographies.forEach((geo) => {
       const numericId = String(geo.id).padStart(3, '0');
       const country = COUNTRY_BY_NUMERIC[numericId];
       if (country) {
@@ -244,40 +246,6 @@ export const WorldMap: React.FC<WorldMapProps> = ({
     [countryDataMap, historicalSuccessorMap, mode, colorA, colorB, colorBoth]
   );
 
-  // マウスドラッグハンドラ
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0) return; // 左クリックのみ
-    setIsDragging(true);
-    dragStartRef.current = { x: e.clientX - pan.x, y: e.clientY - pan.y };
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    setPan({
-      x: e.clientX - dragStartRef.current.x,
-      y: e.clientY - dragStartRef.current.y,
-    });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // ホイールズーム
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    const zoomFactor = e.deltaY < 0 ? 1.2 : 0.83;
-    setZoom(prev => Math.min(Math.max(prev * zoomFactor, 0.8), 8));
-  };
-
-  // ズームコントロールボタン
-  const handleZoomIn = () => setZoom(prev => Math.min(prev * 1.3, 8));
-  const handleZoomOut = () => setZoom(prev => Math.max(prev / 1.3, 0.8));
-  const handleReset = () => {
-    setZoom(1);
-    setPan({ x: 0, y: 0 });
-  };
-
   return (
     <div className="relative w-full h-[480px] lg:h-[560px] bg-slate-100 dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner select-none">
       {/* ズーム操作コントロール */}
@@ -306,317 +274,113 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       </div>
 
       {/* 左上フローティングパネル：地域組織・非国家参加 & 地図未表示の参加国 */}
-      {(() => {
-        const renderMemberItem = (country: Country, data: CountryMapData) => {
-          const isSelected = selectedCountryAlpha3 === country.alpha3;
-          const fill = getCountryFill(country.alpha3, false, isSelected);
-          const isNonState = isNonStateParticipant(country.alpha3);
-          const statusLabel = isNonState
-            ? (language === 'en' ? 'Non-State Participant' : '非国家参加者')
-            : (data.status && STATUS_LABELS[data.status]
-                ? STATUS_LABELS[data.status][language === 'en' ? 'labelEn' : 'labelJa']
-                : data.status);
-
-          return (
-            <button
-              key={country.alpha3}
-              onClick={() => onSelectCountry?.(country)}
-              className={`w-full flex items-center justify-between gap-2 px-2 py-1 text-left text-xs transition-colors cursor-pointer rounded ${
-                isSelected
-                  ? 'text-orange-600 dark:text-orange-400 font-semibold bg-orange-50/70 dark:bg-orange-950/40'
-                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/70 dark:hover:bg-slate-700/40'
-              }`}
-              title={language === 'en' ? country.nameEn : country.nameJa}
-            >
-              <div className="flex items-center gap-1.5 truncate">
-                <span className="text-sm shrink-0">{country.flagEmoji || '🌐'}</span>
-                <span className="truncate font-medium">
-                  {language === 'en' ? country.nameEn : country.nameJa}
-                </span>
-              </div>
-              {mode === 'compare' ? (
-                <span className="flex items-center gap-1.5 text-[11px] shrink-0 text-slate-500 dark:text-slate-400">
-                  <span
-                    className="w-2 h-2 rounded-full shrink-0"
-                    style={{ backgroundColor: fill }}
-                  />
-                  <span className="truncate max-w-[84px]">
-                    {data.inFrameworkA && data.inFrameworkB
-                      ? (language === 'ja' ? '両方' : 'Both')
-                      : data.inFrameworkA
-                      ? labelA
-                      : labelB}
-                  </span>
-                </span>
-              ) : (
-                statusLabel && (
-                  <span className="flex items-center gap-1.5 text-[11px] shrink-0 text-slate-500 dark:text-slate-400">
-                    <span
-                      className="w-2 h-2 rounded-full shrink-0"
-                      style={{ backgroundColor: fill }}
-                    />
-                    <span className="truncate max-w-[84px]">{statusLabel}</span>
-                  </span>
-                )
-              )}
-            </button>
-          );
-        };
-
-        if (regionalBlocMembers.length === 0 && microstateMembers.length === 0) return null;
-
-        return (
-          <div className="absolute top-4 left-4 z-10 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-md flex flex-col gap-2.5 max-w-[280px] sm:max-w-[320px] max-h-[calc(100%-2rem)] overflow-y-auto">
-            {/* 地域組織・非国家参加 */}
-            {regionalBlocMembers.length > 0 && (
-              <div className="flex flex-col gap-1">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">
-                  {language === 'ja' ? '地域組織・非国家参加' : 'Regional / Non-state Members'}
-                </div>
-                <div className="flex flex-col">
-                  {regionalBlocMembers.map(({ country, data }) => renderMemberItem(country, data))}
-                </div>
-              </div>
-            )}
-
-            {/* セパレーター */}
-            {regionalBlocMembers.length > 0 && microstateMembers.length > 0 && (
-              <div className="border-t border-slate-200 dark:border-slate-700/80" />
-            )}
-
-            {/* 地図未表示の参加国 */}
-            {microstateMembers.length > 0 && (
-              <div className="flex flex-col gap-1">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">
-                  {language === 'ja' ? '地図未表示の参加国' : 'Other participating states'}
-                </div>
-                <div className="flex flex-col">
-                  {microstateMembers.map(({ country, data }) => renderMemberItem(country, data))}
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      })()}
+      <MapEntityBadges
+        regionalBlocMembers={regionalBlocMembers}
+        microstateMembers={microstateMembers}
+        selectedCountryAlpha3={selectedCountryAlpha3}
+        onSelectCountry={onSelectCountry}
+        getCountryFill={getCountryFill}
+        mode={mode}
+        labelA={labelA}
+        labelB={labelB}
+        language={language}
+      />
 
       <svg
-          ref={svgRef}
-          viewBox={`0 0 ${width} ${height}`}
-          className={`w-full h-full ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={() => {
-            setIsDragging(false);
-            setHoverInfo(null);
-          }}
-          onWheel={handleWheel}
+        ref={svgRef}
+        viewBox={`0 0 ${width} ${height}`}
+        className={`w-full h-full ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={() => {
+          handleMouseUp();
+          setHoverInfo(null);
+        }}
+        onWheel={handleWheel}
+      >
+        {/* 海洋の背景 */}
+        <rect width={width} height={height} fill="transparent" />
+
+        {/* グリッド/経緯度線の装飾 */}
+        <g
+          transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}
+          style={{ transformOrigin: 'center center', transition: isDragging ? 'none' : 'transform 0.1s ease-out' }}
         >
-          {/* 海洋の背景 */}
-          <rect width={width} height={height} fill="transparent" />
+          {/* 国境の描画 */}
+          {geographies.map((geo, idx) => {
+            const path = pathGenerator(geo);
+            const numericId = String(geo.id).padStart(3, '0');
+            const country = COUNTRY_BY_NUMERIC[numericId];
+            const alpha3 = country ? country.alpha3 : `C${numericId}`;
+            const isSelected = selectedCountryAlpha3 === alpha3;
+            const isHovered = hoverInfo?.country.alpha3 === alpha3;
 
-          {/* グリッド/経緯度線の装飾 */}
-          <g
-            transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}
-            style={{ transformOrigin: 'center center', transition: isDragging ? 'none' : 'transform 0.1s ease-out' }}
-          >
-            {/* 国境の描画 */}
-            {geographies.map((geo, idx) => {
-              const path = pathGenerator(geo);
-              const numericId = String(geo.id).padStart(3, '0');
-              const country = COUNTRY_BY_NUMERIC[numericId];
-              const alpha3 = country ? country.alpha3 : `C${numericId}`;
-              const isSelected = selectedCountryAlpha3 === alpha3;
-              const isHovered = hoverInfo?.country.alpha3 === alpha3;
-              const fallback = historicalSuccessorMap[alpha3];
-              const effectiveData = countryDataMap[alpha3] || fallback?.data;
+            // 後継国家コンテキスト (SUN, DDR, CSK 等の代理ポリゴン)
+            const successorContext = historicalSuccessorMap[alpha3];
+            const displayEntity = successorContext ? successorContext.historicalEntity : country;
 
-              return (
-                <path
-                  key={geo.id || idx}
-                  d={path || ''}
-                  fill={getCountryFill(alpha3, isHovered, isSelected)}
-                  stroke={isSelected ? '#c2410c' : '#ffffff'}
-                  strokeWidth={isSelected ? 1.5 / zoom : 0.4 / zoom}
-                  className="transition-colors duration-150 outline-none"
-                  onMouseEnter={(e) => {
-                    if (country) {
-                      setHoverInfo({
-                        x: e.clientX,
-                        y: e.clientY,
-                        country,
-                        data: effectiveData,
-                        historicalContext: fallback
-                          ? { entity: fallback.historicalEntity, isSuccessor: true }
-                          : undefined,
-                      });
-                    }
-                  }}
-                  onMouseMove={(e) => {
-                    if (hoverInfo && country) {
-                      setHoverInfo({
-                        x: e.clientX,
-                        y: e.clientY,
-                        country,
-                        data: effectiveData,
-                        historicalContext: fallback
-                          ? { entity: fallback.historicalEntity, isSuccessor: true }
-                          : undefined,
-                      });
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    setHoverInfo(null);
-                  }}
-                  onClick={() => {
-                    if (fallback) {
-                      const histCountry = COUNTRY_BY_ALPHA3[fallback.historicalEntity.alpha3];
-                      if (histCountry && onSelectCountry) {
-                        onSelectCountry(histCountry);
-                        return;
-                      }
-                    }
-                    if (country && onSelectCountry) {
-                      onSelectCountry(country);
-                    }
-                  }}
-                />
-              );
-            })}
-          </g>
-        </svg>
+            const fill = getCountryFill(alpha3, isHovered, isSelected);
+
+            const directData = countryDataMap[alpha3];
+            const mapData = directData || successorContext?.data;
+            const hasData = hasFrameworkSelected
+              ? Boolean(mapData && (mapData.status || mapData.inFrameworkA || mapData.inFrameworkB || (mode === 'choropleth' && mapData.statValue !== undefined)))
+              : true;
+
+            return (
+              <path
+                key={geo.id || idx}
+                d={path || ''}
+                fill={fill}
+                stroke={isSelected ? '#ea580c' : isHovered ? '#64748b' : 'var(--map-border, #94a3b8)'}
+                strokeWidth={isSelected ? 2 / zoom : isHovered ? 1.5 / zoom : 0.5 / zoom}
+                className={`transition-colors duration-150 ${
+                  hasData ? 'cursor-pointer hover:opacity-90' : 'cursor-default'
+                }`}
+                onMouseEnter={(e) => {
+                  if (displayEntity) {
+                    setHoverInfo({
+                      x: e.clientX,
+                      y: e.clientY,
+                      country: country || (displayEntity as Country),
+                      data: mapData,
+                      historicalContext: successorContext
+                        ? {
+                            entity: successorContext.historicalEntity,
+                            isSuccessor: true,
+                          }
+                        : undefined,
+                    });
+                  }
+                }}
+                onMouseMove={(e) => {
+                  if (hoverInfo) {
+                    setHoverInfo((prev) => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
+                  }
+                }}
+                onMouseLeave={() => setHoverInfo(null)}
+                onClick={() => {
+                  if (displayEntity && onSelectCountry) {
+                    const targetEntity = COUNTRY_BY_ALPHA3[alpha3] || displayEntity;
+                    onSelectCountry(targetEntity as Country);
+                  }
+                }}
+              />
+            );
+          })}
+        </g>
+      </svg>
 
       {/* ホバー時ツールチップ */}
-      {hoverInfo && (
-        <div
-          className="fixed pointer-events-none z-50 transform -translate-x-1/2 -translate-y-full mb-3 px-3.5 py-2.5 bg-slate-900/95 dark:bg-slate-800/95 text-white text-xs rounded-xl shadow-xl border border-slate-700/50 backdrop-blur-md transition-all duration-75 max-w-xs"
-          style={{
-            left: `${hoverInfo.x}px`,
-            top: `${hoverInfo.y - 10}px`,
-          }}
-        >
-          {hoverInfo.historicalContext ? (
-            <div className="space-y-1 mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-base">{hoverInfo.historicalContext.entity.flagEmoji || '🚩'}</span>
-                <span className="font-bold text-sm text-amber-300">
-                  {language === 'en'
-                    ? hoverInfo.historicalContext.entity.nameEn
-                    : hoverInfo.historicalContext.entity.nameJa}
-                </span>
-                <span className="text-amber-400/80 text-[11px] font-mono">
-                  ({hoverInfo.historicalContext.entity.alpha3})
-                </span>
-              </div>
-              <div className="text-[10px] text-amber-200/90 font-medium bg-amber-950/60 px-2 py-1 rounded border border-amber-800/50 leading-relaxed">
-                {language === 'ja'
-                  ? `※現代の「${hoverInfo.country.nameJa}」領域（${hoverInfo.historicalContext.entity.succession.descriptionJa}）`
-                  : `*Territory of ${hoverInfo.country.nameEn} (${hoverInfo.historicalContext.entity.succession.descriptionEn})`}
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-base">{hoverInfo.country.flagEmoji || '🌐'}</span>
-              <span className="font-bold text-sm">
-                {language === 'en' ? hoverInfo.country.nameEn : hoverInfo.country.nameJa}
-              </span>
-              <span className="text-slate-400 text-[11px] font-mono">({hoverInfo.country.alpha3})</span>
-            </div>
-          )}
-
-          {mode === 'compare' ? (
-            <div className="space-y-1 pt-1 border-t border-slate-700/60">
-              {hoverInfo.data?.inFrameworkA && hoverInfo.data?.inFrameworkB ? (
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-semibold text-purple-200 bg-purple-900/60">
-                  <span className="w-2 h-2 rounded-full bg-purple-400"></span>
-                  {language === 'ja' ? '両方の枠組みに参加' : 'Member of both frameworks'}
-                </div>
-              ) : hoverInfo.data?.inFrameworkA ? (
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-semibold text-blue-200 bg-blue-900/60">
-                  <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-                  {language === 'ja' ? `${labelA || '枠組みA'} のみ参加` : `Member of ${labelA || 'Framework A'} only`}
-                </div>
-              ) : hoverInfo.data?.inFrameworkB ? (
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-semibold text-red-200 bg-red-900/60">
-                  <span className="w-2 h-2 rounded-full bg-red-400"></span>
-                  {language === 'ja' ? `${labelB || '枠組みB'} のみ参加` : `Member of ${labelB || 'Framework B'} only`}
-                </div>
-              ) : (
-                <div className="text-slate-400">{language === 'ja' ? 'いずれも非参加' : 'Non-member'}</div>
-              )}
-            </div>
-          ) : mode === 'choropleth' ? (
-            <div className="space-y-1 pt-1 border-t border-slate-700/60">
-              {hoverInfo.data?.statFormatted ? (
-                <>
-                  <div className="flex items-center justify-between gap-3 font-medium">
-                    <span className="text-slate-300 truncate">
-                      {statIndicatorName || (language === 'ja' ? '指標値' : 'Indicator Value')}:
-                    </span>
-                    <span className="font-semibold text-sky-300 font-mono">
-                      {hoverInfo.data.statFormatted}
-                    </span>
-                  </div>
-                  {(hoverInfo.data.statRank !== undefined || hoverInfo.data.statShare) && (
-                    <div className="flex items-center gap-2 text-[11px] text-slate-300">
-                      {hoverInfo.data.statRank !== undefined && (
-                        <span className="font-semibold text-amber-300 font-mono">
-                          #{hoverInfo.data.statRank}
-                        </span>
-                      )}
-                      {hoverInfo.data.statShare && (
-                        <span className="text-slate-400">{hoverInfo.data.statShare}</span>
-                      )}
-                    </div>
-                  )}
-                  {hoverInfo.data.isFilteredOut && (
-                    <div className="text-[10px] text-slate-400 italic">
-                      {language === 'ja' ? '※ 選択枠組みの対象外' : '* Outside selected framework'}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="text-slate-400 text-xs">
-                  {language === 'ja' ? 'データ未集計' : 'No data'}
-                </div>
-              )}
-            </div>
-          ) : (
-            hasFrameworkSelected ? (
-              <div className="space-y-1 pt-1 border-t border-slate-700/60">
-                {hoverInfo.data?.status ? (
-                  <>
-                    <div className="flex items-center gap-1.5 font-medium">
-                      <span className="text-slate-300">{t('mapStatusLabel')}:</span>
-                      <span className="font-semibold text-sky-300">
-                        {STATUS_LABELS[hoverInfo.data.status]?.[language === 'en' ? 'labelEn' : 'labelJa'] || hoverInfo.data.status}
-                      </span>
-                    </div>
-                    {hoverInfo.data.year && (
-                      <div className="text-slate-300">
-                        {t('mapYearLabel')}:{' '}
-                        <span className="font-semibold text-white">
-                          {hoverInfo.data.year}{language === 'ja' ? '年' : ''}
-                        </span>
-                      </div>
-                    )}
-                    {hoverInfo.data.notes && (
-                      <div className="text-slate-400 text-[11px] italic mt-0.5">
-                        {hoverInfo.data.notes}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="text-slate-400">{language === 'ja' ? '非加盟・非参加' : 'Non-member'}</div>
-                )}
-              </div>
-            ) : null
-          )}
-          <div className="text-[10px] text-slate-400 mt-1.5 border-t border-slate-800 pt-1">
-            {t('mapClickTip')}
-          </div>
-        </div>
-      )}
+      <MapTooltip
+        hoverInfo={hoverInfo}
+        mode={mode}
+        labelA={labelA}
+        labelB={labelB}
+        statIndicatorName={statIndicatorName}
+        language={language}
+      />
     </div>
   );
 };
