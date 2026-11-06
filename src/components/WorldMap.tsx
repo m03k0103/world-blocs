@@ -86,12 +86,12 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   const width = 960;
   const height = 500;
 
-  // D3 投影法の計算
+  // D3 投影法の計算（イコールアース図法: Equal Earth projection）
   const projection = useMemo(() => {
     return d3Geo
-      .geoNaturalEarth1()
-      .scale(160)
-      .translate([width / 2, height / 2 + 20]);
+      .geoEqualEarth()
+      .scale(172)
+      .translate([width / 2, height / 2 + 10]);
   }, [width, height]);
 
   const pathGenerator = useMemo(() => {
