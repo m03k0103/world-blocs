@@ -6,6 +6,7 @@ import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
 import { isNonStateParticipant } from '../utils/entityUtils';
+import { exportToCsv } from '../utils/csv';
 
 function getEntityTypeBadge(entityType?: EntityType, lang: 'ja' | 'en' = 'ja') {
   if (!entityType || entityType === 'sovereign_state') return null;
@@ -146,53 +147,35 @@ export const TableView: React.FC<TableViewProps> = ({
   };
 
   // CSVエクスポート
+  // CSVエクスポート
   const handleExportCSV = () => {
-    // CSV Formula Injection (DDE/数式実行) 対策サニタイズ
-    const sanitizeCsvCell = (val: string | number | undefined | null): string => {
-      if (val === null || val === undefined) return '""';
-      let str = String(val);
-      // セル先頭が =, +, -, @, \t, \r の場合、シングルクォートでエスケープ
-      if (/^[=+\-@\t\r]/.test(str)) {
-        str = `'${str}`;
-      }
-      return `"${str.replace(/"/g, '""')}"`;
-    };
-
     const headers = language === 'ja'
       ? ['ISO3', '国名（日）', '国名（英）', '地域', 'ステータス', '加盟/批准/申請年', '備考']
       : ['ISO3', 'Name (JA)', 'Name (EN)', 'Region', 'Status', 'Year (Ratified/Signed/Applied)', 'Notes'];
-
-    const headerRow = headers.map(h => sanitizeCsvCell(h)).join(',');
 
     const rows = filteredMembers.map((m) => {
       const c = getEntity(m.countryCode);
       const statusLabel = STATUS_LABELS[m.currentStatus]
         ? (language === 'en' ? STATUS_LABELS[m.currentStatus].labelEn : STATUS_LABELS[m.currentStatus].labelJa)
         : m.currentStatus;
-
       const dateDetail = getMembershipDateDetail(m, language);
 
       return [
-        sanitizeCsvCell(m.countryCode),
-        sanitizeCsvCell(c?.nameJa || ''),
-        sanitizeCsvCell(c?.nameEn || ''),
-        sanitizeCsvCell(c?.region || ''),
-        sanitizeCsvCell(statusLabel),
-        sanitizeCsvCell(dateDetail.displayText || dateDetail.dateText || ''),
-        sanitizeCsvCell(m.notes || ''),
-      ].join(',');
+        m.countryCode,
+        c?.nameJa || '',
+        c?.nameEn || '',
+        c?.region || '',
+        statusLabel,
+        dateDetail.displayText || dateDetail.dateText || '',
+        m.notes || '',
+      ];
     });
 
-    const csvContent = '\uFEFF' + [headerRow, ...rows].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${frameworkName}${t('csvFileSuffix')}`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    exportToCsv({
+      filename: `${frameworkName}${t('csvFileSuffix')}`,
+      headers,
+      rows,
+    });
   };
 
   return (
