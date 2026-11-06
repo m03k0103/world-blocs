@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import type { Country, Framework, Language, StatIndicatorId } from '../../types';
 import type { IndicatorItem } from './useStatsAggregation';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../../data/countryStats';
 import { exportToCsv } from '../../utils/csv';
 import { getLocalizedName } from '../../utils/i18nUtils';
+import { useTableFilterSort } from '../../hooks/useTableFilterSort';
 import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
 
 interface StatsTableProps {
@@ -34,59 +35,58 @@ export const StatsTable: React.FC<StatsTableProps> = ({
   onSelectCountry,
   language,
 }) => {
-  const [search, setSearch] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('all');
-  const [sortField, setSortField] = useState<'rank' | 'name' | 'value'>('rank');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
   const indicatorMeta = STAT_INDICATORS[activeIndicator];
 
-  // ランキングテーブル用フィルタ & ソート
-  const filteredTableData = useMemo(() => {
-    return targetItems
-      .filter((item) => {
-        if (search) {
-          const q = search.toLowerCase();
-          const matchName =
-            item.country.nameJa.toLowerCase().includes(q) ||
-            item.country.nameEn.toLowerCase().includes(q) ||
-            item.country.alpha3.toLowerCase().includes(q);
-          if (!matchName) return false;
-        }
+  // 検索フィルタ関数
+  const searchFilter = useCallback((item: IndicatorItem, q: string) => {
+    return (
+      item.country.nameJa.toLowerCase().includes(q) ||
+      item.country.nameEn.toLowerCase().includes(q) ||
+      item.country.alpha3.toLowerCase().includes(q)
+    );
+  }, []);
 
-        if (selectedRegion !== 'all' && item.country.region !== selectedRegion) {
-          return false;
-        }
+  // 地域フィルタ関数
+  const regionFilter = useCallback((item: IndicatorItem, reg: string) => {
+    return item.country.region === reg;
+  }, []);
 
-        return true;
-      })
-      .sort((a, b) => {
-        let diff = 0;
-        if (sortField === 'rank') {
-          const rankA = rankMap.get(a.country.alpha3) ?? 9999;
-          const rankB = rankMap.get(b.country.alpha3) ?? 9999;
-          diff = rankA - rankB;
-        } else if (sortField === 'name') {
-          diff =
-            language === 'en'
-              ? a.country.nameEn.localeCompare(b.country.nameEn, 'en')
-              : a.country.nameJa.localeCompare(b.country.nameJa, 'ja');
-        } else if (sortField === 'value') {
-          diff = (b.value ?? 0) - (a.value ?? 0);
-        }
+  // ソート比較関数
+  const comparator = useCallback(
+    (a: IndicatorItem, b: IndicatorItem, field: 'rank' | 'name' | 'value', order: 'asc' | 'desc') => {
+      let diff = 0;
+      if (field === 'rank') {
+        const rankA = rankMap.get(a.country.alpha3) ?? 9999;
+        const rankB = rankMap.get(b.country.alpha3) ?? 9999;
+        diff = rankA - rankB;
+      } else if (field === 'name') {
+        diff =
+          language === 'en'
+            ? a.country.nameEn.localeCompare(b.country.nameEn, 'en')
+            : a.country.nameJa.localeCompare(b.country.nameJa, 'ja');
+      } else if (field === 'value') {
+        diff = (b.value ?? 0) - (a.value ?? 0);
+      }
+      return order === 'asc' ? diff : -diff;
+    },
+    [rankMap, language]
+  );
 
-        return sortOrder === 'asc' ? diff : -diff;
-      });
-  }, [targetItems, search, selectedRegion, sortField, sortOrder, rankMap, language]);
-
-  const handleSort = (field: 'rank' | 'name' | 'value') => {
-    if (sortField === field) {
-      setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortField(field);
-      setSortOrder('asc');
-    }
-  };
+  // 共通テーブルフック
+  const {
+    search,
+    setSearch,
+    selectedRegion,
+    setSelectedRegion,
+    handleSort,
+    filteredAndSortedData: filteredTableData,
+  } = useTableFilterSort<IndicatorItem, 'rank' | 'name' | 'value'>({
+    data: targetItems,
+    searchFilter,
+    regionFilter,
+    initialSortField: 'rank',
+    comparator,
+  });
 
   // CSVエクスポート（共通 exportToCsv を使用）
   const handleExportCSV = () => {
