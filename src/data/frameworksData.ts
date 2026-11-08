@@ -2246,12 +2246,18 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '19940223',
     inForceYear: 1994,
     secretariat: 'ミンスク（ベラルーシ）',
-    description: 'ソビエト連邦の崩壊に伴い、旧ソ連構成共和国間の多分野（経済・安全保障・法務・人道等）の協調を維持するために結成された地域協力機構。1991年12月のベロヴェーシ合意およびアルマ・アタ宣言により創設、1993年1月にCIS憲章採択。モルドバやアルメニアなど近年距離を置く国もあるが、現行正式加盟9カ国、準加盟1カ国（トルクメニスタン）で構成。ジョージア（2009年）およびウクライナ（2018年）は脱退。',
+    description: 'ソビエト連邦の崩壊に伴い、旧ソ連構成共和国間の多分野（経済・安全保障・法務・人道等）の協調を維持するために結成された地域協力機構。1991年12月のベロヴェーシ合意およびアルマ・アタ宣言により創設、1993年1月にCIS憲章採択。モルドバやアルメニアなど近年距離を置く国もあるが、現行正式加盟9カ国、準加盟1カ国（トルクメニスタン）で構成。ジョージア（2009年正式脱退）およびウクライナ（2018年代表部引揚・事実上離脱）は脱退。なおモルドバは2026年4月に創設協定・憲章の破棄を正式通告（2027年4月8日脱退発効予定）。',
     sources: [
       {
         titleJa: 'CIS公式ポータル（執行委員会）',
         titleEn: 'CIS Executive Committee Portal',
         url: 'https://cis.minsk.by/',
+        type: 'official'
+      },
+      {
+        titleJa: 'CIS執行委員会情報ポータル',
+        titleEn: 'CIS Information Portal (e-cis.info)',
+        url: 'https://e-cis.info/',
         type: 'official'
       },
       {
@@ -2271,12 +2277,12 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'UZB', status: 'member', signed: '19911221', ratified: '19940209', joined: '19911221', notes: '原加盟国（1991年アルマアタ宣言調印、1994年憲章批准）' },
       { countryCode: 'ARM', status: 'member', signed: '19911221', ratified: '19940316', joined: '19911221', notes: '原加盟国（1991年アルマアタ宣言調印、1994年憲章批准）' },
       { countryCode: 'AZE', status: 'member', signed: '19930924', ratified: '19931214', joined: '19930924', notes: '1991年創設署名後議会否決を経て、1993年9月に国民議会決議で正式加盟、同年12月憲章批准' },
-      { countryCode: 'MDA', status: 'member', signed: '19911221', ratified: '19940408', joined: '19940408', notes: '1991年創設署名、1994年4月議会批准。近年EU加盟方針に伴い一部協定から離脱中だが憲章上の正式脱退は未発効' },
+      { countryCode: 'MDA', status: 'member', signed: '19911221', ratified: '19940408', joined: '19940408', withdrawalNotified: '20260408', notes: '1991年創設署名、1994年4月議会批准。2026年4月8日にCIS創設協定および憲章破棄を正式通告（規定に基づき2027年4月8日に正式脱退発効予定）' },
       // 準加盟国 (Associate Member: 1カ国)
       { countryCode: 'TKM', status: 'partner', signed: '19911221', joined: '20050826', notes: '1991年創設調印（憲章未批准）。2005年8月のカザン首脳会議で永世中立政策に基づき「準加盟国（Associate State）」へ移行' },
       // 脱退国 (2カ国)
       { countryCode: 'GEO', status: 'withdrawn', joined: '19931203', ratified: '19940419', withdrawalNotified: '20080818', withdrawn: '20090818', notes: '1993年12月加盟。2008年8月の南オセチア紛争（ロシア・ジョージア戦争）を受け脱退通告、2009年8月18日に正式脱退発効' },
-      { countryCode: 'UKR', status: 'withdrawn', signed: '19911221', withdrawalNotified: '20180519', withdrawn: '20180519', notes: '1991年創設署名国（憲章は未批准のまま創設参加国として活動）。2014年クリミア併合を受け参加停止、2018年5月大統領令により代表部閉鎖・脱退' }
+      { countryCode: 'UKR', status: 'withdrawn', signed: '19911221', withdrawalNotified: '20180519', withdrawn: '20180519', notes: '1991年創設協定署名国（1993年CIS憲章は未批准の創設参加国）。2014年クリミア併合を受け参加停止、2018年5月大統領令により代表部完全閉鎖・事実上離脱（2026年3月にも関連協定破棄を継続）' }
     ]
   },
   {
@@ -2292,7 +2298,7 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20150101',
     inForceYear: 2015,
     secretariat: 'モスクワ（ロシア / ユーラシア経済委員会）',
-    description: 'ロシア、ベラルーシ、カザフスタン、アルメニア、キルギスの旧ソ連5カ国による包括的地域経済統合体。2014年5月のアスタナ条約調印を経て2015年1月1日に発効。商品・サービス・資本・労働力の「4つの自由移動」を保証し、単一市場と共通関税・共通競争政策を運用。',
+    description: 'ロシア、ベラルーシ、カザフスタン、アルメニア、キルギスの旧ソ連5カ国による包括的地域経済統合体。2014年5月のアスタナ条約調印を経て2015年1月1日に発効。商品・サービス・資本・労働力の「4つの自由移動」を保証し、単一市場と共通関税・共通競争政策を運用。モルドバ、ウズベキスタン、キューバ、イランの4カ国がオブザーバー参加。',
     sources: [
       {
         titleJa: 'ユーラシア経済委員会（EEC / EAEU公式ポータル）',
@@ -2314,10 +2320,11 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'KAZ', status: 'member', signed: '20140529', ratified: '20141014', inForce: '20150101', joined: '20150101', notes: '創設原加盟国（2014年アスタナ条約調印地）' },
       { countryCode: 'ARM', status: 'member', signed: '20141010', ratified: '20141204', inForce: '20150102', joined: '20150102', notes: '2014年10月加入条約署名、2015年1月2日正式発効加盟' },
       { countryCode: 'KGZ', status: 'member', signed: '20141223', ratified: '20150521', inForce: '20150812', joined: '20150812', notes: '2014年12月加入条約署名、2015年8月12日正式発効加盟' },
-      // オブザーバー国 (3カ国)
+      // オブザーバー国 (4カ国)
       { countryCode: 'MDA', status: 'observer', candidate: '20180514', joined: '20180514', notes: '2018年5月オブザーバー国認定（ドドン政権下で承認、親欧州政権下で距離）' },
       { countryCode: 'UZB', status: 'observer', candidate: '20201211', joined: '20201211', notes: '2020年12月最高ユーラシア経済評議会でオブザーバー国認定' },
-      { countryCode: 'CUB', status: 'observer', candidate: '20201211', joined: '20201211', notes: '2020年12月最高ユーラシア経済評議会でオブザーバー国認定' }
+      { countryCode: 'CUB', status: 'observer', candidate: '20201211', joined: '20201211', notes: '2020年12月最高ユーラシア経済評議会でオブザーバー国認定' },
+      { countryCode: 'IRN', status: 'observer', candidate: '20241226', joined: '20241226', notes: '2024年12月26日最高ユーラシア経済評議会（サンクトペテルブルク）でオブザーバー資格付与。2025年5月FTA発効' }
     ]
   },
   {
@@ -2332,7 +2339,7 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20020604',
     inForceYear: 2002,
     secretariat: 'アスタナ（カザフスタン）',
-    description: 'アジア地域における平和・安全・安定の促進を目指す多国間信頼醸成・安全保障対話フォーラム。1992年10月の国連総会でカザフスタンのナザルバエフ大統領が提唱、2002年の第1回首脳会議（アルマ・アタ）で憲章採択。軍事・政治、経済、環境、新脅威、人道的分野の信頼醸成措置を推進。中東から東アジアまでの28カ国が正式加盟し、2022年に常設国際機関への改編プロセスを開始。',
+    description: 'アジア地域における平和・安全・安定の促進を目指す多国間信頼醸成・安全保障対話フォーラム。1992年10月の国連総会でカザフスタンのナザルバエフ大統領が提唱、2002年の第1回首脳会議（アルマ・アタ）で憲章採択。軍事・政治、経済、環境、新脅威、人道的分野の信頼醸成措置を推進。中東から東アジア・東南アジアまでの29カ国が正式加盟（2026年にラオスが正式加盟へ昇格）し、2022年より常設国際機関への改編プロセスを推進。',
     sources: [
       {
         titleJa: 'CICA公式事務局ポータル',
@@ -2348,7 +2355,7 @@ export const FRAMEWORKS: Framework[] = [
       }
     ],
     members: [
-      // 正式参加国 (28カ国)
+      // 正式参加国 (29カ国)
       { countryCode: 'KAZ', status: 'member', joined: '19921005', declarationSigned: '19990914', notes: '提唱国・原参加国・事務局所在地' },
       { countryCode: 'AFG', status: 'member', joined: '1992', declarationSigned: '19990914' },
       { countryCode: 'AZE', status: 'member', joined: '1992', declarationSigned: '19990914' },
@@ -2362,8 +2369,9 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'IRQ', status: 'member', joined: '2010' },
       { countryCode: 'ISR', status: 'member', joined: '1992', declarationSigned: '19990914', notes: '原参加国' },
       { countryCode: 'JOR', status: 'member', joined: '2008' },
-      { countryCode: 'KWT', status: 'member', joined: '20221013', notes: '2022年アスタナ首脳会議で第28番目の正式加盟国として加盟' },
+      { countryCode: 'KWT', status: 'member', joined: '20221013', notes: '2022年アスタナ首脳会議で加盟' },
       { countryCode: 'KGZ', status: 'member', joined: '1992', declarationSigned: '19990914', notes: '原参加国' },
+      { countryCode: 'LAO', status: 'member', joined: '2026', notes: '2018年オブザーバー参加、2026年に第29番目の正式加盟国へ昇格' },
       { countryCode: 'MNG', status: 'member', joined: '2001' },
       { countryCode: 'PAK', status: 'member', joined: '1992', declarationSigned: '19990914', notes: '原参加国' },
       { countryCode: 'PSE', status: 'member', joined: '1992', declarationSigned: '19990914', notes: '原参加国（パレスチナ）' },
@@ -2377,16 +2385,16 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'ARE', status: 'member', joined: '2008' },
       { countryCode: 'UZB', status: 'member', joined: '1992', declarationSigned: '19990914', notes: '原参加国' },
       { countryCode: 'VNM', status: 'member', joined: '2010' },
-      // オブザーバー国
+      // オブザーバー国 (9カ国)
       { countryCode: 'JPN', status: 'observer', joined: '1993', notes: '1993年よりオブザーバー参加' },
       { countryCode: 'USA', status: 'observer', joined: '1992', notes: 'オブザーバー参加' },
       { countryCode: 'IDN', status: 'observer', joined: '2002' },
       { countryCode: 'MYS', status: 'observer', joined: '2002' },
       { countryCode: 'PHL', status: 'observer', joined: '2004' },
+      { countryCode: 'SAU', status: 'observer', joined: '2024', notes: '2024年オブザーバー資格取得' },
       { countryCode: 'UKR', status: 'observer', joined: '1998' },
       { countryCode: 'TKM', status: 'observer', joined: '2021' },
-      { countryCode: 'BLR', status: 'observer', joined: '2015' },
-      { countryCode: 'LAO', status: 'observer', joined: '2018' }
+      { countryCode: 'BLR', status: 'observer', joined: '2015' }
     ]
   },
   {
@@ -2401,7 +2409,7 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '20060523',
     inForceYear: 2006,
     secretariat: 'キーウ（ウクライナ）',
-    description: 'ジョージア、ウクライナ、アゼルバイジャン、モルドバの旧ソ連4カ国による地域協力・安全保障国際機関。1997年10月にストラスブールで設立共同コミュニケ採択、2001年ヤルタ憲章を経て2006年5月キーウ首脳会談で常設国際機関として正式発足。民主的価値の共有、主権と領土の一体性、エネルギー輸送ルート（カスピ海〜黒海〜欧州）の安全確保、自由貿易協定（GUAM FTA）の運用を推進。1999〜2005年はウズベキスタンが加盟しGUUAMと呼ばれたが脱退。',
+    description: 'ジョージア、ウクライナ、アゼルバイジャン、モルドバの旧ソ連4カ国による地域協力・安全保障国際機関。1997年10月にストラスブールで設立共同コミュニケ採択、2001年ヤルタ憲章を経て2006年5月キーウ首脳会談で常設国際機関として正式発足。民主的価値の共有、主権と領土の一体性、エネルギー輸送ルート（カスピ海〜黒海〜欧州）の安全確保、自由貿易協定（GUAM FTA）の運用を推進。トルコ・ラトビアがオブザーバー、日本・米国がパートナー国として協力。1999〜2005年はウズベキスタンが加盟しGUUAMと呼ばれたが脱退。',
     sources: [
       {
         titleJa: 'GUAM公式事務局ポータル',
@@ -2424,10 +2432,12 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'MDA', status: 'member', signed: '19971010', joined: '19971010', declarationSigned: '20060523', notes: '原加盟国（M：モルドバ）' },
       // 過去の加盟国・脱退国 (1カ国)
       { countryCode: 'UZB', status: 'withdrawn', joined: '19990424', withdrawalNotified: '20050505', withdrawn: '20050505', notes: '1999年4月加盟（GUUAMへ改称）。2002年参加凍結後、2005年5月に脱退通告（GUAMへ復帰）' },
-      // パートナー国
-      { countryCode: 'JPN', status: 'partner', joined: '2007', notes: '「GUAM＋日本」対話パートナー（2007年外相会合開始）' },
-      { countryCode: 'USA', status: 'partner', joined: '1999', notes: '「GUAM＋米国」パートナーシップ' },
-      { countryCode: 'TUR', status: 'partner', joined: '2019', notes: '「GUAM＋トルコ」協力フォーラム' }
+      // オブザーバー国 (2カ国)
+      { countryCode: 'TUR', status: 'observer', joined: '2019', notes: '公式オブザーバー国（「GUAM＋トルコ」協力）' },
+      { countryCode: 'LVA', status: 'observer', joined: '2008', notes: '公式オブザーバー国（バルト三国連携）' },
+      // パートナー国 (2カ国)
+      { countryCode: 'JPN', status: 'partner', joined: '2007', notes: '「GUAM＋日本」対話パートナー（2007年外相会合開始、防災・観光・通商協力）' },
+      { countryCode: 'USA', status: 'partner', joined: '1999', notes: '「GUAM＋米国」枠組みパートナー（法執行・国境警備・サイバーセキュリティ協力）' }
     ]
   },
   {
@@ -2442,7 +2452,7 @@ export const FRAMEWORKS: Framework[] = [
     inForce: '19921128',
     inForceYear: 1992,
     secretariat: 'テヘラン（イラン）',
-    description: '西アジア、中央アジア、コーカサスにまたがる10カ国で構成される政府間地域経済協力機関。1964年の地域協力開発機構（RCD）を前身として1985年にイラン、パキスタン、トルコにより設立（イズミル条約）。1992年11月28日にアフガニスタン、アゼルバイジャン、中央アジア5カ国が一斉加盟して10カ国体制へ拡大。域内貿易自由化、交通・エネルギー回廊開発、持続可能経済発展を推進。',
+    description: '西アジア、中央アジア、コーカサスにまたがる10カ国で構成される政府間地域経済協力機関。1964年の地域協力開発機構（RCD）を前身として1985年にイラン、パキスタン、トルコにより設立（イズミル条約）。1992年11月28日にアフガニスタン、アゼルバイジャン、中央アジア5カ国が一斉加盟して10カ国体制へ拡大。域内貿易自由化、交通・エネルギー回廊開発、持続可能経済発展を推進。オブザーバーとして北キプロス（「キプロス・トルコ国家」名義）やテュルク諸国機構（OTS）が参加。',
     sources: [
       {
         titleJa: '経済協力機構（ECO公式ポータル）',
@@ -2507,7 +2517,7 @@ export const FRAMEWORKS: Framework[] = [
       { countryCode: 'TJK', status: 'member', joined: '1998', notes: '1998年参加' },
       { countryCode: 'AZE', status: 'member', joined: '2002', notes: '2002年参加' },
       { countryCode: 'MNG', status: 'member', joined: '2002', notes: '2002年参加' },
-      { countryCode: 'AFG', status: 'member', joined: '2005', notes: '2005年参加' },
+      { countryCode: 'AFG', status: 'member', joined: '2005', notes: '2005年参加。公式リストに留まるが、2021年8月のタリバン復権以降、ADBの通常業務停止に伴い閣僚会議等への参加は実質的に凍結' },
       { countryCode: 'PAK', status: 'member', joined: '2010', notes: '2010年参加' },
       { countryCode: 'TKM', status: 'member', joined: '2010', notes: '2010年参加' },
       { countryCode: 'GEO', status: 'member', joined: '2016', notes: '2016年参加' }
