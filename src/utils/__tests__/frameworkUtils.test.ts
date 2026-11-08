@@ -44,11 +44,11 @@ describe('Framework Utility (frameworkUtils)', () => {
   describe('getFrameworksByCategory', () => {
     it('カテゴリごとの枠組み一覧を取得できる', () => {
       const security = getFrameworksByCategory('security');
-      expect(security.length).toBe(8);
+      expect(security.length).toBe(9);
       expect(security.every((f) => f.category === 'security')).toBe(true);
 
       const all = getFrameworksByCategory('all');
-      expect(all.length).toBe(34);
+      expect(all.length).toBe(40);
     });
   });
 

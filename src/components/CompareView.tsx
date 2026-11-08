@@ -133,6 +133,8 @@ export const CompareView: React.FC<CompareViewProps> = ({
   // クイック比較プリセット
   const presets = [
     { title: 'WAICO × Pax Silica', a: 'waico', b: 'pax_silica' },
+    { title: 'CIS × GUAM', a: 'cis', b: 'guam' },
+    { title: 'CIS × EAEU', a: 'cis', b: 'eaeu' },
     { title: 'EU × NATO', a: 'eu', b: 'nato' },
     { title: 'NATO × OSCE', a: 'nato', b: 'osce' },
     { title: 'EU × EEA', a: 'eu', b: 'eea' },
@@ -151,7 +153,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           {t('compareFeaturedPresets')}
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-11 gap-2">
           {presets.map((p) => (
             <button
               key={p.title}
