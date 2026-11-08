@@ -1,6 +1,6 @@
 # World Blocs 改善・機能拡充マスタードキュメント (Drops.md)
 
-> 最終更新: 2026-10-31  
+> 最終更新: 2026-11-08  
 > 運用規約は [`GLOBAL_RULES.md`](file:///C:/Users/m03k0/.gemini/antigravity/rules/GLOBAL_RULES.md) 第3章7項、および [`Agent.md`](file:///d:/dev/World/Agent.md) に準拠します。  
 > 未着手の将来構想テーマは **「Track（トラック）」** として管理し、着手・完了した個別施策単位にはその時点の最新連番を付与して **「Drop（ドロップ）」** としてアーカイブ化します。
 
@@ -73,10 +73,11 @@
 
 ---
 
-## 3. 実装済 Drop一覧（Drop 1 〜 Drop 40）
+## 3. 実装済 Drop一覧（Drop 1 〜 Drop 44）
 
 | Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
 |:---:|:---:|:---|:---|:---|
+| **Drop 44** | 2026-11-08 | **Track [DevOps-PortManagement]: ポート5173強制終了廃止・専用ポート(8006/8056)対応・二重起動再利用・自PID安全停止** | `start.bat`, `stop.bat`, `scripts/port_helper.cjs`, `.gitignore` | ポート5173無差別Kill完全廃止、Orchestration ports.json参照＆空きポート探索（8006➔8056➔8057-8099）、二重起動時の既存サーバー再利用（挙動1）、.server_port/.server_pidファイル管理、自身PIDのみの安全停止（他プロジェクトプロセス保護）、Vitest 30件合格、oxlint 0警告、本番ビルド成功 |
 | **Drop 43** | 2026-11-07 | **Track [CodeRefactor-Phase3]: 状態管理・共通テーブルフック & ユニットテスト基盤(Vitest)導入** | `useAppRouter.ts`, `useTableFilterSort.ts`, `App.tsx`, `StatsTable.tsx`, `package.json`, `src/utils/__tests__/*` | useAppRouterによるApp.tsxのルーティング・URL同期カプセル化（179行➔117行）、ジェネリックなuseTableFilterSortフック新設、Vitestテスト基盤構築＆コアユーティリティ（csv, date, statsFormatters, frameworkUtils）の30テストケース100%合格、oxlint 0警告、本番ビルド成功 |
 | **Drop 42** | 2026-11-07 | **Track [CodeRefactor-Phase2]: データ層・メタデータ・ロジックの3層分離 & 地図コンポーネント構造刷新** | `frameworksData.ts`, `frameworkLabels.ts`, `frameworkUtils.ts`, `statIndicators.ts`, `countryStatsData.ts`, `statsFormatters.ts`, `useSvgZoomPan.ts`, `MapTooltip.tsx`, `MapEntityBadges.tsx`, `WorldMap.tsx` | frameworksおよびcountryStatsの純粋データ・UIラベル定義・検索計算ロジックの3層分離（完全後方互換）、WorldMap（622行➔387行）のズームパンフック抽出（useSvgZoomPan）・any型排除・ツールチップ/バッジのサブコンポーネント化、oxlint 0警告、本番ビルド成功 |
 | **Drop 41** | 2026-11-07 | **Track [CodeRefactor-Phase1]: UIクリーンアップ・責務分離（StatsView分割・CSV共通化・i18nヘルパー）** | `src/utils/csv.ts`, `src/utils/i18nUtils.ts`, `src/components/stats/*`, `src/components/StatsView.tsx`, `src/components/TableView.tsx` | CSV出力＆Formula Injectionサニタイズ処理の共通化、多言語引当ヘルパー導入、StatsView（1,051行➔185行、-82%）をカスタムフック（useStatsAggregation）および4つの単一責任サブコンポーネント（Tabs, SummaryCards, Legend, Table）に完全分離、oxlint 0警告、本番ビルド成功 |
@@ -128,6 +129,7 @@
 
 | Track ID | 構想テーマ | 技術仕様・変更詳細 | 到達成果 | 対応 Drop |
 |:---:|:---|:---|:---|:---:|
+| **Track [DevOps-PortManagement]** | **ポート5173強制終了廃止・専用ポート(8006/8056)対応・二重起動再利用・自PID安全停止** | - **ポート5173無差別Kill完全削除**: `start.bat` および `stop.bat` からポート5173の無条件 `taskkill /F` を廃止。<br>- **専用ポート & Orchestration台帳参照**: デフォルトポート8006、フォールバック8056を設定し、`D:\\dev\\Orchestration\\ports.json` の World 設定を自動参照（8006➔8056➔8057〜8099空きポート探索）。<br>- **Vite起動コマンド厳格化**: `npm run dev -- --port <検出ポート> --strictPort` に変更。<br>- **二重起動時の既存サーバー再利用（挙動1）**: `.server_port` で既にサーバーが応答している場合はサーバーを落とさずブラウザで `http://localhost:<port>/` を開いて即終了（HMR自動反映）。<br>- **状態ファイルと自身のPIDのみ安全停止**: 起動時に `.server_port` と `.server_pid` を記録し、`stop.bat` は自プロセスツリー（cmd/npm/node）のみを停止し他プロジェクトプロセスを完全保護。 | 複数プロジェクト併行開発時のポート競合・プロセス強制終了リスク完全解消、高速な既存サーバー再利用 | **Drop 44** |
 | **Track [Stats-WorldBankIncomeLevels]** | **世界銀行 所得水準別分類（LIC / LMIC / UMIC / HIC）の統計マップ表示** | - **世界銀行公式API連携 & 4区分マスタ配備**: 世界銀行 Country and Lending Groups（FY2025基準）に基づき、全205カ国・地域に `incomeLevel`（`LIC`, `LMIC`, `UMIC`, `HIC`）を配備（`src/data/countryStats.ts`）。<br>- **カテゴリカル配色（Categorical Palette）**: 高所得国（#2563eb）、高中所得国（#0ea5e9）、低中所得国（#f59e0b）、低所得国（#ef4444）の明瞭な4色で世界地図を塗色。<br>- **枠組み連動 動的サマリーカード（4枚）**: `income_level` 選択時、4枚のサマリーカードが「HIC / UMIC / LMIC / LIC」の各国数および構成比（%）へ動的切替。各枠組み（G7, G20, ASEAN, NATO等）における所得階層の構成比を可視化。<br>- **カテゴリカル凡例チップ**: GNI per capita基準（$14,006以上、$4,516〜$14,005、$1,146〜$4,515、$1,145以下）を明記した4色凡例チップを表示。<br>- **一覧テーブル & 国詳細モーダル統合**: テーブル指標列でのカラーバッジ表示、ソート、CSV出力、および国プロファイルモーダルヘッダーへの世銀所得区分バッジ表示。 | 各国の経済発展段階・援助対象基準の直感的可視化と、各国際枠組みにおける所得グループ構成の定量的比較 | **Drop 40** |
 | **Track [UI-StateVsNonStateParticipants]** | **凡例ゼロ件非表示 & 国家・非国家参加者（State vs Non-State）の分離表示** | - **凡例改善**: 選択年に対象主体が存在しないステータス（count === 0）を凡例から完全除外。<br>- **集計適正化**: EU（EUR）・AU（AFU）等の非国家参加者を「参加国」カウントから除外し、主権国家（State Participants）と非国家参加者（Non-State Participants）を厳格に分離集計。<br>- **データモデル刷新（案C：ステータス型の細分化）**: `MembershipStatus` に `non_state_member`（非国家構成員）と `non_state_party`（非国家条約締約組織）を新設。G7/G20/Pax Silica/パリ協定の EU・AU レコード（計5件）を新ステータスへ移行。<br>- **全画面ステータス完全同期**: コンポーネント側の個別判定を廃止し、データ駆動（Single Source of Truth）で国プロファイルモーダル、一覧テーブル、凡例、地図パネルの全画面においてパープルの「非国家参加者」バッジを完全同期。<br>- **タイムライン計算および構成員判定の再発防止ガード・横展開**: `FrameworkView.tsx` のタイムライン計算（`computedMembership`）の分岐条件、`CompareView.tsx` の構成員判定、および `CountryListView.tsx` の参加枠組み数集計をすべて共通ヘルパー `isFullMemberStatus` に集約・統一し、新ステータス追加時にもメンバー除外や集計欠落が発生しない構造を確立。<br>- **共通化**: `src/utils/entityUtils.tsx` を新設し主体種別判定および専用カラー定義を統一。 | 凡例のノイズ解消、国際法・国際関係実務に即した正確な参加主体内訳の可視化 | **Drop 38** |
 | **Track [CodeQuality-Refinement]** | **Schema 2.0 連携バグ修正・静的解析警告解消・UI/バンドル最適化** | - **バグ修正**: `TableView.tsx` の地域抽出・フィルタ・ソート、および `CompareView.tsx` の主体取得に `getEntity(code)` を適用し、歴史的主体（SUN, DDR, CSK）の欠落を是正。<br>- **集計適正化**: `CompareView.tsx` の比較対象および `CountryListView.tsx` の参加枠組み数集計を `member`, `party`, `participating_state` のみに厳格化（`Agent.md` 第9項準拠）。<br>- **UI改善**: `FrameworkView.tsx` のタイムライン計算に `negotiationsApproved` を反映しヘッダーに `frameworkType` バッジを表示。`CountryProfileModal.tsx` に背景クリックおよび `Escape` キー閉鎖を追加。<br>- **静的解析・バンドル最適化**: `package.json` を `"lint": "oxlint src"` に変更しルーティング関数を `routing.ts` に分離（警告 1,132件 ➔ 0件）。`vite.config.ts` で `vendor` (218kB) / `d3` (21kB) / `app` (393kB) に分割（500kB警告解消）。 | コンポーネント間データ整合性確保、静的解析警告ゼロ化、初期ロード効率化 | **Drop 37** |
