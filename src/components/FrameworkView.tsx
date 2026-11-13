@@ -1,15 +1,17 @@
 import React, { useState, useMemo } from 'react';
-import type { Framework, Country, MembershipStatus } from '../types';
-import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS, FRAMEWORK_TYPE_LABELS } from '../data/frameworks';
+import type { Framework, Country } from '../types';
+import { FRAMEWORKS, CATEGORY_LABELS, STATUS_LABELS } from '../data/frameworks';
 import { WorldMap } from './WorldMap';
 import type { CountryMapData } from './WorldMap';
 import { TimelineSlider } from './TimelineSlider';
 import { TableView } from './TableView';
 import { FrameworkCombobox } from './FrameworkCombobox';
-import { Map, Table, Building2, Globe, FileText, ExternalLink } from 'lucide-react';
+import { FrameworkHeader } from './framework/FrameworkHeader';
+import { Map, Table, Globe } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { extractYear, getEffectiveMembershipYear } from '../utils/date';
 import { isNonStateParticipant, isStateParticipant, isFullMemberStatus } from '../utils/entityUtils';
+import { computeFrameworkMembersAtYear } from '../utils/membershipUtils';
 
 interface FrameworkViewProps {
   selectedFramework: Framework | null;
@@ -37,99 +39,10 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
   }, [selectedCategory]);
 
   // 選択された年における各国のステータスを計算
-  const computedMembership = useMemo(() => {
-    if (!selectedFramework) return [];
-    return selectedFramework.members
-      .map((m) => {
-        let currentStatus: MembershipStatus | null = null;
-        const effectiveJoinYear = getEffectiveMembershipYear(m);
-        const candidateStartYear =
-          extractYear(m.candidate) ||
-          extractYear(m.negotiationsApproved) ||
-          extractYear(m.negotiationsStarted) ||
-          extractYear(m.applied) ||
-          m.candidateYear ||
-          m.negotiationsStartedYear ||
-          m.appliedYear;
-        const signedYear = extractYear(m.signed) || m.signedYear;
-        const withdrawnYear = extractYear(m.withdrawn) || extractYear(m.withdrawalNotified) || m.withdrawnYear;
-        const suspendedYear = extractYear(m.suspended) || m.suspendedYear;
-
-        // 1. 加盟候補国、オブザーバー、パートナー、対話パートナーの場合
-        if (m.status === 'candidate' || m.status === 'observer' || m.status === 'partner' || m.status === 'dialogue') {
-          const startYear = candidateStartYear || signedYear;
-          if (startYear) {
-            currentStatus = selectedYear >= startYear ? m.status : null;
-          } else {
-            currentStatus = selectedYear >= selectedFramework.establishedYear ? m.status : null;
-          }
-        }
-        // 2. 脱退国の場合
-        else if (m.status === 'withdrawn') {
-          if (withdrawnYear && selectedYear >= withdrawnYear) {
-            currentStatus = 'withdrawn';
-          } else if (effectiveJoinYear && selectedYear >= effectiveJoinYear) {
-            currentStatus = (m.joined || m.joinedYear) ? 'member' : 'party';
-          } else if (signedYear && selectedYear >= signedYear) {
-            currentStatus = 'signatory';
-          } else {
-            currentStatus = null;
-          }
-        }
-        // 3. 参加資格停止国の場合 (suspended)
-        else if (m.status === 'suspended') {
-          if (suspendedYear && selectedYear >= suspendedYear) {
-            currentStatus = 'suspended';
-          } else if (effectiveJoinYear && selectedYear >= effectiveJoinYear) {
-            currentStatus = (m.joined || m.joinedYear) ? 'member' : 'party';
-          } else if (signedYear && selectedYear >= signedYear) {
-            currentStatus = 'signatory';
-          } else {
-            currentStatus = null;
-          }
-        }
-        // 4. 署名撤回国 (unsigned)
-        else if (m.status === 'unsigned') {
-          if (withdrawnYear && selectedYear >= withdrawnYear) {
-            currentStatus = 'unsigned';
-          } else if (signedYear && selectedYear >= signedYear) {
-            currentStatus = 'signatory';
-          } else {
-            currentStatus = null;
-          }
-        }
-        // 5. 未締結・非当事国 (non_party / non-party)
-        else if (m.status === 'non_party' || m.status === 'non-party') {
-          currentStatus = selectedYear >= selectedFramework.establishedYear ? 'non_party' : null;
-        }
-        // 6. 正式加盟国・条約締約国・参加国・非国家参加者 (isFullMemberStatus)
-        else if (isFullMemberStatus(m.status)) {
-          if (effectiveJoinYear && selectedYear >= effectiveJoinYear) {
-            currentStatus = m.status;
-          } else if (signedYear && selectedYear >= signedYear) {
-            currentStatus = 'signatory';
-          } else if (candidateStartYear && selectedYear >= candidateStartYear) {
-            currentStatus = 'candidate';
-          } else {
-            currentStatus = null;
-          }
-        }
-        // 7. 署名国 (signatory / signed)
-        else if (m.status === 'signatory' || m.status === 'signed') {
-          if (signedYear && selectedYear >= signedYear) {
-            currentStatus = m.status;
-          } else {
-            currentStatus = null;
-          }
-        }
-
-        return {
-          ...m,
-          currentStatus,
-        };
-      })
-      .filter((m): m is typeof m & { currentStatus: MembershipStatus } => m.currentStatus !== null);
-  }, [selectedFramework, selectedYear]);
+  const computedMembership = useMemo(
+    () => computeFrameworkMembersAtYear(selectedFramework, selectedYear),
+    [selectedFramework, selectedYear]
+  );
 
   // 地図描画用データマップ
   const mapData = useMemo(() => {
@@ -260,108 +173,13 @@ export const FrameworkView: React.FC<FrameworkViewProps> = ({
 
       {/* 枠組みヘッダー情報 or 未選択時ウェルカムカード */}
       {selectedFramework ? (
-        <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-3xl">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/30 text-blue-200 border border-blue-400/30">
-                  {CATEGORY_LABELS[selectedFramework.category]?.[language === 'en' ? 'labelEn' : 'labelJa']}
-                </span>
-                {selectedFramework.frameworkType && FRAMEWORK_TYPE_LABELS[selectedFramework.frameworkType] && (
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider border ${FRAMEWORK_TYPE_LABELS[selectedFramework.frameworkType].badgeColor}`}>
-                    {FRAMEWORK_TYPE_LABELS[selectedFramework.frameworkType][language === 'en' ? 'labelEn' : 'labelJa']}
-                  </span>
-                )}
-                <span className="text-blue-300 font-mono text-xs">
-                  {t('establishedLabel')}: {selectedFramework.establishedYear}{t('yearSliderSuffix')}
-                  {selectedFramework.inForceYear && ` (${t('inForceLabel')}: ${selectedFramework.inForceYear}${t('yearSliderSuffix')})`}
-                </span>
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-3">
-                <span>{language === 'en' ? selectedFramework.nameEn : selectedFramework.nameJa}</span>
-                <span className="text-blue-400 font-mono text-xl sm:text-2xl font-bold">
-                  ({selectedFramework.acronym})
-                </span>
-              </h2>
-
-              <p className="text-slate-300 text-sm leading-relaxed">
-                {selectedFramework.description}
-              </p>
-
-              {/* 一次資料・公式記録リンク */}
-              {selectedFramework.sources && selectedFramework.sources.length > 0 && (
-                <div className="flex flex-wrap items-center gap-2 pt-2">
-                  <span className="text-xs text-blue-200/90 font-medium flex items-center gap-1.5 shrink-0">
-                    <FileText className="w-3.5 h-3.5 text-blue-300" />
-                    {t('primarySourcesLabel')}
-                  </span>
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    {selectedFramework.sources.map((src, idx) => (
-                      <a
-                        key={idx}
-                        href={src.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white/10 hover:bg-white/20 text-blue-100 hover:text-white border border-white/15 transition-all shadow-xs group"
-                        title={src.url}
-                      >
-                        <span>{language === 'en' ? src.titleEn : src.titleJa}</span>
-                        <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* 右側サマリーバッジ */}
-            <div className="shrink-0 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex lg:flex-col gap-4 justify-around min-w-[140px]">
-              <div className="text-center">
-                <div className="text-xs text-blue-200 font-medium">
-                  {latestMembers.nonStates.length > 0 ? t('stateParticipants') : t('membersCount')}
-                </div>
-                <div className="text-3xl font-black font-mono mt-0.5 text-white">
-                  {latestMembers.states.length}
-                  <span className="text-sm font-normal text-blue-200 ml-1">
-                    {latestMembers.nonStates.length > 0 ? t('stateParticipantsSuffix') : t('countriesSuffix')}
-                  </span>
-                </div>
-                {latestMembers.nonStates.length > 0 && (
-                  <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/30 text-blue-100 border border-blue-400/30 text-[11px] font-medium">
-                    <span>+{latestMembers.nonStates.length} {t('nonStateParticipantsSuffix')}</span>
-                  </div>
-                )}
-                {selectedYear !== currentMaxYear && (
-                  <div className="text-[11px] text-blue-300/80 font-mono mt-1">
-                    {language === 'ja'
-                      ? `${selectedYear}年当時: ${activeMembers.states.length}カ国${
-                          activeMembers.nonStates.length > 0
-                            ? ` + ${activeMembers.nonStates.length}非国家参加者`
-                            : ''
-                        }`
-                      : `${selectedYear}: ${activeMembers.states.length} States${
-                          activeMembers.nonStates.length > 0
-                            ? ` + ${activeMembers.nonStates.length} Non-State`
-                            : ''
-                        }`}
-                  </div>
-                )}
-              </div>
-              {selectedFramework.secretariat && (
-                <div className="text-center lg:border-t lg:border-white/10 lg:pt-3">
-                  <div className="text-xs text-blue-200 font-medium flex items-center justify-center gap-1">
-                    <Building2 className="w-3.5 h-3.5" />
-                    {t('secretariatLabel')}
-                  </div>
-                  <div className="text-xs font-semibold mt-0.5 text-white truncate max-w-[140px]">
-                    {selectedFramework.secretariat}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <FrameworkHeader
+          framework={selectedFramework}
+          latestMembers={latestMembers}
+          activeMembers={activeMembers}
+          selectedYear={selectedYear}
+          currentMaxYear={currentMaxYear}
+        />
       ) : (
         <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg relative overflow-hidden">
           <div className="relative z-10 space-y-4">
