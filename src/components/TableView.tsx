@@ -1,48 +1,19 @@
-import React, { useState, useMemo } from 'react';
-import type { MembershipRecord, Country, MembershipStatus, EntityType } from '../types';
+import React, { useState, useMemo, useCallback } from 'react';
+import type { MembershipRecord, Country, MembershipStatus } from '../types';
 import { getEntity, HISTORICAL_ENTITY_BY_ALPHA3 } from '../data/countries';
 import { STATUS_LABELS } from '../data/frameworks';
 import { Search, Download, ArrowUpDown, Filter } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getMembershipDateDetail, getEffectiveMembershipYear, formatDateString } from '../utils/date';
-import { isNonStateParticipant } from '../utils/entityUtils';
+import { isNonStateParticipant, getEntityTypeBadge } from '../utils/entityUtils';
 import { exportToCsv } from '../utils/csv';
+import { getLocalizedName } from '../utils/i18nUtils';
+import { useTableFilterSort } from '../hooks/useTableFilterSort';
 
-function getEntityTypeBadge(entityType?: EntityType, lang: 'ja' | 'en' = 'ja') {
-  if (!entityType || entityType === 'sovereign_state') return null;
-
-  switch (entityType) {
-    case 'supranational':
-      return (
-        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
-          {lang === 'ja' ? '超国家機関' : 'Supranational'}
-        </span>
-      );
-    case 'regional_org':
-      return (
-        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300">
-          {lang === 'ja' ? '地域国際機関' : 'Regional Org'}
-        </span>
-      );
-    case 'special_entity':
-      return (
-        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 dark:bg-slate-700/60 dark:text-slate-300">
-          {lang === 'ja' ? '特別実体' : 'Special Entity'}
-        </span>
-      );
-    case 'historical_state':
-      return (
-        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60">
-          {lang === 'ja' ? '歴史的国家' : 'Historical State'}
-        </span>
-      );
-    default:
-      return null;
-  }
-}
+type MemberRow = MembershipRecord & { currentStatus: MembershipStatus };
 
 interface TableViewProps {
-  members: (MembershipRecord & { currentStatus: MembershipStatus })[];
+  members: MemberRow[];
   frameworkName: string;
   onSelectCountry?: (country: Country) => void;
 }
@@ -53,11 +24,7 @@ export const TableView: React.FC<TableViewProps> = ({
   onSelectCountry,
 }) => {
   const { t, language } = useLanguage();
-  const [search, setSearch] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [sortField, setSortField] = useState<'name' | 'year' | 'status'>('name');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // 地域一覧
   const regions = useMemo(() => {
@@ -89,64 +56,70 @@ export const TableView: React.FC<TableViewProps> = ({
   // 枠組み切り替え等で選択中ステータスが存在しない場合の安全な派生ステータス
   const effectiveStatus = availableStatuses.includes(selectedStatus) ? selectedStatus : 'all';
 
-  // フィルタ & ソート
-  const filteredMembers = useMemo(() => {
-    return members
-      .filter((m) => {
-        const c = getEntity(m.countryCode);
-        if (!c) return false;
+  // ステータスによる事前フィルタリング（存在しないエンティティも除外）
+  const statusFilteredMembers = useMemo(() => {
+    return members.filter((m) => {
+      if (!getEntity(m.countryCode)) return false;
+      if (effectiveStatus !== 'all' && m.currentStatus !== effectiveStatus) return false;
+      return true;
+    });
+  }, [members, effectiveStatus]);
 
-        if (search) {
-          const q = search.toLowerCase();
-          const matchName =
-            c.nameJa.toLowerCase().includes(q) ||
-            c.nameEn.toLowerCase().includes(q) ||
-            c.alpha3.toLowerCase().includes(q);
-          if (!matchName) return false;
-        }
+  const searchFilter = useCallback((m: MemberRow, q: string) => {
+    const c = getEntity(m.countryCode);
+    if (!c) return false;
+    return (
+      c.nameJa.toLowerCase().includes(q) ||
+      c.nameEn.toLowerCase().includes(q) ||
+      c.alpha3.toLowerCase().includes(q)
+    );
+  }, []);
 
-        if (selectedRegion !== 'all' && c.region !== selectedRegion) {
-          return false;
-        }
+  const regionFilter = useCallback((m: MemberRow, region: string) => {
+    return getEntity(m.countryCode)?.region === region;
+  }, []);
 
-        if (effectiveStatus !== 'all' && m.currentStatus !== effectiveStatus) {
-          return false;
-        }
+  const comparator = useCallback(
+    (a: MemberRow, b: MemberRow, field: 'name' | 'year' | 'status', order: 'asc' | 'desc') => {
+      const ca = getEntity(a.countryCode);
+      const cb = getEntity(b.countryCode);
+      if (!ca || !cb) return 0;
 
-        return true;
-      })
-      .sort((a, b) => {
-        const ca = getEntity(a.countryCode);
-        const cb = getEntity(b.countryCode);
-        if (!ca || !cb) return 0;
-
-        let diff = 0;
-        if (sortField === 'name') {
-          diff = language === 'en'
+      let diff = 0;
+      if (field === 'name') {
+        diff =
+          language === 'en'
             ? ca.nameEn.localeCompare(cb.nameEn, 'en')
             : ca.nameJa.localeCompare(cb.nameJa, 'ja');
-        } else if (sortField === 'year') {
-          const ya = getEffectiveMembershipYear(a) ?? 9999;
-          const yb = getEffectiveMembershipYear(b) ?? 9999;
-          diff = ya - yb;
-        } else if (sortField === 'status') {
-          diff = a.currentStatus.localeCompare(b.currentStatus);
-        }
+      } else if (field === 'year') {
+        const ya = getEffectiveMembershipYear(a) ?? 9999;
+        const yb = getEffectiveMembershipYear(b) ?? 9999;
+        diff = ya - yb;
+      } else if (field === 'status') {
+        diff = a.currentStatus.localeCompare(b.currentStatus);
+      }
 
-        return sortOrder === 'asc' ? diff : -diff;
-      });
-  }, [members, search, selectedRegion, effectiveStatus, sortField, sortOrder, language]);
+      return order === 'asc' ? diff : -diff;
+    },
+    [language]
+  );
 
-  const handleSort = (field: 'name' | 'year' | 'status') => {
-    if (sortField === field) {
-      setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortField(field);
-      setSortOrder('asc');
-    }
-  };
+  const {
+    search,
+    setSearch,
+    selectedRegion,
+    setSelectedRegion,
+    handleSort,
+    filteredAndSortedData: filteredMembers,
+  } = useTableFilterSort<MemberRow, 'name' | 'year' | 'status'>({
+    data: statusFilteredMembers,
+    searchFilter,
+    regionFilter,
+    initialSortField: 'name',
+    initialSortOrder: 'asc',
+    comparator,
+  });
 
-  // CSVエクスポート
   // CSVエクスポート
   const handleExportCSV = () => {
     const headers = language === 'ja'
@@ -336,7 +309,7 @@ export const TableView: React.FC<TableViewProps> = ({
                         <div>
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="font-semibold text-slate-800 dark:text-slate-200 block">
-                              {language === 'en' ? c.nameEn : c.nameJa}
+                              {getLocalizedName(c, language)}
                             </span>
                             {getEntityTypeBadge(entityType, language)}
                           </div>

@@ -5,6 +5,7 @@ import { FRAMEWORKS } from '../data/frameworks';
 import { Search, Filter, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { isFullMemberStatus } from '../utils/entityUtils';
+import { getLocalizedName } from '../utils/i18nUtils';
 
 interface CountryListViewProps {
   onSelectCountry: (country: Country) => void;
@@ -138,7 +139,7 @@ export const CountryListView: React.FC<CountryListViewProps> = ({ onSelectCountr
                 </span>
                 <div>
                   <div className="font-bold text-sm text-slate-800 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {language === 'en' ? country.nameEn : country.nameJa}
+                    {getLocalizedName(country, language)}
                   </div>
                   <div className="text-[11px] text-slate-400 font-mono">
                     {language === 'en' ? country.nameJa : country.nameEn} ({country.alpha3})

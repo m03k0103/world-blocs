@@ -21,9 +21,16 @@ export interface ParsedRoute {
 }
 
 // URLからルート情報（mode, framework, compareA, compareB）を特定するパーサー
-export function parseRouteFromUrl(basePath: string): ParsedRoute {
+export function parseRouteFromUrl(
+  basePath: string,
+  pathnameArg?: string,
+  searchArg?: string,
+  hashArg?: string
+): ParsedRoute {
   // 1. パス解析
-  const pathname = decodeURIComponent(window.location.pathname);
+  const rawPathname =
+    pathnameArg ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
+  const pathname = decodeURIComponent(rawPathname);
   let relativePath = pathname;
   if (basePath && basePath !== '.' && relativePath.toLowerCase().startsWith(basePath.toLowerCase())) {
     relativePath = relativePath.slice(basePath.length);
@@ -97,7 +104,8 @@ export function parseRouteFromUrl(basePath: string): ParsedRoute {
   }
 
   // 2. クエリパラメータフォールバック
-  const params = new URLSearchParams(window.location.search);
+  const rawSearch = searchArg ?? (typeof window !== 'undefined' ? window.location.search : '');
+  const params = new URLSearchParams(rawSearch);
   const qMode = params.get('mode') || params.get('tab');
   const qCompare = params.get('compare');
   const qParamA = params.get('a');
@@ -155,7 +163,8 @@ export function parseRouteFromUrl(basePath: string): ParsedRoute {
   }
 
   // 3. ハッシュフォールバック: #/compare/... や #/NATO
-  const hashVal = window.location.hash.replace(/^#\/?/, '');
+  const rawHash = hashArg ?? (typeof window !== 'undefined' ? window.location.hash : '');
+  const hashVal = rawHash.replace(/^#\/?/, '');
   if (hashVal) {
     const hashSegments = hashVal.split('/').filter(Boolean);
     if (hashSegments.length > 0 && hashSegments[0].toLowerCase() === 'compare') {

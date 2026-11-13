@@ -8,7 +8,8 @@ import type { CountryMapData } from './WorldMap';
 import { FrameworkCombobox } from './FrameworkCombobox';
 import { Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { isFullMemberStatus } from '../utils/entityUtils';
+import { findFramework, getFrameworkFullMemberCodes } from '../utils/frameworkUtils';
+import { getLocalizedName } from '../utils/i18nUtils';
 
 interface CompareViewProps {
   onSelectCountry: (country: Country) => void;
@@ -50,32 +51,24 @@ export const CompareView: React.FC<CompareViewProps> = ({
   };
 
   const frameworkA = useMemo(
-    () => (activeAId ? FRAMEWORKS.find((f) => f.id === activeAId) || null : null),
+    () => (activeAId ? findFramework(activeAId) : null),
     [activeAId]
   );
   const frameworkB = useMemo(
-    () => (activeBId ? FRAMEWORKS.find((f) => f.id === activeBId) || null : null),
+    () => (activeBId ? findFramework(activeBId) : null),
     [activeBId]
   );
 
-  // 正式構成員コードを取得（member / party / participating_state / ratified）
-  const validMembersA = useMemo(() => {
-    if (!frameworkA) return new Set<string>();
-    return new Set(
-      frameworkA.members
-        .filter((m) => isFullMemberStatus(m.status))
-        .map((m) => m.countryCode)
-    );
-  }, [frameworkA]);
+  // 正式構成員コードを取得
+  const validMembersA = useMemo(
+    () => (frameworkA ? getFrameworkFullMemberCodes(frameworkA) : new Set<string>()),
+    [frameworkA]
+  );
 
-  const validMembersB = useMemo(() => {
-    if (!frameworkB) return new Set<string>();
-    return new Set(
-      frameworkB.members
-        .filter((m) => isFullMemberStatus(m.status))
-        .map((m) => m.countryCode)
-    );
-  }, [frameworkB]);
+  const validMembersB = useMemo(
+    () => (frameworkB ? getFrameworkFullMemberCodes(frameworkB) : new Set<string>()),
+    [frameworkB]
+  );
 
   // 重複（積集合）、Aのみ、Bのみの分類
   const comparisonResults = useMemo(() => {
@@ -248,7 +241,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
           <div className="text-xs opacity-75 mt-1 truncate">
             {frameworkA
-              ? (comparisonResults.aOnly.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? 'なし' : 'None'))
+              ? (comparisonResults.aOnly.map((c) => getLocalizedName(c, language)).join(', ') || (language === 'ja' ? 'なし' : 'None'))
               : '-'}
           </div>
         </div>
@@ -274,7 +267,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
           <div className="text-xs text-purple-600 dark:text-purple-300 mt-1 truncate">
             {frameworkA && frameworkB
-              ? (comparisonResults.both.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? '該当なし' : 'None'))
+              ? (comparisonResults.both.map((c) => getLocalizedName(c, language)).join(', ') || (language === 'ja' ? '該当なし' : 'None'))
               : '-'}
           </div>
         </div>
@@ -300,7 +293,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
           </div>
           <div className="text-xs opacity-75 mt-1 truncate">
             {frameworkB
-              ? (comparisonResults.bOnly.map((c) => (language === 'en' ? c.nameEn : c.nameJa)).join(', ') || (language === 'ja' ? 'なし' : 'None'))
+              ? (comparisonResults.bOnly.map((c) => getLocalizedName(c, language)).join(', ') || (language === 'ja' ? 'なし' : 'None'))
               : '-'}
           </div>
         </div>
@@ -375,7 +368,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-purple-200 dark:border-purple-700 text-xs font-semibold hover:border-purple-500 shadow-xs transition-colors cursor-pointer"
                 >
                   <span>{c.flagEmoji || '🌐'}</span>
-                  <span>{language === 'en' ? c.nameEn : c.nameJa}</span>
+                  <span>{getLocalizedName(c, language)}</span>
                 </button>
               ))}
             </div>
@@ -397,7 +390,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-700 text-xs font-semibold hover:border-blue-500 shadow-xs transition-colors cursor-pointer"
                 >
                   <span>{c.flagEmoji || '🌐'}</span>
-                  <span>{language === 'en' ? c.nameEn : c.nameJa}</span>
+                  <span>{getLocalizedName(c, language)}</span>
                 </button>
               ))}
             </div>
@@ -419,7 +412,7 @@ export const CompareView: React.FC<CompareViewProps> = ({
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-red-200 dark:border-red-700 text-xs font-semibold hover:border-red-500 shadow-xs transition-colors cursor-pointer"
                 >
                   <span>{c.flagEmoji || '🌐'}</span>
-                  <span>{language === 'en' ? c.nameEn : c.nameJa}</span>
+                  <span>{getLocalizedName(c, language)}</span>
                 </button>
               ))}
             </div>

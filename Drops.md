@@ -1,6 +1,6 @@
 # World Blocs 改善・機能拡充マスタードキュメント (Drops.md)
 
-> 最終更新: 2026-11-13  
+> 最終更新: 2026-11-14  
 > 運用規約は [`GLOBAL_RULES.md`](file:///C:/Users/m03k0/.gemini/antigravity/rules/GLOBAL_RULES.md) 第3章7項、および [`Agent.md`](file:///d:/dev/World/Agent.md) に準拠します。  
 > 未着手の将来構想テーマは **「Track（トラック）」** として管理し、着手・完了した個別施策単位にはその時点の最新連番を付与して **「Drop（ドロップ）」** としてアーカイブ化します。
 
@@ -11,7 +11,6 @@
 | Track ID / Drop | 構想テーマ | 主な対象枠組み・機能 | 到達目標・期待価値 | ステータス |
 |:---:|:---|:---|:---|:---:|
 | **Track [Stats-AdvancedIndicators]** | **高次統計・安全保障・ガバナンス指標の拡充（HDI・軍事費・民主主義指数等）** | **統計指標マップの収録指標拡張**<br>- 人間開発指数（HDI / 国連開発計画 UNDP）<br>- 軍事費・防衛費（総額・対GDP比 / SIPRI基準）<br>- 民主主義指数（EIU）および報道の自由度指数（RSF）等のガバナンス指標 | 安全保障同盟（NATO等）の防衛費負担分析や、枠組み別の人間開発・ガバナンス水準の多角的比較 | **【構想】** |
-| **Track [CodeRefactor-Phase5]** | **既存フック・ヘルパー統一 & テスト拡充（CompareView / TableView / routing）** | **未活用共通基盤の統合と残領域テスト整備**<br>- `CompareView.tsx` の `findFramework` / `getFrameworkFullMemberCodes` 統合<br>- `TableView.tsx` の `useTableFilterSort` 移行・バッジ共通化<br>- `i18nUtils.ts` (`getLocalizedName`) の全画面適用<br>- `routing.ts` / `entityUtils.tsx` ユニットテスト追加 | コンポーネント間の重複ロジック解消、O(1)検索の徹底、URLルーティング・主体種別判定の回帰テスト網羅 | **【計画策定済】** |
 
 ---
 
@@ -72,24 +71,13 @@
 | CR-EU-6 | `carec`<br>中央アジア地域経済協力 (CAREC) | `economic` / `political_dialogue` | 1997年創設（ADB主導）。事務局：マニラ（ADB内）。参加11カ国（AFG, AZE, GEO, KAZ, KGZ, MNG, PAK, CHN, TJK, TKM, UZB）。出典：carecprogram.org、ADB |
 
 
-### 2-3. 【計画策定済】Track [CodeRefactor-Phase5] - 既存フック・ヘルパー統一 & テスト拡充
-
-#### 背景・課題
-- Phase 1〜3 で導入した共通フック・ユーティリティ（`useTableFilterSort`, `frameworkUtils`, `i18nUtils`）について、一部の既存コンポーネントに自前実装が残存している。
-- URLルーティング（`routing.ts`）や主体判定（`entityUtils.tsx`）に対するユニットテストが未整備である。
-
-#### 実装スコープ（予定）
-- **CompareView の整理**: `FRAMEWORKS.find` / 自前メンバー抽出を `frameworkUtils.ts` の `findFramework` / `getFrameworkFullMemberCodes` に置換し、比較結果計算を分離。
-- **TableView の整理**: 自前の検索・ソート状態管理を `useTableFilterSort` に統一し、`getEntityTypeBadge` を共通化。
-- **多言語取得の統一**: `CompareView`, `CountryListView` 等に残る `language === 'en' ? nameEn : nameJa` を `getLocalizedName` に置換。
-- **ユニットテスト拡充**: `routing.ts`（URL パース・生成）および `entityUtils.tsx` のテストケースを追加。
-
 ---
 
-## 3. 実装済 Drop一覧（Drop 1 〜 Drop 46）
+## 3. 実装済 Drop一覧（Drop 1 〜 Drop 47）
 
 | Drop ID | 完了日 | 施策名 | 主な変更対象 | 到達成果・定量数値 |
 |:---:|:---:|:---|:---|:---|
+| **Drop 47** | 2026-11-14 | **Track [CodeRefactor-Phase5]: 既存フック・ヘルパー統一 & ユニットテスト拡充** | `CompareView.tsx`, `TableView.tsx`, `CountryListView.tsx`, `routing.ts`, `src/utils/__tests__/routing.test.ts`, `entityUtils.test.ts` | `CompareView` へ `findFramework`・`getFrameworkFullMemberCodes` 適用、`TableView` へ `useTableFilterSort` 移行＆重複 `getEntityTypeBadge` 削除、`getLocalizedName` の全画面統一、`routing.ts`・`entityUtils.tsx` テスト10件追加（計52テスト100%合格）、oxlint 0警告、本番ビルド成功 |
 | **Drop 46** | 2026-11-13 | **Track [CodeRefactor-Phase4]: 時系列ステータス遷移ロジック抽出 & countries.ts データ/ロジック分離** | `membershipUtils.ts`, `FrameworkHeader.tsx`, `FrameworkView.tsx`, `countriesData.ts`, `countryUtils.ts`, `countries.ts`, `src/utils/__tests__/*` | `FrameworkView`（503行➔321行）から時系列ステータス計算を純粋関数 `membershipUtils.ts` へ抽出しヘッダーを `FrameworkHeader.tsx` へ分離、`countries.ts`（1,966行）を純粋データ（`countriesData.ts`）とルックアップロジック（`countryUtils.ts`）へ分離（完全後方互換）、新規12テスト追加（計42テスト100%合格）、oxlint 0警告、本番ビルド成功 |
 | **Drop 45** | 2026-11-08 | **Track [Eurasia-CentralAsia]: ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加 & ファクトチェック精緻化（CIS, EAEU, CICA, GUAM, ECO, CAREC）** | `src/data/frameworksData.ts`, `src/components/CompareView.tsx`, `src/utils/__tests__/frameworkUtils.test.ts` | 旧ソ連・中央アジア・ユーラシア主要6枠組み追加（全34→40枠組み）、CICA正式29カ国（LAO昇格）/オブザーバー9カ国（SAU追加）、EAEUオブザーバー4カ国（IRN追加）、GUAMオブザーバー（TUR, LVA）/パートナー（JPN, USA）厳格分離、CISモルドバ脱退通告（2026年4月通告・2027年発効）およびウクライナ法的地位注記、ECO北キプロスおよびCARECアフガニスタン注記完備、Vitest 30件合格、oxlint 0警告、本番ビルド成功 |
 | **Drop 44** | 2026-11-08 | **Track [DevOps-PortManagement]: ポート5173強制終了廃止・専用ポート(8006/8056)対応・二重起動再利用・自PID安全停止** | `start.bat`, `stop.bat`, `scripts/port_helper.cjs`, `.gitignore` | ポート5173無差別Kill完全廃止、Orchestration ports.json参照＆空きポート探索（8006➔8056➔8057-8099）、二重起動時の既存サーバー再利用（挙動1）、.server_port/.server_pidファイル管理、自身PIDのみの安全停止（他プロジェクトプロセス保護）、Vitest 30件合格、oxlint 0警告、本番ビルド成功 |
@@ -144,6 +132,7 @@
 
 | Track ID | 構想テーマ | 技術仕様・変更詳細 | 到達成果 | 対応 Drop |
 |:---:|:---|:---|:---|:---:|
+| **Track [CodeRefactor-Phase5]** | **既存フック・ヘルパー統一 & ユニットテスト拡充** | - **CompareView の統一**: `FRAMEWORKS.find` / 自前構成員抽出を `findFramework` / `getFrameworkFullMemberCodes` へ置換し、多言語名取得を `getLocalizedName` に統一。<br>- **TableView の統一**: ローカル重複の `getEntityTypeBadge` を削除して `entityUtils.tsx` へ統一し、検索・ソート状態管理を `useTableFilterSort` フックへ移行。<br>- **CountryListView の統一**: 多言語名表示を `getLocalizedName` へ統一。<br>- **テスト容易性向上 & テスト拡充**: `routing.ts` の `parseRouteFromUrl` をオプショナル引数対応とし、`routing.test.ts`（7件）・`entityUtils.test.ts`（3件）を追加（総テスト数42➔52件）。 | 共通フック・ユーティリティのコンポーネント横断統一、重複ロジック削減、ルーティング・主体種別判定の回帰テスト網羅 | **Drop 47** |
 | **Track [CodeRefactor-Phase4]** | **時系列ステータス遷移ロジック抽出 & countries.ts データ/ロジック分離** | - **時系列ステータス遷移の純粋関数化**: `FrameworkView.tsx` 内の `computedMembership`（約90行）を `src/utils/membershipUtils.ts`（`computeMembershipStatusAtYear`, `computeFrameworkMembersAtYear`）へ抽出。<br>- **ヘッダーサブコンポーネント化**: `src/components/framework/FrameworkHeader.tsx` を新設し、`FrameworkView.tsx` を 503行 ➔ 321行へスリム化。<br>- **countries.ts のデータ・ロジック分離**: 1,966行の `countries.ts` を純粋データ `countriesData.ts` と検索/互換マップ `countryUtils.ts` に分離し、`countries.ts` は完全後方互換の re-export ハブへ整理。<br>- **ユニットテスト拡充**: `membershipUtils.test.ts`（7件）および `countryUtils.test.ts`（5件）を新設し、計42テスト合格。 | 中核ドメインロジックのテスト可能化、全主要データマスタの3層分離統一、コード保守性向上 | **Drop 46** |
 | **Track [Eurasia-CentralAsia]** | **ユーラシア・中央アジア・旧ソ連圏 6枠組みの新規追加 & ファクトチェック精緻化（CIS, EAEU, CICA, GUAM, ECO, CAREC）** | - **6枠組みの新規追加（全34→40枠組み）**:<br>  1. **CIS（独立国家共同体）**: 正式加盟9カ国（RUS, BLR, KAZ, KGZ, TJK, UZB, ARM, AZE, MDA）、準加盟1カ国（TKM）、脱退2カ国（GEO, UKR）。モルドバの2026年4月8日脱退通告（2027年4月8日発効予定）およびウクライナの「1993年憲章未批准の創設参加国からの事実上離脱（2018年）」を厳格注記。<br>  2. **EAEU（ユーラシア経済同盟）**: 正式加盟5カ国（RUS, BLR, KAZ, ARM, KGZ）、オブザーバー4カ国（MDA, UZB, CUB、および2024年12月26日資格取得の**IRN［イラン］**）。<br>  3. **CICA（アジア信頼醸成措置会議）**: 正式加盟29カ国（2026年にオブザーバーから昇格した**LAO［ラオス］**を含む）、オブザーバー9カ国（2024年加盟の**SAU［サウジアラビア］**、JPN, USA, IDN, MYS, PHL, UKR, TKM, BLR）。<br>  4. **GUAM（民主主義と経済発展のための機構-GUAM）**: 正式加盟4カ国（GEO, UKR, AZE, MDA）、脱退1カ国（UZB）、公式オブザーバー2カ国（**TUR, LVA**）、対話パートナー2カ国（**JPN, USA**）へ法的に正確な区分整理を実施。<br>  5. **ECO（経済協力機構）**: 正式加盟10カ国（IRN, PAK, TUR, AFG, AZE, KAZ, KGZ, TJK, TKM, UZB）。北キプロス（「キプロス・トルコ国家」名義）やOTSのオブザーバー参加を補足。<br>  6. **CAREC（中央アジア地域経済協力）**: 参加11カ国（AFG, AZE, GEO, KAZ, KGZ, MNG, PAK, CHN, TJK, TKM, UZB）。アフガニスタン（AFG）の2021年タリバン復権に伴う実質参加凍結を注記補足。<br>- **Schema 2.0 & 一次資料準拠**: `frameworkType`、`sources`、文字列型日付（`yyyy`/`yyyymm`/`yyyymmdd`）、厳格メンバー集計ルールを適用。<br>- **比較画面（CompareView）プリセット追加**: 「CIS × GUAM」および「CIS × EAEU」をクイック比較プリセットに新設。 | 旧ソ連・中央アジア・ユーラシアの地政学・経済統合構造の完全可視化、データ品質・型安全性・テストの100%整合性担保 | **Drop 45** |
 | **Track [DevOps-PortManagement]** | **ポート5173強制終了廃止・専用ポート(8006/8056)対応・二重起動再利用・自PID安全停止** | - **ポート5173無差別Kill完全削除**: `start.bat` および `stop.bat` からポート5173の無条件 `taskkill /F` を廃止。<br>- **専用ポート & Orchestration台帳参照**: デフォルトポート8006、フォールバック8056を設定し、`D:\\dev\\Orchestration\\ports.json` の World 設定を自動参照（8006➔8056➔8057〜8099空きポート探索）。<br>- **Vite起動コマンド厳格化**: `npm run dev -- --port <検出ポート> --strictPort` に変更。<br>- **二重起動時の既存サーバー再利用（挙動1）**: `.server_port` で既にサーバーが応答している場合はサーバーを落とさずブラウザで `http://localhost:<port>/` を開いて即終了（HMR自動反映）。<br>- **状態ファイルと自身のPIDのみ安全停止**: 起動時に `.server_port` と `.server_pid` を記録し、`stop.bat` は自プロセスツリー（cmd/npm/node）のみを停止し他プロジェクトプロセスを完全保護。 | 複数プロジェクト併行開発時のポート競合・プロセス強制終了リスク完全解消、高速な既存サーバー再利用 | **Drop 44** |
